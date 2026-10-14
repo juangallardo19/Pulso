@@ -1,3 +1,49 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { Splash } from './pages/splash/splash';
+import { Onboarding } from './pages/onboarding/onboarding';
+import { Login } from './pages/login/login';
+import { Register } from './pages/register/register';
+import { Goals } from './pages/goals/goals';
+import { Home } from './pages/home/home';
+import { CheckinMood } from './pages/checkin-mood/checkin-mood';
+import { CheckinSleep } from './pages/checkin-sleep/checkin-sleep';
+import { CheckinWater } from './pages/checkin-water/checkin-water';
+import { CheckinExercise } from './pages/checkin-exercise/checkin-exercise';
+import { CheckinStress } from './pages/checkin-stress/checkin-stress';
+import { CheckinSummary } from './pages/checkin-summary/checkin-summary';
+import { CheckinDone } from './pages/checkin-done/checkin-done';
+import { Stats } from './pages/stats/stats';
+import { History } from './pages/history/history';
+import { DayDetail } from './pages/day-detail/day-detail';
+import { Breathe } from './pages/breathe/breathe';
+import { BreatheSession } from './pages/breathe-session/breathe-session';
+import { Reminders } from './pages/reminders/reminders';
+import { Wellness } from './pages/wellness/wellness';
+import { Profile } from './pages/profile/profile';
+import { Privacy } from './pages/privacy/privacy';
+
+export const routes: Routes = [
+  { path: '', component: Splash },
+  { path: 'onboarding', component: Onboarding },
+  { path: 'login', component: Login },
+  { path: 'registro', component: Register },
+  { path: 'metas', component: Goals },
+  { path: 'inicio', component: Home },
+  { path: 'checkin/animo', component: CheckinMood },
+  { path: 'checkin/sueno', component: CheckinSleep },
+  { path: 'checkin/agua', component: CheckinWater },
+  { path: 'checkin/ejercicio', component: CheckinExercise },
+  { path: 'checkin/estres', component: CheckinStress },
+  { path: 'checkin/resumen', component: CheckinSummary },
+  { path: 'checkin/listo', component: CheckinDone },
+  { path: 'estadisticas', component: Stats },
+  { path: 'historial', component: History },
+  { path: 'historial/dia', component: DayDetail },
+  { path: 'respira', component: Breathe },
+  { path: 'respira/sesion', component: BreatheSession },
+  { path: 'recordatorios', component: Reminders },
+  { path: 'bienestar', component: Wellness },
+  { path: 'perfil', component: Profile },
+  { path: 'privacidad', component: Privacy },
+];
