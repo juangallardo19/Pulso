@@ -1,0 +1,96 @@
+.splash {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25vh 24px 40px;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--tint-lav) 0%, var(--tint-mint) 100%);
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.35;
+}
+
+.blob.lav {
+  width: 320px;
+  height: 300px;
+  top: -80px;
+  left: -100px;
+  background: var(--primary);
+}
+
+.blob.mint {
+  width: 300px;
+  height: 300px;
+  right: -80px;
+  bottom: 60px;
+  background: var(--secondary);
+}
+
+.blob.coral {
+  width: 220px;
+  height: 220px;
+  left: -60px;
+  bottom: 160px;
+  background: var(--accent);
+}
+
+.center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.logo.big {
+  width: 112px;
+  height: 112px;
+  border-radius: 36px;
+  margin-bottom: 12px;
+  animation: heartbeat 1.6s ease-in-out infinite;
+}
+
+h1 {
+  font-size: 2.75rem;
+}
+
+.center p {
+  font-size: 1.125rem;
+}
+
+.actions {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* El logo "late" como un pulso */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.08);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.05);
+  }
+}

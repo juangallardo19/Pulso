@@ -1,0 +1,84 @@
+<main class="page auth">
+  <aside class="auth-side">
+    <span class="sun"></span>
+    <span class="hill one"></span>
+    <span class="hill two"></span>
+    <div class="faces">
+      <img src="moods/1.svg" alt="" /><img src="moods/2.svg" alt="" /><img
+        src="moods/3.svg"
+        alt=""
+      /><img src="moods/4.svg" alt="" /><img src="moods/5.svg" alt="" />
+    </div>
+    <h2>Metas a tu medida</h2>
+    <p>Empieza con algo alcanzable. Podrás ajustarlas cuando quieras desde tu perfil.</p>
+  </aside>
+
+  <section class="auth-main">
+    <div class="back-row">
+      <a routerLink="/registro" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <span class="small">Paso 2 de 2</span>
+    </div>
+
+    <div>
+      <h1>¿Cuáles son tus metas?</h1>
+      <p class="muted">Puedes cambiarlas cuando quieras.</p>
+    </div>
+
+    <article class="card tint bg-blue goal">
+      <div class="row">
+        <span class="bubble"><span class="icon i-moon c-sleep"></span></span>
+        <h3 class="grow">Sueño</h3>
+        <span class="metric">8</span><span class="small">h / noche</span>
+      </div>
+      <input
+        type="range"
+        class="range sleep"
+        min="4"
+        max="12"
+        value="8"
+        aria-label="Horas de sueño"
+      />
+      <div class="limits"><span>4 h</span><span>12 h</span></div>
+    </article>
+
+    <article class="card tint bg-mint goal">
+      <div class="row">
+        <span class="bubble"><span class="icon i-droplet c-secondary"></span></span>
+        <h3 class="grow">Agua</h3>
+        <span class="metric">8</span><span class="small">vasos</span>
+      </div>
+      <input
+        type="range"
+        class="range water"
+        min="1"
+        max="15"
+        value="8"
+        aria-label="Vasos de agua"
+      />
+      <div class="limits"><span>1</span><span>15</span></div>
+    </article>
+
+    <article class="card tint bg-coral goal">
+      <div class="row">
+        <span class="bubble"><span class="icon i-flame c-accent"></span></span>
+        <h3 class="grow">Ejercicio</h3>
+        <span class="metric">30</span><span class="small">min / día</span>
+      </div>
+      <input
+        type="range"
+        class="range exercise"
+        min="0"
+        max="120"
+        value="30"
+        aria-label="Minutos de ejercicio"
+      />
+      <div class="limits"><span>0</span><span>120 min</span></div>
+    </article>
+
+    <a routerLink="/inicio" class="btn btn-primary"
+      >Continuar <span class="icon sm i-arrow"></span
+    ></a>
+  </section>
+</main>
