@@ -1,0 +1,195 @@
+.history-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.counters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.faces {
+  display: flex;
+  gap: 12px;
+}
+
+.count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-title);
+}
+
+.count img {
+  width: 32px;
+  height: 32px;
+}
+
+.total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.total .metric {
+  font-size: 1.5rem;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.month {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.month .icon-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--bg);
+  box-shadow: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  justify-items: center;
+}
+
+.week span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.cell {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: transform 0.15s ease;
+}
+
+a.cell:hover {
+  transform: scale(1.12);
+}
+
+.cell img {
+  width: 36px;
+  height: 36px;
+}
+
+.cell.today {
+  border: 2.5px solid var(--primary);
+}
+
+.num {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--tint-lav);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.cell.future {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.more {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  font-family: var(--font-title);
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--primary);
+}
+
+.fab {
+  position: fixed;
+  right: 24px;
+  bottom: 100px;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-strong);
+  transition: transform 0.15s ease;
+}
+
+.fab:active {
+  transform: scale(0.9);
+}
+
+@media (min-width: 1024px) {
+  .history-grid {
+    grid-template-columns: 1fr 2fr;
+    align-items: start;
+    gap: 24px;
+  }
+
+  .counters {
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  .faces {
+    flex-direction: column;
+  }
+
+  .count {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .count img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .calendar {
+    padding: 24px;
+  }
+
+  .grid {
+    gap: 10px;
+  }
+
+  .cell {
+    width: 64px;
+    height: 64px;
+  }
+
+  .cell img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .num {
+    width: 52px;
+    height: 52px;
+    font-size: 0.875rem;
+  }
+
+  .fab {
+    bottom: 40px;
+    right: 40px;
+  }
+}

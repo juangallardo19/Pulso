@@ -1,0 +1,82 @@
+<main class="page onboarding">
+  <header class="top">
+    <span class="brand"
+      ><span class="logo"><span class="logo-mark"></span></span> Pulso</span
+    >
+    <a routerLink="/registro" class="skip">Omitir</a>
+  </header>
+
+  <!-- Carrusel deslizable hecho solo con CSS (scroll-snap) -->
+  <section class="slides">
+    <!-- Paso 1 -->
+    <article class="slide">
+      <div class="art bg-lav">
+        <div class="phone">
+          <span class="notch"></span>
+          <p class="phone-title">¿Cómo te sientes?</p>
+          <div class="mini-faces">
+            <img src="moods/1.svg" alt="" /><img src="moods/2.svg" alt="" /><img
+              src="moods/3.svg"
+              alt=""
+            /><img src="moods/4.svg" alt="" /><img src="moods/5.svg" alt="" />
+          </div>
+          <div class="pill bg-mint"><span class="icon sm i-droplet c-secondary"></span> 6 / 8</div>
+          <div class="pill bg-blue"><span class="icon sm i-moon c-sleep"></span> 7.5 h</div>
+          <div class="pill bg-coral"><span class="icon sm i-flame c-accent"></span> 30 min</div>
+        </div>
+        <span class="float f1 bg-mint"><span class="icon i-droplet c-secondary"></span></span>
+        <span class="float f2 bg-blue"><span class="icon i-moon c-sleep"></span></span>
+      </div>
+      <h1>Registra tu día</h1>
+      <p class="muted">
+        Anota cómo te sientes, cuánto duermes y cuánta agua tomas en menos de un minuto.
+      </p>
+      <div class="dots"><span class="on"></span><span></span><span></span></div>
+    </article>
+
+    <!-- Paso 2 -->
+    <article class="slide">
+      <div class="art bg-mint">
+        <div class="chart card">
+          <p class="phone-title">Tu semana</p>
+          <svg viewBox="0 0 240 110" class="line" aria-hidden="true">
+            <path d="M10 70 C40 70 40 30 70 36 S110 96 140 80 S190 20 230 24" />
+          </svg>
+          <img src="moods/3.svg" alt="" class="pt p1" />
+          <img src="moods/4.svg" alt="" class="pt p2" />
+          <img src="moods/1.svg" alt="" class="pt p3" />
+          <img src="moods/5.svg" alt="" class="pt p4" />
+        </div>
+        <span class="float f2 bg-lav"><span class="icon i-sparkle c-primary"></span></span>
+      </div>
+      <h1>Descubre tus patrones</h1>
+      <p class="muted">
+        Gráficos sencillos te muestran cómo se relacionan tu sueño, tu estrés y tu ánimo.
+      </p>
+      <div class="dots"><span></span><span class="on"></span><span></span></div>
+    </article>
+
+    <!-- Paso 3 -->
+    <article class="slide">
+      <div class="art bg-coral">
+        <span class="ring-soft"></span>
+        <span class="heart"><span class="icon i-heart"></span></span>
+        <span class="float f1 bg-mint"><span class="icon i-shield c-secondary"></span></span>
+        <span class="float f2 bg-blue"><span class="icon i-bell c-sleep"></span></span>
+      </div>
+      <h1>Cuídate a tiempo</h1>
+      <p class="muted">
+        Recibe recordatorios amables y encuentra ayuda en tu universidad cuando la necesites.
+      </p>
+      <p class="small">Pulso es una herramienta de autocuidado y no reemplaza a un profesional.</p>
+      <div class="dots"><span></span><span></span><span class="on"></span></div>
+    </article>
+  </section>
+
+  <footer class="actions">
+    <a routerLink="/registro" class="btn btn-primary"
+      >Empezar <span class="icon sm i-arrow"></span
+    ></a>
+    <a routerLink="/login" class="btn btn-ghost">Ya tengo una cuenta</a>
+  </footer>
+</main>

@@ -1,0 +1,51 @@
+<main class="page">
+  <section class="ci">
+    <header class="ci-top">
+      <a routerLink="/checkin/ejercicio" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <div class="stepper" aria-label="Paso 5 de 6">
+        <span class="done"></span><span class="done"></span><span class="done"></span
+        ><span class="done"></span><span class="done"></span><span></span>
+      </div>
+      <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
+        ><span class="icon i-x"></span
+      ></a>
+    </header>
+
+    <div class="ci-head">
+      <span class="eyebrow">Paso 5 de 6</span>
+      <h1>¿Qué tan estresado estás?</h1>
+      <p class="muted">Del 1 (tranquilo) al 10 (muy tenso).</p>
+    </div>
+
+    <div class="ci-body">
+      <article class="card tint bg-lav amount">
+        <div class="big-number">
+          <span class="metric c-primary">7</span><span class="muted">/ 10</span>
+        </div>
+        <input type="range" class="range" min="1" max="10" value="7" aria-label="Nivel de estrés" />
+        <div class="limits"><span>Tranquilo</span><span>Muy tenso</span></div>
+      </article>
+
+      <div class="group">
+        <span class="label">¿Qué lo causa? (puedes elegir varias)</span>
+        <div class="chips">
+          <span class="chip active">Parcial</span>
+          <span class="chip active">Trabajo</span>
+          <span class="chip">Familia</span>
+          <span class="chip">Dinero</span>
+          <span class="chip">Salud</span>
+          <span class="chip">Otro</span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="ci-actions">
+      <a routerLink="/checkin/resumen" class="btn btn-primary"
+        >Siguiente <span class="icon sm i-arrow"></span
+      ></a>
+      <a routerLink="/checkin/resumen" class="btn btn-ghost">Omitir</a>
+    </footer>
+  </section>
+</main>

@@ -1,0 +1,61 @@
+.spacer {
+  width: 44px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mood-hero,
+.tags,
+.edit {
+  grid-column: span 2;
+}
+
+.mood-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+}
+
+.mood-hero img {
+  width: 72px;
+  height: 72px;
+}
+
+.mini {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 128px;
+}
+
+.mini .metric {
+  font-size: 1.625rem;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+}
+
+@media (min-width: 1024px) {
+  .detail-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .mood-hero,
+  .tags,
+  .edit {
+    grid-column: span 4;
+  }
+
+  .edit {
+    max-width: 320px;
+  }
+}

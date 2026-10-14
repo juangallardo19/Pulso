@@ -1,0 +1,58 @@
+<main class="page">
+  <section class="ci">
+    <header class="ci-top">
+      <a routerLink="/checkin/agua" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <div class="stepper" aria-label="Paso 4 de 6">
+        <span class="done"></span><span class="done"></span><span class="done"></span
+        ><span class="done"></span><span></span><span></span>
+      </div>
+      <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
+        ><span class="icon i-x"></span
+      ></a>
+    </header>
+
+    <div class="ci-head">
+      <span class="eyebrow">Paso 4 de 6</span>
+      <h1>¿Te moviste hoy?</h1>
+      <p class="muted">Cualquier movimiento suma: caminar también cuenta.</p>
+    </div>
+
+    <div class="ci-body">
+      <article class="card tint bg-coral amount">
+        <div class="big-number">
+          <span class="metric">30</span><span class="muted">minutos</span>
+        </div>
+        <input
+          type="range"
+          class="range exercise"
+          min="0"
+          max="120"
+          value="30"
+          aria-label="Minutos de ejercicio"
+        />
+        <div class="limits"><span>0</span><span>Meta 30 min</span><span>120</span></div>
+      </article>
+
+      <div class="group">
+        <span class="label">Tipo de actividad</span>
+        <div class="chips">
+          <span class="chip active">Caminar</span>
+          <span class="chip">Correr</span>
+          <span class="chip">Gimnasio</span>
+          <span class="chip">Deporte</span>
+          <span class="chip">Yoga</span>
+          <span class="chip">Otro</span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="ci-actions">
+      <a routerLink="/checkin/estres" class="btn btn-primary"
+        >Siguiente <span class="icon sm i-arrow"></span
+      ></a>
+      <a routerLink="/checkin/estres" class="btn btn-ghost">Omitir</a>
+    </footer>
+  </section>
+</main>

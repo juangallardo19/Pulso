@@ -1,0 +1,72 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header">
+      <h1>Historial</h1>
+      <a routerLink="/historial" class="icon-btn" aria-label="Acción"
+        ><span class="icon i-search"></span
+      ></a>
+    </header>
+
+    <section class="history-grid">
+      <!-- Contadores del mes -->
+      <article class="card counters">
+        <div class="faces">
+          <div class="count"><img src="moods/1.svg" alt="Muy mal" /><strong>1</strong></div>
+          <div class="count"><img src="moods/2.svg" alt="Mal" /><strong>3</strong></div>
+          <div class="count"><img src="moods/3.svg" alt="Regular" /><strong>8</strong></div>
+          <div class="count"><img src="moods/4.svg" alt="Bien" /><strong>9</strong></div>
+          <div class="count"><img src="moods/5.svg" alt="Muy bien" /><strong>4</strong></div>
+        </div>
+        <div class="total">
+          <span class="metric">25</span>
+          <span class="small">registros</span>
+        </div>
+      </article>
+
+      <!-- Calendario -->
+      <article class="card calendar">
+        <div class="month">
+          <button class="icon-btn" type="button" aria-label="Mes anterior">
+            <span class="icon sm i-left"></span>
+          </button>
+          <h3>Octubre 2026</h3>
+          <button class="icon-btn" type="button" aria-label="Mes siguiente">
+            <span class="icon sm i-right"></span>
+          </button>
+        </div>
+
+        <div class="grid week">
+          <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span
+          ><span>D</span>
+        </div>
+
+        <div class="grid">
+          <span class="cell" *ngFor="let empty of emptyDays"></span>
+
+          <a
+            *ngFor="let day of days"
+            class="cell"
+            routerLink="/historial/dia"
+            [ngClass]="day.isToday ? 'today' : ''"
+          >
+            <img [src]="'moods/' + day.mood + '.svg'" [alt]="'Día ' + day.number" />
+          </a>
+
+          <span class="cell future" *ngFor="let number of futureDays">
+            <span class="num">{{ number }}</span>
+          </span>
+        </div>
+
+        <a routerLink="/estadisticas" class="more">
+          Ver análisis del mes <span class="icon sm i-right"></span>
+        </a>
+      </article>
+    </section>
+
+    <a routerLink="/checkin/animo" class="fab" aria-label="Nuevo registro"
+      ><span class="icon i-plus"></span
+    ></a>
+  </div>
+</main>

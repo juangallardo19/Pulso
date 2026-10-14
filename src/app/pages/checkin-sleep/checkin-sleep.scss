@@ -1,0 +1,60 @@
+.times {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.time {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time input {
+  border: 0;
+  background: transparent;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: var(--text);
+  outline: none;
+}
+
+.quality {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dots-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.q {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.q.on {
+  border-color: var(--sleep);
+  background: var(--sleep);
+  color: var(--on-primary);
+}
+
+.limits {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted);
+}

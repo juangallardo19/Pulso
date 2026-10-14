@@ -1,0 +1,194 @@
+.stats-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.section-title h3 {
+  font-size: 1.0625rem;
+}
+
+.chart {
+  position: relative;
+  height: 160px;
+  margin-top: 12px;
+}
+
+.chart svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.chart line {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.chart path {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 600;
+  animation: draw 1.4s ease-out both;
+}
+
+.pt {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+}
+
+.days {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5.4%;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.days .today {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.bars {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 130px;
+  margin-top: 16px;
+}
+
+.bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  height: 100%;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.bar {
+  width: 26px;
+  border-radius: 9px;
+  background: var(--sleep);
+  opacity: 0.45;
+  transform-origin: bottom;
+  animation: grow 0.8s ease-out both;
+}
+
+.bar.ok {
+  opacity: 1;
+}
+
+.goal-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(80% * 0.84 + 20px);
+  border-top: 1.5px dashed var(--muted);
+  text-align: right;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.goal-line small {
+  position: relative;
+  top: -18px;
+}
+
+.heat {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.heat-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.heat-col span {
+  width: 34px;
+  height: 24px;
+  border-radius: 8px;
+  background: var(--accent);
+}
+
+.insight {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.insight .bubble {
+  background: var(--surface);
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 600;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@media (min-width: 1024px) {
+  .segmented {
+    max-width: 320px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .mood-card,
+  .insight {
+    grid-column: span 2;
+  }
+
+  .stats-grid .card {
+    padding: 24px;
+  }
+
+  .chart {
+    height: 220px;
+  }
+
+  .pt {
+    width: 36px;
+    height: 36px;
+  }
+
+  .bar {
+    width: 40px;
+  }
+
+  .heat-col span {
+    width: 52px;
+    height: 34px;
+  }
+}

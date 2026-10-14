@@ -1,0 +1,59 @@
+.spacer {
+  width: 44px;
+}
+
+.privacy {
+  display: grid;
+  gap: 14px;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.info {
+  padding: 4px 16px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.info-row h3 {
+  font-size: 0.9375rem;
+}
+
+.danger {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+}
+
+.danger h3 {
+  font-size: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .privacy {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .intro {
+    grid-column: span 2;
+  }
+
+  .info,
+  .danger {
+    padding: 24px;
+  }
+}

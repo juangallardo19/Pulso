@@ -1,0 +1,113 @@
+.profile-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--tint-lav);
+  color: var(--primary);
+}
+
+.goals {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.goal-row {
+  display: flex;
+  gap: 8px;
+}
+
+.goal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  padding: 12px 8px;
+  border-radius: 18px;
+  font-family: var(--font-title);
+  font-size: 0.875rem;
+}
+
+.settings {
+  padding: 4px 16px;
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  border-bottom: 1px solid var(--line);
+}
+
+.setting:last-child {
+  border-bottom: 0;
+}
+
+.setting small {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  font-family: var(--font-title);
+  font-weight: 600;
+  color: var(--error);
+}
+
+@media (min-width: 1024px) {
+  .profile-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .identity {
+    grid-column: span 2;
+  }
+
+  .avatar {
+    width: 96px;
+    height: 96px;
+  }
+
+  .goals,
+  .settings {
+    padding: 24px;
+  }
+
+  .settings {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .bottom {
+    grid-column: span 2;
+  }
+}

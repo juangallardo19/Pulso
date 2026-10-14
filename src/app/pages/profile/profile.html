@@ -1,0 +1,70 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header">
+      <h1>Perfil</h1>
+    </header>
+
+    <section class="profile-grid">
+      <article class="identity">
+        <span class="avatar"><span class="icon lg i-user"></span></span>
+        <div>
+          <h2>Laura Gómez</h2>
+          <p class="small">Ingeniería · 5.º semestre</p>
+          <p class="small">laura@universidad.edu.co</p>
+        </div>
+      </article>
+
+      <article class="card goals">
+        <div class="section-title">
+          <h3>Mis metas</h3>
+          <a routerLink="/metas" class="link">Editar</a>
+        </div>
+        <div class="goal-row">
+          <div class="goal bg-blue">
+            <span class="icon i-moon c-sleep"></span><strong>8 h</strong>
+          </div>
+          <div class="goal bg-mint">
+            <span class="icon i-droplet c-secondary"></span><strong>8 vasos</strong>
+          </div>
+          <div class="goal bg-coral">
+            <span class="icon i-flame c-accent"></span><strong>30 min</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="card settings">
+        <div class="setting">
+          <span class="icon i-moon c-muted"></span>
+          <span class="grow">Modo oscuro <small>· según tu sistema</small></span>
+          <button class="toggle" type="button" aria-label="Modo oscuro"></button>
+        </div>
+        <a routerLink="/recordatorios" class="setting">
+          <span class="icon i-bell c-muted"></span>
+          <span class="grow">Recordatorios</span>
+          <span class="icon sm i-right c-muted"></span>
+        </a>
+        <a routerLink="/bienestar" class="setting">
+          <span class="icon i-heart c-muted"></span>
+          <span class="grow">Bienestar U</span>
+          <span class="icon sm i-right c-muted"></span>
+        </a>
+        <a routerLink="/privacidad" class="setting">
+          <span class="icon i-shield c-muted"></span>
+          <span class="grow">Privacidad y datos</span>
+          <span class="icon sm i-right c-muted"></span>
+        </a>
+      </article>
+
+      <div class="bottom">
+        <a routerLink="/login" class="logout pressable"
+          ><span class="icon i-logout"></span> Cerrar sesión</a
+        >
+        <p class="small">
+          Pulso es una herramienta de autocuidado y no reemplaza a un profesional.
+        </p>
+      </div>
+    </section>
+  </div>
+</main>

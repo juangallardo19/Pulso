@@ -1,0 +1,52 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header centered">
+      <a routerLink="/perfil" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <h3>Privacidad y datos</h3>
+      <span class="spacer"></span>
+    </header>
+
+    <section class="privacy">
+      <div class="intro">
+        <span class="bubble lg bg-mint"><span class="icon lg i-shield c-secondary"></span></span>
+        <p class="muted">Tus datos de bienestar son solo tuyos. Nadie más puede verlos.</p>
+      </div>
+
+      <article class="card info">
+        <div class="info-row">
+          <span class="bubble bg-lav"><span class="icon i-book c-primary"></span></span>
+          <div>
+            <h3>Qué guardamos</h3>
+            <p class="small">Tus check-ins, metas y recordatorios.</p>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="bubble bg-lav"><span class="icon i-lock c-primary"></span></span>
+          <div>
+            <h3>Quién los ve</h3>
+            <p class="small">Únicamente tú, con tu cuenta.</p>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="bubble bg-lav"><span class="icon i-trash c-primary"></span></span>
+          <div>
+            <h3>Tus derechos</h3>
+            <p class="small">Puedes borrar todo cuando quieras.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card tint bg-coral danger">
+        <h3>Eliminar mis datos</h3>
+        <p class="small">Se borrarán todos tus registros. Esta acción no se puede deshacer.</p>
+        <button class="btn btn-danger" type="button">
+          Eliminar mis datos <span class="icon sm i-trash"></span>
+        </button>
+      </article>
+    </section>
+  </div>
+</main>
