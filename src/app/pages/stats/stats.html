@@ -1,0 +1,127 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header">
+      <h1>Estadísticas</h1>
+      <a routerLink="/historial" class="icon-btn" aria-label="Acción"
+        ><span class="icon i-calendar"></span
+      ></a>
+    </header>
+
+    <div class="segmented">
+      <button type="button" class="active">Semana</button>
+      <button type="button">Mes</button>
+    </div>
+
+    <section class="stats-grid">
+      <!-- Ánimo de la semana -->
+      <article class="card mood-card">
+        <div class="section-title">
+          <div>
+            <p class="small">Ánimo</p>
+            <h3>Bien en promedio</h3>
+          </div>
+          <div class="row arrows">
+            <button class="round-btn bg-lav" type="button" aria-label="Semana anterior">
+              <span class="icon sm i-left"></span>
+            </button>
+            <button class="round-btn bg-lav" type="button" aria-label="Semana siguiente">
+              <span class="icon sm i-right"></span>
+            </button>
+          </div>
+        </div>
+        <div class="chart">
+          <svg viewBox="0 0 300 150" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="0" y1="25" x2="300" y2="25" />
+            <line x1="0" y1="62" x2="300" y2="62" />
+            <line x1="0" y1="100" x2="300" y2="100" />
+            <line x1="0" y1="137" x2="300" y2="137" />
+            <path
+              d="M20.0 75.0 C41.7 75.0 41.7 50.0 63.3 50.0 C85.0 50.0 85.0 100.0 106.7 100.0 C128.3 100.0 128.3 125.0 150.0 125.0 C171.7 125.0 171.7 75.0 193.3 75.0 C215.0 75.0 215.0 25.0 236.7 25.0 C258.3 25.0 258.3 50.0 280.0 50.0"
+            />
+          </svg>
+          <img src="moods/3.svg" alt="" class="pt" style="left: 6.7%; top: 50%" />
+          <img src="moods/4.svg" alt="" class="pt" style="left: 21.1%; top: 33.3%" />
+          <img src="moods/2.svg" alt="" class="pt" style="left: 35.6%; top: 66.7%" />
+          <img src="moods/1.svg" alt="" class="pt" style="left: 50%; top: 83.3%" />
+          <img src="moods/3.svg" alt="" class="pt" style="left: 64.4%; top: 50%" />
+          <img src="moods/5.svg" alt="" class="pt" style="left: 78.9%; top: 16.7%" />
+          <img src="moods/4.svg" alt="" class="pt" style="left: 93.3%; top: 33.3%" />
+        </div>
+        <div class="days">
+          <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span
+          ><span class="today">S</span><span>D</span>
+        </div>
+      </article>
+
+      <!-- Sueño -->
+      <article class="card">
+        <div class="section-title">
+          <div>
+            <p class="small">Sueño</p>
+            <h3>6 h 50 min al día</h3>
+          </div>
+          <span class="bubble sm bg-blue"><span class="icon sm i-moon c-sleep"></span></span>
+        </div>
+        <div class="bars">
+          <span class="goal-line"><small>Meta 8 h</small></span>
+          <div class="bar-col"><span class="bar" style="height: 60%"></span><small>L</small></div>
+          <div class="bar-col"><span class="bar" style="height: 75%"></span><small>M</small></div>
+          <div class="bar-col"><span class="bar" style="height: 55%"></span><small>X</small></div>
+          <div class="bar-col">
+            <span class="bar ok" style="height: 80%"></span><small>J</small>
+          </div>
+          <div class="bar-col"><span class="bar" style="height: 65%"></span><small>V</small></div>
+          <div class="bar-col">
+            <span class="bar ok" style="height: 90%"></span><small>S</small>
+          </div>
+          <div class="bar-col"><span class="bar" style="height: 75%"></span><small>D</small></div>
+        </div>
+      </article>
+
+      <!-- Estrés -->
+      <article class="card">
+        <div class="section-title">
+          <div>
+            <p class="small">Estrés</p>
+            <h3>Más alto los miércoles</h3>
+          </div>
+          <span class="bubble sm bg-lav"><span class="icon sm i-activity c-primary"></span></span>
+        </div>
+        <div class="heat">
+          <div class="heat-col">
+            <span style="opacity: 0.2"></span><span style="opacity: 0.3"></span><small>L</small>
+          </div>
+          <div class="heat-col">
+            <span style="opacity: 0.4"></span><span style="opacity: 0.5"></span><small>M</small>
+          </div>
+          <div class="heat-col">
+            <span style="opacity: 0.9"></span><span style="opacity: 0.8"></span><small>X</small>
+          </div>
+          <div class="heat-col">
+            <span style="opacity: 0.6"></span><span style="opacity: 0.7"></span><small>J</small>
+          </div>
+          <div class="heat-col">
+            <span style="opacity: 0.3"></span><span style="opacity: 0.4"></span><small>V</small>
+          </div>
+          <div class="heat-col">
+            <span style="opacity: 0.15"></span><span style="opacity: 0.2"></span><small>S</small>
+          </div>
+          <div class="heat-col">
+            <span style="opacity: 0.1"></span><span style="opacity: 0.2"></span><small>D</small>
+          </div>
+        </div>
+      </article>
+
+      <!-- Hallazgo -->
+      <article class="card tint bg-lav insight">
+        <span class="bubble"><span class="icon i-sparkle c-primary"></span></span>
+        <div class="grow">
+          <h3>Duermes menos los días con entregas</h3>
+          <p class="small">Los miércoles dormiste 1 h 20 min menos que tu promedio.</p>
+        </div>
+      </article>
+    </section>
+  </div>
+</main>

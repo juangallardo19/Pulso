@@ -1,0 +1,64 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header centered">
+      <a routerLink="/historial" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <h3>Sábado 3 de octubre</h3>
+      <a routerLink="/checkin/animo" class="icon-btn" aria-label="Acción"
+        ><span class="icon i-edit"></span
+      ></a>
+    </header>
+
+    <section class="detail-grid">
+      <article class="card mood-hero">
+        <img src="moods/4.svg" alt="" />
+        <div class="grow">
+          <p class="small">Ánimo</p>
+          <h2>Bien</h2>
+          <p class="small">"Salí a caminar después de clase y me sentó genial."</p>
+        </div>
+      </article>
+
+      <article class="card tint bg-blue mini lift">
+        <span class="bubble sm"><span class="icon sm i-moon c-sleep"></span></span>
+        <div>
+          <span class="metric">7.5</span> <span class="small">h</span>
+          <p class="small">Sueño · calidad 4</p>
+        </div>
+      </article>
+      <article class="card tint bg-mint mini lift">
+        <span class="bubble sm"><span class="icon sm i-droplet c-secondary"></span></span>
+        <div>
+          <span class="metric">6</span> <span class="small">/ 8</span>
+          <p class="small">Agua</p>
+        </div>
+      </article>
+      <article class="card tint bg-coral mini lift">
+        <span class="bubble sm"><span class="icon sm i-flame c-accent"></span></span>
+        <div>
+          <span class="metric">30</span> <span class="small">min</span>
+          <p class="small">Ejercicio · caminar</p>
+        </div>
+      </article>
+      <article class="card tint bg-lav mini lift">
+        <span class="bubble sm"><span class="icon sm i-activity c-primary"></span></span>
+        <div>
+          <span class="metric">4</span> <span class="small">/ 10</span>
+          <p class="small">Estrés</p>
+        </div>
+      </article>
+
+      <div class="tags">
+        <span class="chip">Parcial</span>
+        <span class="chip">Trabajo</span>
+      </div>
+
+      <a routerLink="/checkin/animo" class="btn btn-secondary edit"
+        >Editar registro <span class="icon sm i-edit"></span
+      ></a>
+    </section>
+  </div>
+</main>
