@@ -1,0 +1,87 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header">
+      <h1>Bienestar U</h1>
+      <a routerLink="/bienestar" class="icon-btn" aria-label="Acción"
+        ><span class="icon i-search"></span
+      ></a>
+    </header>
+
+    <div class="chips filters">
+      <span class="chip active">Todos</span>
+      <span class="chip">Psicología</span>
+      <span class="chip">Enfermería</span>
+      <span class="chip">Deportes</span>
+    </div>
+
+    <section class="wellness-grid">
+      <article class="card tint bg-coral hotline">
+        <div class="row">
+          <span class="bubble"><span class="icon i-heart c-accent"></span></span>
+          <div class="grow">
+            <h3>¿Necesitas hablar con alguien?</h3>
+            <p class="small">Atención gratuita, en cualquier momento.</p>
+          </div>
+        </div>
+        <div class="lines">
+          <a href="tel:106" class="line pressable"
+            ><span class="icon sm i-phone c-accent"></span> Línea 106</a
+          >
+          <a href="tel:192" class="line pressable"
+            ><span class="icon sm i-phone c-accent"></span> 192 · opción 4</a
+          >
+        </div>
+      </article>
+      <article class="card service lift">
+        <div class="row">
+          <span class="bubble bg-lav"><span class="icon i-mind c-primary"></span></span>
+          <div class="grow">
+            <h3>Psicología</h3>
+            <p class="small">Orientación individual y grupal</p>
+          </div>
+        </div>
+        <div class="meta">
+          <span><span class="icon sm i-clock"></span> L–V · 8:00–17:00</span>
+          <span><span class="icon sm i-pin"></span> Bloque B, piso 2</span>
+        </div>
+        <button class="btn btn-secondary contact" type="button">
+          Contactar <span class="icon sm i-phone"></span>
+        </button>
+      </article>
+      <article class="card service lift">
+        <div class="row">
+          <span class="bubble bg-mint"><span class="icon i-medic c-secondary"></span></span>
+          <div class="grow">
+            <h3>Enfermería</h3>
+            <p class="small">Primeros auxilios y consulta</p>
+          </div>
+        </div>
+        <div class="meta">
+          <span><span class="icon sm i-clock"></span> L–V · 7:00–19:00</span>
+          <span><span class="icon sm i-pin"></span> Edificio central</span>
+        </div>
+        <button class="btn btn-secondary contact" type="button">
+          Contactar <span class="icon sm i-phone"></span>
+        </button>
+      </article>
+      <article class="card service lift">
+        <div class="row">
+          <span class="bubble bg-coral"><span class="icon i-dumbbell c-accent"></span></span>
+          <div class="grow">
+            <h3>Deportes</h3>
+            <p class="small">Gimnasio, yoga y pausas activas</p>
+          </div>
+        </div>
+        <div class="meta">
+          <span><span class="icon sm i-clock"></span> L–S · 6:00–20:00</span>
+          <span><span class="icon sm i-pin"></span> Coliseo</span>
+        </div>
+        <button class="btn btn-secondary contact" type="button">
+          Contactar <span class="icon sm i-phone"></span>
+        </button>
+      </article>
+    </section>
+  </div>
+</main>

@@ -1,0 +1,77 @@
+.spacer {
+  width: 44px;
+}
+
+.reminders {
+  display: grid;
+  gap: 12px;
+}
+
+.reminder {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reminder h3 {
+  font-size: 1rem;
+}
+
+.reminder .metric {
+  font-size: 1.625rem;
+}
+
+.reminder.off {
+  opacity: 0.65;
+}
+
+.days {
+  display: flex;
+  justify-content: space-between;
+}
+
+.day {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.day.on {
+  border-color: transparent;
+}
+
+.day.primary {
+  background: var(--tint-lav);
+  color: var(--primary);
+}
+
+.day.secondary {
+  background: var(--tint-mint);
+  color: var(--secondary);
+}
+
+.day.sleep {
+  background: var(--tint-blue);
+  color: var(--sleep);
+}
+
+@media (min-width: 1024px) {
+  .reminders {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .reminder {
+    padding: 24px;
+  }
+
+  .new {
+    max-width: 320px;
+  }
+}

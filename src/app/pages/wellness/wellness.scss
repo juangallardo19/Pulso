@@ -1,0 +1,88 @@
+.filters {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.wellness-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.hotline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+}
+
+.hotline h3,
+.service h3 {
+  font-size: 1rem;
+}
+
+.lines {
+  display: flex;
+  gap: 8px;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--surface);
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.meta > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contact {
+  min-height: 44px;
+}
+
+@media (min-width: 1024px) {
+  .wellness-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .hotline {
+    grid-column: span 3;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+  }
+
+  .lines {
+    min-width: 360px;
+  }
+
+  .service {
+    padding: 24px;
+  }
+}

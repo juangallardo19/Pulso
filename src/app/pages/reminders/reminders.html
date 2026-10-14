@@ -1,0 +1,83 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header centered">
+      <a routerLink="/perfil" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <h3>Recordatorios</h3>
+      <span class="spacer"></span>
+    </header>
+
+    <section class="reminders">
+      <article class="card reminder lift">
+        <div class="row">
+          <span class="bubble bg-lav"><span class="icon i-check c-primary"></span></span>
+          <div class="grow">
+            <h3>Check-in diario</h3>
+            <span class="metric">20:30</span>
+          </div>
+          <button class="toggle on" type="button" aria-label="Activar recordatorio"></button>
+        </div>
+        <div class="days">
+          <span class="day on primary">L</span><span class="day on primary">M</span
+          ><span class="day on primary">X</span><span class="day on primary">J</span
+          ><span class="day on primary">V</span><span class="day on primary">S</span
+          ><span class="day on primary">D</span>
+        </div>
+      </article>
+      <article class="card reminder lift">
+        <div class="row">
+          <span class="bubble bg-mint"><span class="icon i-droplet c-secondary"></span></span>
+          <div class="grow">
+            <h3>Tomar agua</h3>
+            <span class="metric">10:00</span>
+          </div>
+          <button class="toggle on" type="button" aria-label="Activar recordatorio"></button>
+        </div>
+        <div class="days">
+          <span class="day on secondary">L</span><span class="day on secondary">M</span
+          ><span class="day on secondary">X</span><span class="day on secondary">J</span
+          ><span class="day on secondary">V</span><span class="day">S</span
+          ><span class="day">D</span>
+        </div>
+      </article>
+      <article class="card reminder lift off">
+        <div class="row">
+          <span class="bubble bg-blue"><span class="icon i-moon c-sleep"></span></span>
+          <div class="grow">
+            <h3>Hora de dormir</h3>
+            <span class="metric">23:00</span>
+          </div>
+          <button class="toggle" type="button" aria-label="Activar recordatorio"></button>
+        </div>
+        <div class="days">
+          <span class="day on sleep">L</span><span class="day on sleep">M</span
+          ><span class="day on sleep">X</span><span class="day on sleep">J</span
+          ><span class="day on sleep">V</span><span class="day on sleep">S</span
+          ><span class="day on sleep">D</span>
+        </div>
+      </article>
+      <article class="card reminder lift">
+        <div class="row">
+          <span class="bubble bg-lav"><span class="icon i-wind c-primary"></span></span>
+          <div class="grow">
+            <h3>Respirar</h3>
+            <span class="metric">15:00</span>
+          </div>
+          <button class="toggle on" type="button" aria-label="Activar recordatorio"></button>
+        </div>
+        <div class="days">
+          <span class="day on primary">L</span><span class="day">M</span
+          ><span class="day on primary">X</span><span class="day">J</span
+          ><span class="day on primary">V</span><span class="day">S</span><span class="day">D</span>
+        </div>
+      </article>
+    </section>
+
+    <button class="btn btn-secondary new" type="button">
+      Nuevo recordatorio <span class="icon sm i-plus"></span>
+    </button>
+  </div>
+</main>
