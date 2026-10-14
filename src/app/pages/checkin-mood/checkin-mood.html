@@ -1,0 +1,39 @@
+<main class="page">
+  <section class="ci">
+    <header class="ci-top">
+      <a routerLink="/inicio" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <div class="stepper" aria-label="Paso 1 de 6">
+        <span class="done"></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
+        ><span class="icon i-x"></span
+      ></a>
+    </header>
+
+    <div class="ci-head">
+      <span class="eyebrow">Paso 1 de 6</span>
+      <h1>¿Cómo te sientes ahora?</h1>
+      <p class="muted">No hay respuestas correctas. Elige la que más se parezca.</p>
+    </div>
+
+    <div class="ci-body">
+      <div class="moods">
+        <a class="mood pressable"><img src="moods/1.svg" alt="" /><span>Muy mal</span></a>
+        <a class="mood pressable"><img src="moods/2.svg" alt="" /><span>Mal</span></a>
+        <a class="mood pressable"><img src="moods/3.svg" alt="" /><span>Regular</span></a>
+        <a class="mood pressable selected"><img src="moods/4.svg" alt="" /><span>Bien</span></a>
+        <a class="mood pressable"><img src="moods/5.svg" alt="" /><span>Muy bien</span></a>
+      </div>
+
+      <textarea class="note" placeholder="Añade una nota (opcional)"></textarea>
+    </div>
+
+    <footer class="ci-actions">
+      <a routerLink="/checkin/sueno" class="btn btn-primary"
+        >Siguiente <span class="icon sm i-arrow"></span
+      ></a>
+    </footer>
+  </section>
+</main>

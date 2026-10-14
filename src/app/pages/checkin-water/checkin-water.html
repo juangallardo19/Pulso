@@ -1,0 +1,54 @@
+<main class="page">
+  <section class="ci">
+    <header class="ci-top">
+      <a routerLink="/checkin/sueno" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <div class="stepper" aria-label="Paso 3 de 6">
+        <span class="done"></span><span class="done"></span><span class="done"></span><span></span
+        ><span></span><span></span>
+      </div>
+      <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
+        ><span class="icon i-x"></span
+      ></a>
+    </header>
+
+    <div class="ci-head">
+      <span class="eyebrow">Paso 3 de 6</span>
+      <h1>¿Cuánta agua tomaste?</h1>
+      <p class="muted">Cada vaso cuenta. Toca + cuando bebas uno.</p>
+    </div>
+
+    <div class="ci-body">
+      <div class="water">
+        <svg class="glass" viewBox="0 0 120 150" aria-hidden="true">
+          <path class="water-fill" d="M19 52H101L96 138Q95 146 88 146H32Q25 146 24 138Z" />
+          <path class="wave" d="M30 70q10-6 20 0t20 0" />
+          <path class="glass-line" d="M14 8H106L98 138Q97 146 89 146H31Q23 146 22 138Z" />
+        </svg>
+
+        <div class="big-number">
+          <span class="metric">6</span><span class="muted">/ 8 vasos</span>
+        </div>
+
+        <div class="controls">
+          <button class="ctrl minus" type="button" aria-label="Quitar un vaso">
+            <span class="icon lg i-minus"></span>
+          </button>
+          <button class="ctrl plus" type="button" aria-label="Sumar un vaso">
+            <span class="icon lg i-plus"></span>
+          </button>
+        </div>
+
+        <p class="small">Te faltan 2 vasos para tu meta de hoy.</p>
+      </div>
+    </div>
+
+    <footer class="ci-actions">
+      <a routerLink="/checkin/ejercicio" class="btn btn-primary"
+        >Siguiente <span class="icon sm i-arrow"></span
+      ></a>
+      <a routerLink="/checkin/ejercicio" class="btn btn-ghost">Omitir</a>
+    </footer>
+  </section>
+</main>

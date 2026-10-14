@@ -1,0 +1,63 @@
+<main class="page">
+  <section class="ci">
+    <header class="ci-top">
+      <a routerLink="/checkin/animo" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <div class="stepper" aria-label="Paso 2 de 6">
+        <span class="done"></span><span class="done"></span><span></span><span></span><span></span
+        ><span></span>
+      </div>
+      <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
+        ><span class="icon i-x"></span
+      ></a>
+    </header>
+
+    <div class="ci-head">
+      <span class="eyebrow">Paso 2 de 6</span>
+      <h1>¿Cómo dormiste anoche?</h1>
+      <p class="muted">Cuéntanos a qué hora te acostaste y te levantaste.</p>
+    </div>
+
+    <div class="ci-body">
+      <div class="times">
+        <label class="card time">
+          <span class="row small"><span class="icon sm i-moon c-sleep"></span> Me dormí</span>
+          <input type="time" value="23:30" />
+        </label>
+        <label class="card time">
+          <span class="row small"><span class="icon sm i-sun c-sleep"></span> Desperté</span>
+          <input type="time" value="07:00" />
+        </label>
+      </div>
+
+      <article class="card tint bg-blue row">
+        <span class="bubble"><span class="icon i-moon c-sleep"></span></span>
+        <div class="grow">
+          <p class="small">Dormiste</p>
+          <h2>7 h 30 min</h2>
+        </div>
+        <span class="small">Meta 8 h</span>
+      </article>
+
+      <div class="quality">
+        <span class="label">Calidad del sueño</span>
+        <div class="dots-row">
+          <span class="q on pressable">1</span>
+          <span class="q on pressable">2</span>
+          <span class="q on pressable">3</span>
+          <span class="q on pressable">4</span>
+          <span class="q pressable">5</span>
+        </div>
+        <div class="limits"><span>Mala</span><span>Excelente</span></div>
+      </div>
+    </div>
+
+    <footer class="ci-actions">
+      <a routerLink="/checkin/agua" class="btn btn-primary"
+        >Siguiente <span class="icon sm i-arrow"></span
+      ></a>
+      <a routerLink="/checkin/agua" class="btn btn-ghost">Omitir</a>
+    </footer>
+  </section>
+</main>
