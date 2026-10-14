@@ -1,0 +1,34 @@
+<main class="session">
+  <span class="blob one"></span>
+  <span class="blob two"></span>
+
+  <header class="top">
+    <a routerLink="/respira" class="icon-btn" aria-label="Cerrar"><span class="icon i-x"></span></a>
+    <div class="title">
+      <h3>Respiración 4-7-8</h3>
+      <p class="small">Sigue el círculo</p>
+    </div>
+    <span class="spacer"></span>
+  </header>
+
+  <!-- El círculo y los textos se animan solo con CSS (ciclo de 19 s: 4 + 7 + 8) -->
+  <section class="circle-wrap">
+    <span class="layer outer"></span>
+    <span class="layer middle"></span>
+    <span class="core">
+      <span class="word inhale">Inhala</span>
+      <span class="word hold">Sostén</span>
+      <span class="word exhale">Exhala</span>
+    </span>
+  </section>
+
+  <section class="steps">
+    <div class="step s-inhale"><strong>4</strong><span>Inhala</span></div>
+    <div class="step s-hold"><strong>7</strong><span>Sostén</span></div>
+    <div class="step s-exhale"><strong>8</strong><span>Exhala</span></div>
+  </section>
+
+  <button class="pause" type="button" aria-label="Pausar">
+    <span class="icon lg i-pause"></span>
+  </button>
+</main>

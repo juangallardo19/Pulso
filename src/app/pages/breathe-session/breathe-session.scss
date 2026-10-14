@@ -1,0 +1,267 @@
+.session {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 24px 20px 40px;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--tint-lav) 0%, var(--tint-mint) 100%);
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+}
+
+.blob.one {
+  width: 300px;
+  height: 300px;
+  top: 80px;
+  left: -100px;
+  background: var(--primary);
+}
+
+.blob.two {
+  width: 280px;
+  height: 280px;
+  right: -80px;
+  bottom: 40px;
+  background: var(--secondary);
+}
+
+.top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 560px;
+}
+
+.title {
+  text-align: center;
+}
+
+.spacer {
+  width: 44px;
+}
+
+.circle-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(320px, 80vw);
+  aspect-ratio: 1;
+  margin-top: 4vh;
+}
+
+.layer {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: breathe 19s ease-in-out infinite;
+}
+
+.layer.outer {
+  inset: 0;
+  opacity: 0.12;
+}
+
+.layer.middle {
+  inset: 11%;
+  opacity: 0.22;
+  animation-delay: 0.15s;
+}
+
+.core {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-strong);
+  animation: breathe 19s ease-in-out infinite;
+}
+
+.word {
+  grid-area: 1 / 1;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 1.75rem;
+  opacity: 0;
+}
+
+.inhale {
+  animation: show-inhale 19s infinite;
+}
+
+.hold {
+  animation: show-hold 19s infinite;
+}
+
+.exhale {
+  animation: show-exhale 19s infinite;
+}
+
+.steps {
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 96px;
+  padding: 10px 0;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background: var(--surface);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.step strong {
+  font-family: var(--font-title);
+  font-size: 1.375rem;
+}
+
+.s-inhale {
+  animation: step-inhale 19s infinite;
+}
+
+.s-hold {
+  animation: step-hold 19s infinite;
+}
+
+.s-exhale {
+  animation: step-exhale 19s infinite;
+}
+
+.pause {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin-top: auto;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--primary);
+  box-shadow: var(--shadow-strong);
+  transition: transform 0.15s ease;
+}
+
+.pause:active {
+  transform: scale(0.9);
+}
+
+/* 0–21 %: inhala (4 s) · 21–58 %: sostén (7 s) · 58–100 %: exhala (8 s) */
+@keyframes breathe {
+  0% {
+    transform: scale(0.7);
+  }
+
+  21%,
+  58% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.7);
+  }
+}
+
+@keyframes show-inhale {
+  0%,
+  20% {
+    opacity: 1;
+  }
+
+  21%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes show-hold {
+  0%,
+  20% {
+    opacity: 0;
+  }
+
+  21%,
+  57% {
+    opacity: 1;
+  }
+
+  58%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes show-exhale {
+  0%,
+  57% {
+    opacity: 0;
+  }
+
+  58%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes step-inhale {
+  0%,
+  20% {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  21%,
+  100% {
+    border-color: transparent;
+  }
+}
+
+@keyframes step-hold {
+  0%,
+  20% {
+    border-color: transparent;
+  }
+
+  21%,
+  57% {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  58%,
+  100% {
+    border-color: transparent;
+  }
+}
+
+@keyframes step-exhale {
+  0%,
+  57% {
+    border-color: transparent;
+  }
+
+  58%,
+  100% {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
