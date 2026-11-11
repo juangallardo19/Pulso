@@ -17,7 +17,29 @@ describe('MoodOption', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('se crea', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('muestra la etiqueta del ánimo', () => {
+    const html: HTMLElement = fixture.nativeElement;
+    expect(html.textContent).toContain('Bien');
+  });
+
+  it('la imagen usa mood.image', () => {
+    const img: HTMLImageElement = fixture.nativeElement.querySelector('img');
+    expect(img.getAttribute('src')).toBe('moods/4.svg');
+  });
+
+  it('emite el valor al hacer clic', () => {
+    const espia = vi.spyOn(component.elegir, 'emit');
+    fixture.nativeElement.querySelector('a').click();
+    expect(espia).toHaveBeenCalledWith(4);
+  });
+
+  it('agrega la clase selected cuando selected es true', async () => {
+    fixture.componentRef.setInput('selected', true);
+    await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('.selected')).not.toBeNull();
   });
 });

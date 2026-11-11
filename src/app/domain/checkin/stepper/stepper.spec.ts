@@ -17,7 +17,21 @@ describe('Stepper', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('se crea', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('con paso 3 marca 3 puntos como hechos', async () => {
+    fixture.componentRef.setInput('paso', 3);
+    await fixture.whenStable();
+    const hechos = fixture.nativeElement.querySelectorAll('span.done');
+    expect(hechos.length).toBe(3);
+  });
+
+  it('el aria-label dice Paso 3 de 6', async () => {
+    fixture.componentRef.setInput('paso', 3);
+    await fixture.whenStable();
+    const stepper: HTMLElement = fixture.nativeElement.querySelector('.stepper');
+    expect(stepper.getAttribute('aria-label')).toBe('Paso 3 de 6');
   });
 });
