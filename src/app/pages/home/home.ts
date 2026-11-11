@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NavBar } from '../../components/nav-bar/nav-bar';
 import { CHECKIN_VACIO, CheckinEntry } from '../../models/checkin.model';
@@ -38,6 +38,7 @@ export class Home {
     ...JSON.parse(localStorage.getItem('pulso-goals') ?? '{}'),
   };
   racha = this.historial.length;
+  vasos = signal(this.hoy.water);
 
   saludo() {
     const hora = new Date().getHours();
@@ -64,9 +65,29 @@ export class Home {
   }
 
   progreso() {
-    const agua = Math.min(100, (this.hoy.water / this.metas.waterGlasses) * 100);
+    const agua = Math.min(100, (this.vasos() / this.metas.waterGlasses) * 100);
     const ejercicio = Math.min(100, (this.hoy.exerciseMinutes / this.metas.exerciseMinutes) * 100);
     const sueno = Math.min(100, (this.horas() / this.metas.sleepHours) * 100);
     return Math.round((agua + ejercicio + sueno) / 3);
+  }
+
+  sumar() {
+    this.vasos.update((v) => v + 1);
+    this.guardarAgua();
+  }
+
+  quitar() {
+    this.vasos.update((v) => (v > 0 ? v - 1 : 0));
+    this.guardarAgua();
+  }
+
+  private guardarAgua() {
+    const actual: CheckinEntry = {
+      ...CHECKIN_VACIO,
+      ...JSON.parse(localStorage.getItem('pulso-checkin-hoy') ?? '{}'),
+      date: new Date().toLocaleDateString('en-CA'),
+      water: this.vasos(),
+    };
+    localStorage.setItem('pulso-checkin-hoy', JSON.stringify(actual));
   }
 }
