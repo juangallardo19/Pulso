@@ -19,33 +19,41 @@
     <div class="ci-body">
       <div class="water">
         <svg class="glass" viewBox="0 0 120 150" aria-hidden="true">
-          <path class="water-fill" d="M19 52H101L96 138Q95 146 88 146H32Q25 146 24 138Z" />
+          <path
+            class="water-fill"
+            [style.opacity]="vasos() / meta"
+            d="M19 52H101L96 138Q95 146 88 146H32Q25 146 24 138Z"
+          />
           <path class="wave" d="M30 70q10-6 20 0t20 0" />
           <path class="glass-line" d="M14 8H106L98 138Q97 146 89 146H31Q23 146 22 138Z" />
         </svg>
 
         <div class="big-number">
-          <span class="metric">6</span><span class="muted">/ 8 vasos</span>
+          <span class="metric">{{ vasos() }}</span
+          ><span class="muted">/ {{ meta }} vasos</span>
         </div>
 
         <div class="controls">
-          <button class="ctrl minus" type="button" aria-label="Quitar un vaso">
+          <button class="ctrl minus" type="button" (click)="quitar()" aria-label="Quitar un vaso">
             <span class="icon lg i-minus"></span>
           </button>
-          <button class="ctrl plus" type="button" aria-label="Sumar un vaso">
+          <button class="ctrl plus" type="button" (click)="sumar()" aria-label="Sumar un vaso">
             <span class="icon lg i-plus"></span>
           </button>
         </div>
 
-        <p class="small">Te faltan 2 vasos para tu meta de hoy.</p>
+        <p class="small" [class.oculto]="faltan() === 0">
+          Te faltan {{ faltan() }} vasos para tu meta de hoy.
+        </p>
+        <p class="small" [class.oculto]="faltan() !== 0">¡Meta cumplida!</p>
       </div>
     </div>
 
     <footer class="ci-actions">
-      <a routerLink="/checkin/ejercicio" class="btn btn-primary"
+      <a routerLink="/checkin/ejercicio" (click)="guardar()" class="btn btn-primary"
         >Siguiente <span class="icon sm i-arrow"></span
       ></a>
-      <a routerLink="/checkin/ejercicio" class="btn btn-ghost">Omitir</a>
+      <a routerLink="/checkin/ejercicio" (click)="guardar()" class="btn btn-ghost">Omitir</a>
     </footer>
   </section>
 </main>
