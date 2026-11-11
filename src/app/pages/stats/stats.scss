@@ -103,6 +103,19 @@
   top: -18px;
 }
 
+.bars.mes .bar {
+  width: 6px;
+  border-radius: 3px;
+}
+
+.bars.mes .bar-col small {
+  display: none;
+}
+
+.oculto {
+  display: none;
+}
+
 .heat {
   display: flex;
   justify-content: space-between;
@@ -185,6 +198,10 @@
 
   .bar {
     width: 40px;
+  }
+
+  .bars.mes .bar {
+    width: 12px;
   }
 
   .heat-col span {

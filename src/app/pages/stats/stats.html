@@ -10,8 +10,12 @@
     </header>
 
     <div class="segmented">
-      <button type="button" class="active">Semana</button>
-      <button type="button">Mes</button>
+      <button type="button" [class.active]="periodo() === 'semana'" (click)="periodo.set('semana')">
+        Semana
+      </button>
+      <button type="button" [class.active]="periodo() === 'mes'" (click)="periodo.set('mes')">
+        Mes
+      </button>
     </div>
 
     <section class="stats-grid">
@@ -20,7 +24,7 @@
         <div class="section-title">
           <div>
             <p class="small">Ánimo</p>
-            <h3>Bien en promedio</h3>
+            <h3>{{ animoPromedio() }} en promedio</h3>
           </div>
           <div class="row arrows">
             <button class="round-btn bg-lav" type="button" aria-label="Semana anterior">
@@ -41,17 +45,17 @@
               d="M20.0 75.0 C41.7 75.0 41.7 50.0 63.3 50.0 C85.0 50.0 85.0 100.0 106.7 100.0 C128.3 100.0 128.3 125.0 150.0 125.0 C171.7 125.0 171.7 75.0 193.3 75.0 C215.0 75.0 215.0 25.0 236.7 25.0 C258.3 25.0 258.3 50.0 280.0 50.0"
             />
           </svg>
-          <img src="moods/3.svg" alt="" class="pt" style="left: 6.7%; top: 50%" />
-          <img src="moods/4.svg" alt="" class="pt" style="left: 21.1%; top: 33.3%" />
-          <img src="moods/2.svg" alt="" class="pt" style="left: 35.6%; top: 66.7%" />
-          <img src="moods/1.svg" alt="" class="pt" style="left: 50%; top: 83.3%" />
-          <img src="moods/3.svg" alt="" class="pt" style="left: 64.4%; top: 50%" />
-          <img src="moods/5.svg" alt="" class="pt" style="left: 78.9%; top: 16.7%" />
-          <img src="moods/4.svg" alt="" class="pt" style="left: 93.3%; top: 33.3%" />
+          <img
+            *ngFor="let d of registros(); index as i"
+            class="pt"
+            alt=""
+            [src]="'moods/' + d.mood + '.svg'"
+            [style.left.%]="(i + 0.5) * (100 / registros().length)"
+            [style.top.%]="100 - d.mood * 16.7"
+          />
         </div>
-        <div class="days">
-          <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span
-          ><span class="today">S</span><span>D</span>
+        <div class="days" [class.oculto]="periodo() === 'mes'">
+          <span *ngFor="let d of registros()">{{ d.date.slice(8) }}</span>
         </div>
       </article>
 
@@ -60,23 +64,18 @@
         <div class="section-title">
           <div>
             <p class="small">Sueño</p>
-            <h3>6 h 50 min al día</h3>
+            <h3>{{ suenoPromedio() }} al día</h3>
           </div>
           <span class="bubble sm bg-blue"><span class="icon sm i-moon c-sleep"></span></span>
         </div>
-        <div class="bars">
-          <span class="goal-line"><small>Meta 8 h</small></span>
-          <div class="bar-col"><span class="bar" style="height: 60%"></span><small>L</small></div>
-          <div class="bar-col"><span class="bar" style="height: 75%"></span><small>M</small></div>
-          <div class="bar-col"><span class="bar" style="height: 55%"></span><small>X</small></div>
-          <div class="bar-col">
-            <span class="bar ok" style="height: 80%"></span><small>J</small>
+        <div class="bars" [class.mes]="periodo() === 'mes'">
+          <span class="goal-line" [style.bottom]="'calc(' + alturaMeta() + '% * 0.84 + 20px)'"
+            ><small>Meta {{ metaSueno }} h</small></span
+          >
+          <div class="bar-col" *ngFor="let d of registros()">
+            <span class="bar" [class.ok]="cumpleMeta(d)" [style.height.%]="alturaBarra(d)"></span>
+            <small>{{ d.date.slice(8) }}</small>
           </div>
-          <div class="bar-col"><span class="bar" style="height: 65%"></span><small>V</small></div>
-          <div class="bar-col">
-            <span class="bar ok" style="height: 90%"></span><small>S</small>
-          </div>
-          <div class="bar-col"><span class="bar" style="height: 75%"></span><small>D</small></div>
         </div>
       </article>
 
@@ -85,7 +84,7 @@
         <div class="section-title">
           <div>
             <p class="small">Estrés</p>
-            <h3>Más alto los miércoles</h3>
+            <h3>{{ estresPromedio() }} / 10 en promedio</h3>
           </div>
           <span class="bubble sm bg-lav"><span class="icon sm i-activity c-primary"></span></span>
         </div>
