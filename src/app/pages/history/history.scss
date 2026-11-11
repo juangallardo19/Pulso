@@ -78,6 +78,19 @@
   border-radius: 50%;
 }
 
+.nombre-mes {
+  text-transform: capitalize;
+}
+
+.empty a {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.oculto {
+  display: none;
+}
+
 .more {
   display: flex;
   align-items: center;

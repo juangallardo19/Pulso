@@ -9,18 +9,33 @@
       ></a>
     </header>
 
+    <p class="card empty" [class.oculto]="historial.length > 0">
+      Aún no tienes registros.
+      <a routerLink="/checkin/animo">Haz tu primer check-in.</a>
+    </p>
+
     <section class="history-grid">
       <!-- Contadores del mes -->
       <article class="card counters">
         <div class="faces">
-          <div class="count"><img src="moods/1.svg" alt="Muy mal" /><strong>1</strong></div>
-          <div class="count"><img src="moods/2.svg" alt="Mal" /><strong>3</strong></div>
-          <div class="count"><img src="moods/3.svg" alt="Regular" /><strong>8</strong></div>
-          <div class="count"><img src="moods/4.svg" alt="Bien" /><strong>9</strong></div>
-          <div class="count"><img src="moods/5.svg" alt="Muy bien" /><strong>4</strong></div>
+          <div class="count">
+            <img src="moods/1.svg" alt="Muy mal" /><strong>{{ contar(1) }}</strong>
+          </div>
+          <div class="count">
+            <img src="moods/2.svg" alt="Mal" /><strong>{{ contar(2) }}</strong>
+          </div>
+          <div class="count">
+            <img src="moods/3.svg" alt="Regular" /><strong>{{ contar(3) }}</strong>
+          </div>
+          <div class="count">
+            <img src="moods/4.svg" alt="Bien" /><strong>{{ contar(4) }}</strong>
+          </div>
+          <div class="count">
+            <img src="moods/5.svg" alt="Muy bien" /><strong>{{ contar(5) }}</strong>
+          </div>
         </div>
         <div class="total">
-          <span class="metric">25</span>
+          <span class="metric">{{ registrosDelMes() }}</span>
           <span class="small">registros</span>
         </div>
       </article>
@@ -31,7 +46,7 @@
           <button class="icon-btn" type="button" aria-label="Mes anterior">
             <span class="icon sm i-left"></span>
           </button>
-          <h3>Octubre 2026</h3>
+          <h3 class="nombre-mes">{{ nombreMes }}</h3>
           <button class="icon-btn" type="button" aria-label="Mes siguiente">
             <span class="icon sm i-right"></span>
           </button>
@@ -43,20 +58,13 @@
         </div>
 
         <div class="grid">
-          <span class="cell" *ngFor="let empty of emptyDays"></span>
+          <span class="cell" *ngFor="let e of emptyDays"></span>
 
-          <a
-            *ngFor="let day of days"
-            class="cell"
-            routerLink="/historial/dia"
-            [ngClass]="day.isToday ? 'today' : ''"
-          >
-            <img [src]="'moods/' + day.mood + '.svg'" [alt]="'Día ' + day.number" />
-          </a>
-
-          <span class="cell future" *ngFor="let number of futureDays">
-            <span class="num">{{ number }}</span>
-          </span>
+          <app-day-cell
+            *ngFor="let d of dias"
+            [day]="d"
+            (elegir)="elegirDia($event)"
+          ></app-day-cell>
         </div>
 
         <a routerLink="/estadisticas" class="more">
