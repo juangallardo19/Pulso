@@ -6,54 +6,60 @@
       <a routerLink="/historial" class="icon-btn" aria-label="Volver"
         ><span class="icon i-left"></span
       ></a>
-      <h3>Sábado 3 de octubre</h3>
+      <h3 class="fecha">{{ fechaBonita() }}</h3>
       <a routerLink="/checkin/animo" class="icon-btn" aria-label="Acción"
         ><span class="icon i-edit"></span
       ></a>
     </header>
 
-    <section class="detail-grid">
+    <p class="card" [class.oculto]="existe">No hay registro para este día</p>
+
+    <section class="detail-grid" [class.oculto]="!existe">
       <article class="card mood-hero">
-        <img src="moods/4.svg" alt="" />
+        <img [src]="mood().image" [alt]="mood().label" />
         <div class="grow">
           <p class="small">Ánimo</p>
-          <h2>Bien</h2>
-          <p class="small">"Salí a caminar después de clase y me sentó genial."</p>
+          <h2>{{ mood().label }}</h2>
+          <p class="small" [class.oculto]="!registro.note">"{{ registro.note }}"</p>
         </div>
       </article>
 
       <article class="card tint bg-blue mini lift">
         <span class="bubble sm"><span class="icon sm i-moon c-sleep"></span></span>
         <div>
-          <span class="metric">7.5</span> <span class="small">h</span>
-          <p class="small">Sueño · calidad 4</p>
+          <span class="metric">{{ horasDormidas() }}</span>
+          <p class="small">Sueño · {{ registro.sleepStart }} a {{ registro.sleepEnd }}</p>
         </div>
       </article>
       <article class="card tint bg-mint mini lift">
         <span class="bubble sm"><span class="icon sm i-droplet c-secondary"></span></span>
         <div>
-          <span class="metric">6</span> <span class="small">/ 8</span>
+          <span class="metric">{{ registro.water }}</span>
+          <span class="small">/ {{ metaAgua }}</span>
           <p class="small">Agua</p>
         </div>
       </article>
       <article class="card tint bg-coral mini lift">
         <span class="bubble sm"><span class="icon sm i-flame c-accent"></span></span>
         <div>
-          <span class="metric">30</span> <span class="small">min</span>
-          <p class="small">Ejercicio · caminar</p>
+          <span class="metric">{{ registro.exerciseMinutes }}</span> <span class="small">min</span>
+          <p class="small">
+            Ejercicio<span [class.oculto]="registro.exerciseTypes.length === 0">
+              · {{ tiposEjercicio() }}</span
+            >
+          </p>
         </div>
       </article>
       <article class="card tint bg-lav mini lift">
         <span class="bubble sm"><span class="icon sm i-activity c-primary"></span></span>
         <div>
-          <span class="metric">4</span> <span class="small">/ 10</span>
+          <span class="metric">{{ registro.stress }}</span> <span class="small">/ 10</span>
           <p class="small">Estrés</p>
         </div>
       </article>
 
       <div class="tags">
-        <span class="chip">Parcial</span>
-        <span class="chip">Trabajo</span>
+        <span class="chip" *ngFor="let c of registro.stressCauses">{{ c }}</span>
       </div>
 
       <a routerLink="/checkin/animo" class="btn btn-secondary edit"
