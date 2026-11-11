@@ -120,7 +120,7 @@
       </a>
 
       <!-- Alerta empática (RF-16): se muestra tras 3 días con ánimo "Muy mal" -->
-      <article class="card alert">
+      <article class="card alert" [class.oculto]="!mostrarAlerta()">
         <span class="bubble"><span class="icon i-heart c-primary"></span></span>
         <div class="grow">
           <h3>No tienes que pasarlo solo</h3>

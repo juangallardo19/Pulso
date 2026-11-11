@@ -71,6 +71,11 @@ export class Home {
     return Math.round((agua + ejercicio + sueno) / 3);
   }
 
+  mostrarAlerta() {
+    const ultimos = this.historial.slice(-3);
+    return ultimos.length === 3 && ultimos.every((d) => d.mood === 1);
+  }
+
   sumar() {
     this.vasos.update((v) => v + 1);
     this.guardarAgua();
