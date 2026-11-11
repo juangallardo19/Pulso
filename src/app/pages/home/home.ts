@@ -1,11 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NavBar } from '../../components/nav-bar/nav-bar';
+import { CHECKIN_VACIO, CheckinEntry } from '../../models/checkin.model';
+import { Goals, METAS_POR_DEFECTO } from '../../models/goals.model';
+import { MOODS } from '../../models/mood.model';
 import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, NavBar],
+  imports: [CommonModule, RouterLink, NavBar],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -21,6 +25,19 @@ export class Home {
     month: 'long',
   });
   fecha = this.fechaLarga.charAt(0).toUpperCase() + this.fechaLarga.slice(1);
+  moods = MOODS;
+  historial: CheckinEntry[] = JSON.parse(localStorage.getItem('pulso-historial') ?? '[]');
+  hoy: CheckinEntry = {
+    ...CHECKIN_VACIO,
+    ...(JSON.parse(localStorage.getItem('pulso-checkin-hoy') ?? 'null') ??
+      this.historial[this.historial.length - 1] ??
+      {}),
+  };
+  metas: Goals = {
+    ...METAS_POR_DEFECTO,
+    ...JSON.parse(localStorage.getItem('pulso-goals') ?? '{}'),
+  };
+  racha = this.historial.length;
 
   saludo() {
     const hora = new Date().getHours();
@@ -31,5 +48,25 @@ export class Home {
       return 'Buenas tardes';
     }
     return 'Buenas noches';
+  }
+
+  horas() {
+    if (!this.hoy.sleepStart || !this.hoy.sleepEnd) {
+      return 0;
+    }
+    const [hi, mi] = this.hoy.sleepStart.split(':').map(Number);
+    const [hf, mf] = this.hoy.sleepEnd.split(':').map(Number);
+    let minutos = hf * 60 + mf - (hi * 60 + mi);
+    if (minutos < 0) {
+      minutos += 24 * 60;
+    }
+    return Math.round((minutos / 60) * 10) / 10;
+  }
+
+  progreso() {
+    const agua = Math.min(100, (this.hoy.water / this.metas.waterGlasses) * 100);
+    const ejercicio = Math.min(100, (this.hoy.exerciseMinutes / this.metas.exerciseMinutes) * 100);
+    const sueno = Math.min(100, (this.horas() / this.metas.sleepHours) * 100);
+    return Math.round((agua + ejercicio + sueno) / 3);
   }
 }

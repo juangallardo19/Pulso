@@ -27,20 +27,12 @@
           <p>¿Cómo te sientes hoy?</p>
         </div>
         <div class="hero-panel">
-          <a routerLink="/checkin/animo" class="mood-option"
-            ><img src="moods/1.svg" alt="" /><span>Muy mal</span></a
-          >
-          <a routerLink="/checkin/animo" class="mood-option"
-            ><img src="moods/2.svg" alt="" /><span>Mal</span></a
-          >
-          <a routerLink="/checkin/animo" class="mood-option"
-            ><img src="moods/3.svg" alt="" /><span>Regular</span></a
-          >
-          <a routerLink="/checkin/animo" class="mood-option selected"
-            ><img src="moods/4.svg" alt="" /><span>Bien</span></a
-          >
-          <a routerLink="/checkin/animo" class="mood-option"
-            ><img src="moods/5.svg" alt="" /><span>Muy bien</span></a
+          <a
+            *ngFor="let m of moods"
+            routerLink="/checkin/animo"
+            class="mood-option"
+            [class.selected]="m.value === hoy.mood"
+            ><img [src]="m.image" alt="" /><span>{{ m.label }}</span></a
           >
         </div>
       </article>
@@ -49,28 +41,28 @@
       <article class="card rings-card">
         <div class="section-title">
           <h3>Tu día</h3>
-          <span class="link">72 %</span>
+          <span class="link">{{ progreso() }} %</span>
         </div>
         <div class="rings">
           <div class="ring-item">
             <div class="ring sleep-ring">
               <div class="ring-hole"><span class="icon i-moon c-sleep"></span></div>
             </div>
-            <strong>7.5 h</strong>
+            <strong>{{ horas() }} h</strong>
             <span class="small">Sueño</span>
           </div>
           <div class="ring-item">
             <div class="ring water-ring">
               <div class="ring-hole"><span class="icon i-droplet c-secondary"></span></div>
             </div>
-            <strong>6 / 8</strong>
+            <strong>{{ hoy.water }} / {{ metas.waterGlasses }}</strong>
             <span class="small">Agua</span>
           </div>
           <div class="ring-item">
             <div class="ring exercise-ring">
               <div class="ring-hole"><span class="icon i-flame c-accent"></span></div>
             </div>
-            <strong>20 min</strong>
+            <strong>{{ hoy.exerciseMinutes }} min</strong>
             <span class="small">Ejercicio</span>
           </div>
         </div>
@@ -80,7 +72,7 @@
       <article class="card tint bg-coral mini lift">
         <span class="bubble sm"><span class="icon sm i-flame c-accent"></span></span>
         <div>
-          <span class="metric">12</span>
+          <span class="metric">{{ racha }}</span>
           <p class="small">días de racha</p>
         </div>
       </article>
@@ -104,7 +96,7 @@
       <article class="card tint bg-blue mini lift desktop-only">
         <span class="bubble sm"><span class="icon sm i-moon c-sleep"></span></span>
         <div>
-          <span class="metric">7.5 h</span>
+          <span class="metric">{{ horas() }} h</span>
           <p class="small">dormiste anoche</p>
         </div>
       </article>
@@ -112,7 +104,7 @@
       <article class="card tint bg-lav mini lift desktop-only">
         <span class="bubble sm"><span class="icon sm i-activity c-primary"></span></span>
         <div>
-          <span class="metric">4 / 10</span>
+          <span class="metric">{{ hoy.stress }} / 10</span>
           <p class="small">nivel de estrés</p>
         </div>
       </article>
