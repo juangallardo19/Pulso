@@ -57,3 +57,12 @@
     padding: 24px;
   }
 }
+
+.eliminado {
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+.oculto {
+  display: none;
+}

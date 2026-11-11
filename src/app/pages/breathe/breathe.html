@@ -9,21 +9,20 @@
     <p class="muted">Elige una técnica y tómate un minuto para ti.</p>
 
     <section class="techniques">
-      <article class="card tint bg-lav technique selected lift">
-        <div class="art primary"><span></span><span></span><span></span></div>
+      <article
+        *ngFor="let t of tecnicas; index as i"
+        class="card tint technique lift pressable"
+        [ngClass]="t.tint"
+        [class.selected]="i === seleccionada()"
+        (click)="seleccionada.set(i)"
+      >
+        <div class="art" [ngClass]="t.color"><span></span><span></span><span></span></div>
         <div class="grow">
-          <h3>Respiración 4-7-8</h3>
-          <p class="small">Ideal antes de dormir o de un parcial.</p>
-          <div class="phases"><span>4 inhala</span><span>7 sostén</span><span>8 exhala</span></div>
-        </div>
-      </article>
-
-      <article class="card tint bg-mint technique lift">
-        <div class="art secondary"><span></span><span></span><span></span></div>
-        <div class="grow">
-          <h3>Respiración en caja</h3>
-          <p class="small">Para recuperar el foco con calma.</p>
-          <div class="phases"><span>4</span><span>4</span><span>4</span><span>4</span></div>
+          <h3>{{ t.name }}</h3>
+          <p class="small">{{ t.description }}</p>
+          <div class="phases">
+            <span *ngFor="let f of t.phases">{{ f }}</span>
+          </div>
         </div>
       </article>
     </section>
@@ -31,13 +30,16 @@
     <div class="duration">
       <span class="label">Duración</span>
       <div class="chips">
-        <span class="chip active">1 min</span>
-        <span class="chip">3 min</span>
-        <span class="chip">5 min</span>
+        <app-chip-option
+          *ngFor="let d of duraciones"
+          [label]="d"
+          [active]="d === duracion()"
+          (alternar)="duracion.set($event)"
+        ></app-chip-option>
       </div>
     </div>
 
-    <a routerLink="/respira/sesion" class="btn btn-primary start"
+    <a routerLink="/respira/sesion" class="btn btn-primary start" (click)="comenzar()"
       >Comenzar <span class="icon sm i-play"></span
     ></a>
   </div>

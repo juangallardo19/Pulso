@@ -10,9 +10,9 @@
       <article class="identity">
         <span class="avatar"><span class="icon lg i-user"></span></span>
         <div>
-          <h2>Laura Gómez</h2>
+          <h2>{{ usuario.name }}</h2>
           <p class="small">Ingeniería · 5.º semestre</p>
-          <p class="small">laura@universidad.edu.co</p>
+          <p class="small">{{ usuario.email }}</p>
         </div>
       </article>
 
@@ -23,13 +23,15 @@
         </div>
         <div class="goal-row">
           <div class="goal bg-blue">
-            <span class="icon i-moon c-sleep"></span><strong>8 h</strong>
+            <span class="icon i-moon c-sleep"></span><strong>{{ metas.sleepHours }} h</strong>
           </div>
           <div class="goal bg-mint">
-            <span class="icon i-droplet c-secondary"></span><strong>8 vasos</strong>
+            <span class="icon i-droplet c-secondary"></span
+            ><strong>{{ metas.waterGlasses }} vasos</strong>
           </div>
           <div class="goal bg-coral">
-            <span class="icon i-flame c-accent"></span><strong>30 min</strong>
+            <span class="icon i-flame c-accent"></span
+            ><strong>{{ metas.exerciseMinutes }} min</strong>
           </div>
         </div>
       </article>
@@ -38,7 +40,11 @@
         <div class="setting">
           <span class="icon i-moon c-muted"></span>
           <span class="grow">Modo oscuro <small>· según tu sistema</small></span>
-          <button class="toggle" type="button" aria-label="Modo oscuro"></button>
+          <app-toggle-switch
+            etiqueta="Modo oscuro"
+            [on]="ajustes().darkMode"
+            (cambiar)="cambiarModoOscuro($event)"
+          ></app-toggle-switch>
         </div>
         <a routerLink="/recordatorios" class="setting">
           <span class="icon i-bell c-muted"></span>
@@ -58,7 +64,7 @@
       </article>
 
       <div class="bottom">
-        <a routerLink="/login" class="logout pressable"
+        <a routerLink="/login" class="logout pressable" (click)="cerrarSesion()"
           ><span class="icon i-logout"></span> Cerrar sesión</a
         >
         <p class="small">

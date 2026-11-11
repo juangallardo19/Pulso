@@ -38,14 +38,41 @@
             <p class="small">Puedes borrar todo cuando quieras.</p>
           </div>
         </div>
+        <div class="info-row">
+          <span class="bubble bg-lav"><span class="icon i-heart c-primary"></span></span>
+          <div class="grow">
+            <h3>Compartir datos anónimos</h3>
+            <p class="small">Ayuda a Bienestar U con estadísticas sin tu nombre.</p>
+          </div>
+          <app-toggle-switch
+            etiqueta="Compartir datos anónimos"
+            [on]="ajustes().shareAnonymousData"
+            (cambiar)="cambiarCompartir($event)"
+          ></app-toggle-switch>
+        </div>
+        <div class="info-row">
+          <span class="bubble bg-lav"><span class="icon i-sparkle c-primary"></span></span>
+          <div class="grow">
+            <h3>Consejos personalizados</h3>
+            <p class="small">Sugerencias según tus registros.</p>
+          </div>
+          <app-toggle-switch
+            etiqueta="Consejos personalizados"
+            [on]="ajustes().showInsights"
+            (cambiar)="cambiarConsejos($event)"
+          ></app-toggle-switch>
+        </div>
       </article>
 
       <article class="card tint bg-coral danger">
         <h3>Eliminar mis datos</h3>
         <p class="small">Se borrarán todos tus registros. Esta acción no se puede deshacer.</p>
-        <button class="btn btn-danger" type="button">
+        <button class="btn btn-danger" type="button" (click)="eliminarDatos()">
           Eliminar mis datos <span class="icon sm i-trash"></span>
         </button>
+        <p class="small eliminado" [class.oculto]="!eliminado()">
+          Listo. Tus datos fueron eliminados.
+        </p>
       </article>
     </section>
   </div>

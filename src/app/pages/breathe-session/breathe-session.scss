@@ -265,3 +265,8 @@
     color: var(--primary);
   }
 }
+
+/* Al pausar se congelan todas las animaciones del círculo y de los pasos */
+.pausado * {
+  animation-play-state: paused !important;
+}

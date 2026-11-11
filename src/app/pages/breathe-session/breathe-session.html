@@ -1,12 +1,12 @@
-<main class="session">
+<main class="session" [class.pausado]="pausado()">
   <span class="blob one"></span>
   <span class="blob two"></span>
 
   <header class="top">
     <a routerLink="/respira" class="icon-btn" aria-label="Cerrar"><span class="icon i-x"></span></a>
     <div class="title">
-      <h3>Respiración 4-7-8</h3>
-      <p class="small">Sigue el círculo</p>
+      <h3>{{ sesion.name }}</h3>
+      <p class="small">{{ sesion.minutes }} min · Sigue el círculo</p>
     </div>
     <span class="spacer"></span>
   </header>
@@ -28,7 +28,12 @@
     <div class="step s-exhale"><strong>8</strong><span>Exhala</span></div>
   </section>
 
-  <button class="pause" type="button" aria-label="Pausar">
-    <span class="icon lg i-pause"></span>
+  <button
+    class="pause"
+    type="button"
+    [attr.aria-label]="pausado() ? 'Reanudar' : 'Pausar'"
+    (click)="alternarPausa()"
+  >
+    <span class="icon lg" [ngClass]="pausado() ? 'i-play' : 'i-pause'"></span>
   </button>
 </main>
