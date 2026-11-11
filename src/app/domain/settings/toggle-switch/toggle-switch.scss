@@ -1,0 +1,5 @@
+// .toggle y .toggle.on vienen de styles.scss
+:host {
+  display: flex;
+  flex-shrink: 0;
+}
