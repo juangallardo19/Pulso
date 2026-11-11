@@ -7,8 +7,8 @@
       <div class="row">
         <span class="avatar"><span class="icon i-user"></span></span>
         <div>
-          <p class="small">Martes, 7 de octubre</p>
-          <h2>Buenos días, Laura</h2>
+          <p class="small">{{ fecha }}</p>
+          <h2>{{ saludo() }}, {{ nombre }}</h2>
         </div>
       </div>
       <a routerLink="/recordatorios" class="icon-btn" aria-label="Recordatorios">
@@ -23,7 +23,7 @@
         <span class="hill one"></span>
         <span class="hill two"></span>
         <div class="hero-text">
-          <h3>Hola, Laura</h3>
+          <h3>Hola, {{ nombre }}</h3>
           <p>¿Cómo te sientes hoy?</p>
         </div>
         <div class="hero-panel">
