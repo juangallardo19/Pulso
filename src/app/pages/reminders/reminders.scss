@@ -7,6 +7,15 @@
   gap: 12px;
 }
 
+.oculto {
+  display: none;
+}
+
+.deshabilitado {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 @media (min-width: 1024px) {
   .reminders {
     grid-template-columns: 1fr 1fr;
