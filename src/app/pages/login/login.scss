@@ -2,3 +2,8 @@
   align-self: flex-end;
   font-size: 0.875rem;
 }
+
+.deshabilitado {
+  pointer-events: none;
+  opacity: 0.5;
+}

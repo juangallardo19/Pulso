@@ -15,3 +15,8 @@
   font-size: 0.75rem;
   color: var(--muted);
 }
+
+// El <form> no debe cambiar el layout de las tarjetas
+.goals-form {
+  display: contents;
+}

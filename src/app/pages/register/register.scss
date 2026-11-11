@@ -34,3 +34,8 @@
   margin: 0;
   accent-color: var(--primary);
 }
+
+.deshabilitado {
+  pointer-events: none;
+  opacity: 0.5;
+}
