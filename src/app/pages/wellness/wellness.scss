@@ -16,8 +16,7 @@
   padding: 18px;
 }
 
-.hotline h3,
-.service h3 {
+.hotline h3 {
   font-size: 1rem;
 }
 
@@ -40,30 +39,6 @@
   font-size: 0.8125rem;
 }
 
-.service {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  font-size: 0.8125rem;
-  color: var(--muted);
-}
-
-.meta > span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.contact {
-  min-height: 44px;
-}
-
 @media (min-width: 1024px) {
   .wellness-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -80,9 +55,5 @@
 
   .lines {
     min-width: 360px;
-  }
-
-  .service {
-    padding: 24px;
   }
 }
