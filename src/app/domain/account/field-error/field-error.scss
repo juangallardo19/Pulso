@@ -1,0 +1,8 @@
+// .error-text (tamaño y color) viene de styles.scss
+.error-text {
+  display: none;
+}
+
+.error-text.show {
+  display: block;
+}
