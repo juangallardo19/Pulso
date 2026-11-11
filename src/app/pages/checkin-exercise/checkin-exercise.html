@@ -4,10 +4,7 @@
       <a routerLink="/checkin/agua" class="icon-btn" aria-label="Volver"
         ><span class="icon i-left"></span
       ></a>
-      <div class="stepper" aria-label="Paso 4 de 6">
-        <span class="done"></span><span class="done"></span><span class="done"></span
-        ><span class="done"></span><span></span><span></span>
-      </div>
+      <app-stepper [paso]="4"></app-stepper>
       <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
         ><span class="icon i-x"></span
       ></a>
@@ -22,14 +19,15 @@
     <div class="ci-body">
       <article class="card tint bg-coral amount">
         <div class="big-number">
-          <span class="metric">30</span><span class="muted">minutos</span>
+          <span class="metric">{{ minutosCtrl.value }}</span
+          ><span class="muted">minutos</span>
         </div>
         <input
           type="range"
           class="range exercise"
           min="0"
           max="120"
-          value="30"
+          [formControl]="minutosCtrl"
           aria-label="Minutos de ejercicio"
         />
         <div class="limits"><span>0</span><span>Meta 30 min</span><span>120</span></div>
@@ -38,21 +36,22 @@
       <div class="group">
         <span class="label">Tipo de actividad</span>
         <div class="chips">
-          <span class="chip active">Caminar</span>
-          <span class="chip">Correr</span>
-          <span class="chip">Gimnasio</span>
-          <span class="chip">Deporte</span>
-          <span class="chip">Yoga</span>
-          <span class="chip">Otro</span>
+          <app-chip-option
+            *ngFor="let t of tipos"
+            [label]="t"
+            [active]="elegidos().includes(t)"
+            (alternar)="alternarTipo($event)"
+          >
+          </app-chip-option>
         </div>
       </div>
     </div>
 
     <footer class="ci-actions">
-      <a routerLink="/checkin/estres" class="btn btn-primary"
+      <a routerLink="/checkin/estres" (click)="guardar()" class="btn btn-primary"
         >Siguiente <span class="icon sm i-arrow"></span
       ></a>
-      <a routerLink="/checkin/estres" class="btn btn-ghost">Omitir</a>
+      <a routerLink="/checkin/estres" (click)="guardar()" class="btn btn-ghost">Omitir</a>
     </footer>
   </section>
 </main>

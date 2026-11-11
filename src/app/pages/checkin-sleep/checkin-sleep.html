@@ -4,10 +4,7 @@
       <a routerLink="/checkin/animo" class="icon-btn" aria-label="Volver"
         ><span class="icon i-left"></span
       ></a>
-      <div class="stepper" aria-label="Paso 2 de 6">
-        <span class="done"></span><span class="done"></span><span></span><span></span><span></span
-        ><span></span>
-      </div>
+      <app-stepper [paso]="2"></app-stepper>
       <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
         ><span class="icon i-x"></span
       ></a>
@@ -23,11 +20,11 @@
       <div class="times">
         <label class="card time">
           <span class="row small"><span class="icon sm i-moon c-sleep"></span> Me dormí</span>
-          <input type="time" value="23:30" />
+          <input type="time" [formControl]="inicioCtrl" />
         </label>
         <label class="card time">
           <span class="row small"><span class="icon sm i-sun c-sleep"></span> Desperté</span>
-          <input type="time" value="07:00" />
+          <input type="time" [formControl]="finCtrl" />
         </label>
       </div>
 
@@ -35,7 +32,7 @@
         <span class="bubble"><span class="icon i-moon c-sleep"></span></span>
         <div class="grow">
           <p class="small">Dormiste</p>
-          <h2>7 h 30 min</h2>
+          <h2>{{ horasDormidas() }}</h2>
         </div>
         <span class="small">Meta 8 h</span>
       </article>
@@ -54,10 +51,10 @@
     </div>
 
     <footer class="ci-actions">
-      <a routerLink="/checkin/agua" class="btn btn-primary"
+      <a routerLink="/checkin/agua" (click)="guardar()" class="btn btn-primary"
         >Siguiente <span class="icon sm i-arrow"></span
       ></a>
-      <a routerLink="/checkin/agua" class="btn btn-ghost">Omitir</a>
+      <a routerLink="/checkin/agua" (click)="guardar()" class="btn btn-ghost">Omitir</a>
     </footer>
   </section>
 </main>
