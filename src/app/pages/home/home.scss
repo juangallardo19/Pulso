@@ -210,6 +210,10 @@
   gap: 4px;
 }
 
+.oculto {
+  display: none;
+}
+
 /* Vista de computador */
 @media (min-width: 1024px) {
   .home-grid {

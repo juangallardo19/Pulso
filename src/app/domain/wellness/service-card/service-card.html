@@ -1,0 +1,18 @@
+<article class="card service lift">
+  <div class="row">
+    <span class="bubble" [ngClass]="service.bubble"
+      ><span class="icon" [ngClass]="service.icon"></span
+    ></span>
+    <div class="grow">
+      <h3>{{ service.name }}</h3>
+      <p class="small">{{ service.description }}</p>
+    </div>
+  </div>
+  <div class="meta">
+    <span><span class="icon sm i-clock"></span> {{ service.hours }}</span>
+    <span><span class="icon sm i-pin"></span> {{ service.place }}</span>
+  </div>
+  <button class="btn btn-secondary contact" type="button" (click)="llamar()">
+    Contactar <span class="icon sm i-phone"></span>
+  </button>
+</article>

@@ -7,8 +7,8 @@
       <div class="row">
         <span class="avatar"><span class="icon i-user"></span></span>
         <div>
-          <p class="small">Martes, 7 de octubre</p>
-          <h2>Buenos días, Laura</h2>
+          <p class="small">{{ fecha }}</p>
+          <h2>{{ saludo() }}, {{ nombre }}</h2>
         </div>
       </div>
       <a routerLink="/recordatorios" class="icon-btn" aria-label="Recordatorios">
@@ -23,24 +23,16 @@
         <span class="hill one"></span>
         <span class="hill two"></span>
         <div class="hero-text">
-          <h3>Hola, Laura</h3>
+          <h3>Hola, {{ nombre }}</h3>
           <p>¿Cómo te sientes hoy?</p>
         </div>
         <div class="hero-panel">
-          <a routerLink="/checkin/animo" class="mood-option"
-            ><img src="moods/1.svg" alt="" /><span>Muy mal</span></a
-          >
-          <a routerLink="/checkin/animo" class="mood-option"
-            ><img src="moods/2.svg" alt="" /><span>Mal</span></a
-          >
-          <a routerLink="/checkin/animo" class="mood-option"
-            ><img src="moods/3.svg" alt="" /><span>Regular</span></a
-          >
-          <a routerLink="/checkin/animo" class="mood-option selected"
-            ><img src="moods/4.svg" alt="" /><span>Bien</span></a
-          >
-          <a routerLink="/checkin/animo" class="mood-option"
-            ><img src="moods/5.svg" alt="" /><span>Muy bien</span></a
+          <a
+            *ngFor="let m of moods"
+            routerLink="/checkin/animo"
+            class="mood-option"
+            [class.selected]="m.value === hoy.mood"
+            ><img [src]="m.image" alt="" /><span>{{ m.label }}</span></a
           >
         </div>
       </article>
@@ -49,28 +41,28 @@
       <article class="card rings-card">
         <div class="section-title">
           <h3>Tu día</h3>
-          <span class="link">72 %</span>
+          <span class="link">{{ progreso() }} %</span>
         </div>
         <div class="rings">
           <div class="ring-item">
             <div class="ring sleep-ring">
               <div class="ring-hole"><span class="icon i-moon c-sleep"></span></div>
             </div>
-            <strong>7.5 h</strong>
+            <strong>{{ horas() }} h</strong>
             <span class="small">Sueño</span>
           </div>
           <div class="ring-item">
             <div class="ring water-ring">
               <div class="ring-hole"><span class="icon i-droplet c-secondary"></span></div>
             </div>
-            <strong>6 / 8</strong>
+            <strong>{{ vasos() }} / {{ metas.waterGlasses }}</strong>
             <span class="small">Agua</span>
           </div>
           <div class="ring-item">
             <div class="ring exercise-ring">
               <div class="ring-hole"><span class="icon i-flame c-accent"></span></div>
             </div>
-            <strong>20 min</strong>
+            <strong>{{ hoy.exerciseMinutes }} min</strong>
             <span class="small">Ejercicio</span>
           </div>
         </div>
@@ -80,7 +72,7 @@
       <article class="card tint bg-coral mini lift">
         <span class="bubble sm"><span class="icon sm i-flame c-accent"></span></span>
         <div>
-          <span class="metric">12</span>
+          <span class="metric">{{ racha }}</span>
           <p class="small">días de racha</p>
         </div>
       </article>
@@ -91,11 +83,11 @@
           <span class="small">Agua</span>
         </div>
         <div class="counter">
-          <button class="round-btn" type="button" aria-label="Quitar un vaso">
+          <button class="round-btn" type="button" (click)="quitar()" aria-label="Quitar un vaso">
             <span class="icon sm i-minus"></span>
           </button>
-          <span class="metric">6</span>
-          <button class="round-btn add" type="button" aria-label="Sumar un vaso">
+          <span class="metric">{{ vasos() }}</span>
+          <button class="round-btn add" type="button" (click)="sumar()" aria-label="Sumar un vaso">
             <span class="icon sm i-plus"></span>
           </button>
         </div>
@@ -104,7 +96,7 @@
       <article class="card tint bg-blue mini lift desktop-only">
         <span class="bubble sm"><span class="icon sm i-moon c-sleep"></span></span>
         <div>
-          <span class="metric">7.5 h</span>
+          <span class="metric">{{ horas() }} h</span>
           <p class="small">dormiste anoche</p>
         </div>
       </article>
@@ -112,7 +104,7 @@
       <article class="card tint bg-lav mini lift desktop-only">
         <span class="bubble sm"><span class="icon sm i-activity c-primary"></span></span>
         <div>
-          <span class="metric">4 / 10</span>
+          <span class="metric">{{ hoy.stress }} / 10</span>
           <p class="small">nivel de estrés</p>
         </div>
       </article>
@@ -128,7 +120,7 @@
       </a>
 
       <!-- Alerta empática (RF-16): se muestra tras 3 días con ánimo "Muy mal" -->
-      <article class="card alert">
+      <article class="card alert" [class.oculto]="!mostrarAlerta()">
         <span class="bubble"><span class="icon i-heart c-primary"></span></span>
         <div class="grow">
           <h3>No tienes que pasarlo solo</h3>
