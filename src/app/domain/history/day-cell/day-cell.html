@@ -1,0 +1,8 @@
+<a class="cell" routerLink="/historial/dia" [ngClass]="claseCelda()" (click)="seleccionar()">
+  <img
+    [class.oculto]="day.mood === 0"
+    [src]="'moods/' + day.mood + '.svg'"
+    [alt]="'Día ' + day.number"
+  />
+  <span class="num" [class.oculto]="day.mood !== 0">{{ day.number }}</span>
+</a>

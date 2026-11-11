@@ -2,31 +2,55 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NavBar } from '../../components/nav-bar/nav-bar';
+import { DayCell } from '../../domain/history/day-cell/day-cell';
 import { Day } from '../../models/day.model';
+import { CheckinEntry } from '../../models/checkin.model';
 
 @Component({
   selector: 'app-history',
-  imports: [CommonModule, RouterLink, NavBar],
+  imports: [CommonModule, RouterLink, NavBar, DayCell],
   templateUrl: './history.html',
   styleUrl: './history.scss',
 })
 export class History {
-  // Octubre 2026 empieza en jueves: 3 espacios vacíos antes del día 1
-  emptyDays = [1, 2, 3];
+  historial: CheckinEntry[] = JSON.parse(localStorage.getItem('pulso-historial') ?? '[]');
 
-  // Días que ya tienen registro de ánimo
-  days: Day[] = [
-    { number: 1, mood: 3 },
-    { number: 2, mood: 4 },
-    { number: 3, mood: 4 },
-    { number: 4, mood: 2 },
-    { number: 5, mood: 3 },
-    { number: 6, mood: 5 },
-    { number: 7, mood: 4, isToday: true },
-  ];
+  hoy = new Date();
+  anio = this.hoy.getFullYear();
+  mes = this.hoy.getMonth();
+  nombreMes = this.hoy.toLocaleDateString('es-CO', { month: 'long', year: 'numeric' });
 
-  // Días que aún no llegan
-  futureDays = [
-    8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-  ];
+  // Lunes = primera columna
+  emptyDays = Array((new Date(this.anio, this.mes, 1).getDay() + 6) % 7).fill(0);
+  totalDias = new Date(this.anio, this.mes + 1, 0).getDate();
+
+  dias: Day[] = this.armarDias();
+
+  armarDias(): Day[] {
+    const lista: Day[] = [];
+    for (let n = 1; n <= this.totalDias; n++) {
+      const fecha = new Date(this.anio, this.mes, n).toLocaleDateString('en-CA');
+      const registro = this.historial.find((d) => d.date === fecha);
+      lista.push({
+        number: n,
+        mood: registro ? registro.mood : 0,
+        isToday: n === this.hoy.getDate(),
+        date: fecha,
+      });
+    }
+    return lista;
+  }
+
+  // Cuántos días del mes tienen ese ánimo
+  contar(valor: number) {
+    return this.dias.filter((d) => d.mood === valor).length;
+  }
+
+  registrosDelMes() {
+    return this.dias.filter((d) => d.mood !== 0).length;
+  }
+
+  elegirDia(dia: Day) {
+    localStorage.setItem('pulso-dia-seleccionado', dia.date ?? '');
+  }
 }

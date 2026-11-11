@@ -1,0 +1,63 @@
+:host {
+  display: contents;
+}
+
+.cell {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: transform 0.15s ease;
+}
+
+a.cell:hover {
+  transform: scale(1.12);
+}
+
+.cell img {
+  width: 36px;
+  height: 36px;
+}
+
+.cell.today {
+  border: 2.5px solid var(--primary);
+}
+
+.num {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--tint-lav);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.cell.future {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.oculto {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .cell {
+    width: 64px;
+    height: 64px;
+  }
+
+  .cell img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .num {
+    width: 52px;
+    height: 52px;
+    font-size: 0.875rem;
+  }
+}

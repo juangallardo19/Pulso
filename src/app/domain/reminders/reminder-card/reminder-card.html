@@ -1,0 +1,24 @@
+<article class="card reminder lift" [class.off]="!reminder.isActive">
+  <div class="row">
+    <span class="bubble" [ngClass]="reminder.bubble">
+      <span class="icon" [ngClass]="[reminder.icon, reminder.iconColor]"></span>
+    </span>
+    <div class="grow">
+      <h3>{{ reminder.title }}</h3>
+      <span class="metric">{{ reminder.time }}</span>
+    </div>
+    <button
+      class="toggle"
+      type="button"
+      [class.on]="reminder.isActive"
+      aria-label="Activar recordatorio"
+      (click)="tocarToggle()"
+    ></button>
+    <button class="icon-btn" type="button" aria-label="Eliminar recordatorio" (click)="borrar()">
+      <span class="icon sm i-trash"></span>
+    </button>
+  </div>
+  <div class="days">
+    <span *ngFor="let d of semana" class="day" [ngClass]="claseDia(d)">{{ d }}</span>
+  </div>
+</article>

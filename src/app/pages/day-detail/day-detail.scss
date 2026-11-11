@@ -43,6 +43,14 @@
   gap: 8px;
 }
 
+.fecha {
+  text-transform: capitalize;
+}
+
+.oculto {
+  display: none;
+}
+
 @media (min-width: 1024px) {
   .detail-grid {
     grid-template-columns: repeat(4, 1fr);
