@@ -57,3 +57,32 @@ ng build                 # compila en dist/
 | 6b | `@Output` con `EventEmitter` | `mood-option` (`elegir`), `chip-option` (`alternar`), `service-card` (`contactar`), entre otros |
 
 ## Pruebas
+
+Las pruebas unitarias usan **Vitest + jsdom**, que ya vienen configurados por Angular 21 (no hay que instalar nada).
+
+```bash
+ng test                  # modo watch: se vuelven a correr al guardar
+ng test --watch=false    # una sola vez (la que se corre antes de cada PR)
+```
+
+### Qué prueba cada quien
+
+| Integrante | Pruebas |
+|---|---|
+| seba4s | stepper, mood-option, chip-option, service-card, 7 páginas de check-in, inicio, bienestar |
+| juangallardo19 | field-error, toggle-switch, login, registro, metas, perfil, privacidad, respira, sesión |
+| andresc1108 | reminder-card, day-cell, recordatorios, historial, detalle, estadísticas · app, rutas, splash, onboarding, nav-bar e integración |
+
+### Pruebas de integración
+
+Están en `src/app/integration/` y prueban que el trabajo de los tres integrantes funcione junto:
+
+| Archivo | Qué verifica |
+|---|---|
+| `checkin-historial.spec.ts` | El check-in guardado aparece en historial, detalle del día y estadísticas |
+| `cuenta-perfil-inicio.spec.ts` | El registro y las metas llegan al perfil, al inicio y al paso de agua |
+| `privacidad-borrado.spec.ts` | Eliminar datos desde privacidad limpia historial, recordatorios y estadísticas |
+
+### Resultado
+
+`ng test --watch=false` → **Test Files: 36 passed · Tests: 180 passed**
