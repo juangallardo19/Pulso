@@ -19,30 +19,39 @@
     <div class="ci-body">
       <article class="card tint bg-lav amount">
         <div class="big-number">
-          <span class="metric c-primary">7</span><span class="muted">/ 10</span>
+          <span class="metric" [ngClass]="claseNivel()">{{ nivelCtrl.value }}</span
+          ><span class="muted">/ 10</span>
         </div>
-        <input type="range" class="range" min="1" max="10" value="7" aria-label="Nivel de estrés" />
+        <input
+          type="range"
+          class="range"
+          min="1"
+          max="10"
+          [formControl]="nivelCtrl"
+          aria-label="Nivel de estrés"
+        />
         <div class="limits"><span>Tranquilo</span><span>Muy tenso</span></div>
       </article>
 
       <div class="group">
         <span class="label">¿Qué lo causa? (puedes elegir varias)</span>
         <div class="chips">
-          <span class="chip active">Parcial</span>
-          <span class="chip active">Trabajo</span>
-          <span class="chip">Familia</span>
-          <span class="chip">Dinero</span>
-          <span class="chip">Salud</span>
-          <span class="chip">Otro</span>
+          <app-chip-option
+            *ngFor="let c of causas"
+            [label]="c"
+            [active]="elegidas().includes(c)"
+            (alternar)="alternarCausa($event)"
+          >
+          </app-chip-option>
         </div>
       </div>
     </div>
 
     <footer class="ci-actions">
-      <a routerLink="/checkin/resumen" class="btn btn-primary"
+      <a routerLink="/checkin/resumen" (click)="guardar()" class="btn btn-primary"
         >Siguiente <span class="icon sm i-arrow"></span
       ></a>
-      <a routerLink="/checkin/resumen" class="btn btn-ghost">Omitir</a>
+      <a routerLink="/checkin/resumen" (click)="guardar()" class="btn btn-ghost">Omitir</a>
     </footer>
   </section>
 </main>
