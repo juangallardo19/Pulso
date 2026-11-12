@@ -909,8 +909,10 @@ input[type='time'] {
   }
 }
 
+/* "backwards" (no "both"): al terminar la animación suelta el elemento,
+   así el hover puede levantarlo (con "both" el transform quedaba fijo) */
 .page-inner > * {
-  animation: fade-up 0.45s ease both;
+  animation: fade-up 0.45s ease backwards;
 }
 
 .page-inner > *:nth-child(2) {
@@ -988,7 +990,8 @@ input[type='time'] {
     grid-template-columns: 1fr 1fr;
   }
 
-  /* Panel con foto (Unsplash, licencia libre) y un degradado para que el texto se lea */
+  /* Panel: el diseño pastel de siempre (degradado, sol y colinas) con la foto encima
+     en baja opacidad, para que se mezcle en vez de verse como una imagen aparte */
   .auth-side {
     position: sticky;
     top: 20px;
@@ -996,78 +999,100 @@ input[type='time'] {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    gap: 18px;
+    gap: 16px;
     margin: 20px;
     padding: 48px;
     border-radius: 40px;
     overflow: hidden;
     isolation: isolate;
-    color: #ffffff;
-    background: #2b2748;
-    box-shadow: var(--shadow-strong);
+    color: #22223b;
+    background: linear-gradient(160deg, #e6e2fd 0%, #ddf3ef 100%);
   }
 
-  /* La foto se acerca muy despacio (efecto "Ken Burns") */
+  /* La foto (Unsplash, licencia libre) apenas se asoma y se acerca muy despacio */
   .auth-side::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -2;
     background: url('/images/fondo-acceso.webp') center / cover no-repeat;
+    opacity: 0.38;
+    mix-blend-mode: multiply;
     animation: acercar 26s ease-in-out infinite alternate;
   }
 
+  /* Un velo claro abajo para que el texto se lea siempre */
   .auth-side::after {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
-    background:
-      radial-gradient(circle at 85% 12%, rgba(255, 213, 158, 0.35) 0, transparent 38%),
-      linear-gradient(
-        180deg,
-        rgba(43, 39, 72, 0) 0%,
-        rgba(43, 39, 72, 0.15) 40%,
-        rgba(28, 24, 52, 0.85) 100%
-      );
-  }
-
-  /* El sol y las colinas dibujados con CSS se reemplazan por la foto */
-  .auth-side .sun,
-  .auth-side .hill {
-    display: none;
+    background: linear-gradient(180deg, transparent 45%, rgba(237, 234, 253, 0.85) 100%);
   }
 
   .auth-side h2 {
     position: relative;
     max-width: 440px;
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     line-height: 1.15;
-    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
   }
 
   .auth-side p {
     position: relative;
     max-width: 400px;
-    color: rgba(255, 255, 255, 0.86);
+    color: #4a4a63;
   }
 
-  /* Caritas dentro de una píldora de vidrio */
+  .auth-side .sun {
+    position: absolute;
+    top: 64px;
+    right: 64px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: #ffd59e;
+    opacity: 0.85;
+    box-shadow: 0 0 60px rgba(255, 213, 158, 0.7);
+  }
+
+  .auth-side .hill {
+    position: absolute;
+    border-radius: 50%;
+    background: #b7e3d2;
+    opacity: 0.6;
+  }
+
+  .auth-side .hill.one {
+    width: 520px;
+    height: 260px;
+    left: -120px;
+    top: 230px;
+  }
+
+  .auth-side .hill.two {
+    width: 460px;
+    height: 240px;
+    right: -140px;
+    top: 280px;
+    background: #9dd6c3;
+  }
+
+  /* Caritas dentro de una píldora de vidrio claro */
   .auth-side .faces {
     position: relative;
     display: flex;
     gap: 10px;
     width: fit-content;
     padding: 10px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.55);
     backdrop-filter: blur(10px);
   }
 
   .auth-side .faces img {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     transition: transform 0.2s ease;
   }
 
@@ -1091,14 +1116,19 @@ input[type='time'] {
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: 999px;
-    background: rgba(28, 24, 52, 0.42);
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(12px);
-    box-shadow: 0 8px 24px rgba(28, 24, 52, 0.2);
+    box-shadow: 0 8px 24px rgba(124, 108, 242, 0.12);
+    color: #3b3566;
     font-size: 0.875rem;
     font-weight: 600;
     animation: flotar 6s ease-in-out infinite;
+  }
+
+  .auth-badge .icon {
+    color: #7c6cf2;
   }
 
   .auth-badge:nth-child(2) {
