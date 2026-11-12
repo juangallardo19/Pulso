@@ -61,11 +61,19 @@
           <span class="icon sm i-lock"></span>
           <input
             id="password"
-            type="password"
+            [attr.type]="verClave() ? 'text' : 'password'"
             placeholder="Mínimo 8 caracteres"
             formControlName="password"
           />
-          <span class="icon sm i-eye"></span>
+          <button
+            type="button"
+            class="ver-clave"
+            [class.activo]="verClave()"
+            [attr.aria-label]="verClave() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            (click)="alternarClave()"
+          >
+            <span class="icon sm i-eye"></span>
+          </button>
         </div>
         <div class="strength">
           <span *ngFor="let b of barras" [class.on]="b <= fuerza()"></span>
@@ -81,7 +89,11 @@
         <label for="confirm">Confirmar contraseña</label>
         <div class="field" [class.error]="confirmacionInvalida()">
           <span class="icon sm i-lock"></span>
-          <input id="confirm" type="password" formControlName="confirm" />
+          <input
+            id="confirm"
+            [attr.type]="verClave() ? 'text' : 'password'"
+            formControlName="confirm"
+          />
         </div>
         <app-field-error
           mensaje="Las contraseñas no coinciden"

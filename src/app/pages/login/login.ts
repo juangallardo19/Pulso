@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FieldError } from '../../domain/account/field-error/field-error';
@@ -26,6 +26,20 @@ export class Login {
     const guardado = JSON.parse(localStorage.getItem('pulso-user') ?? 'null');
     const correo = this.loginForm.value.email ?? '';
     return guardado !== null && correo !== '' && guardado.email !== correo;
+  }
+
+  verClave = signal(false);
+
+  alternarClave() {
+    this.verClave.update((v) => !v);
+  }
+
+  // No hay servidor: la contraseña no se guarda en ningún lado, así que no se puede recuperar
+  olvideClave() {
+    alert(
+      'Pulso guarda tu cuenta solo en este dispositivo y no almacena tu contraseña. ' +
+        'Si la olvidaste, crea una cuenta nueva desde "Regístrate".',
+    );
   }
 
   entrar() {

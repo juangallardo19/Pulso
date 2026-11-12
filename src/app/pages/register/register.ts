@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -23,6 +23,12 @@ export class Register {
   });
 
   barras = [1, 2, 3];
+
+  verClave = signal(false);
+
+  alternarClave() {
+    this.verClave.update((v) => !v);
+  }
 
   campoInvalido(nombre: 'name' | 'email' | 'password' | 'confirm' | 'consent') {
     const ctrl = this.registerForm.get(nombre);
