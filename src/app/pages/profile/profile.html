@@ -1,0 +1,79 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header">
+      <h1>Perfil</h1>
+    </header>
+
+    <section class="profile-grid">
+      <article class="identity">
+        <span class="avatar"><span class="icon lg i-user"></span></span>
+        <div>
+          <h2>{{ usuario.name }}</h2>
+          <p class="small" [class.oculto]="!tieneCuenta">{{ usuario.email }}</p>
+          <p class="small" [class.oculto]="tieneCuenta">
+            Aún no tienes cuenta. <a routerLink="/registro" class="link">Crear cuenta</a>
+          </p>
+        </div>
+      </article>
+
+      <article class="card goals">
+        <div class="section-title">
+          <h3>Mis metas</h3>
+          <a routerLink="/metas" class="link">{{ tieneMetas ? 'Editar' : 'Definir' }}</a>
+        </div>
+        <div class="goal-row">
+          <div class="goal bg-blue">
+            <span class="icon i-moon c-sleep"></span
+            ><strong>{{ tieneMetas ? metas.sleepHours + ' h' : 'Sin definir' }}</strong>
+          </div>
+          <div class="goal bg-mint">
+            <span class="icon i-droplet c-secondary"></span
+            ><strong>{{ tieneMetas ? metas.waterGlasses + ' vasos' : 'Sin definir' }}</strong>
+          </div>
+          <div class="goal bg-coral">
+            <span class="icon i-flame c-accent"></span
+            ><strong>{{ tieneMetas ? metas.exerciseMinutes + ' min' : 'Sin definir' }}</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="card settings">
+        <div class="setting">
+          <span class="icon i-moon c-muted"></span>
+          <span class="grow">Modo oscuro <small>· según tu sistema</small></span>
+          <app-toggle-switch
+            etiqueta="Modo oscuro"
+            [on]="ajustes().darkMode"
+            (cambiar)="cambiarModoOscuro($event)"
+          ></app-toggle-switch>
+        </div>
+        <a routerLink="/recordatorios" class="setting">
+          <span class="icon i-bell c-muted"></span>
+          <span class="grow">Recordatorios</span>
+          <span class="icon sm i-right c-muted"></span>
+        </a>
+        <a routerLink="/bienestar" class="setting">
+          <span class="icon i-heart c-muted"></span>
+          <span class="grow">Bienestar U</span>
+          <span class="icon sm i-right c-muted"></span>
+        </a>
+        <a routerLink="/privacidad" class="setting">
+          <span class="icon i-shield c-muted"></span>
+          <span class="grow">Privacidad y datos</span>
+          <span class="icon sm i-right c-muted"></span>
+        </a>
+      </article>
+
+      <div class="bottom">
+        <a routerLink="/login" class="logout pressable" (click)="cerrarSesion()"
+          ><span class="icon i-logout"></span> Cerrar sesión</a
+        >
+        <p class="small">
+          Pulso es una herramienta de autocuidado y no reemplaza a un profesional.
+        </p>
+      </div>
+    </section>
+  </div>
+</main>

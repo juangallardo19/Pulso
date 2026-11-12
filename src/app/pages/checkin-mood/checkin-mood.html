@@ -1,0 +1,50 @@
+<main class="page">
+  <section class="ci">
+    <header class="ci-top">
+      <a routerLink="/inicio" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <app-stepper [paso]="1"></app-stepper>
+      <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
+        ><span class="icon i-x"></span
+      ></a>
+    </header>
+
+    <div class="ci-head">
+      <span class="eyebrow">Paso 1 de 6</span>
+      <h1>¿Cómo te sientes ahora?</h1>
+      <p class="muted">No hay respuestas correctas. Elige la que más se parezca.</p>
+    </div>
+
+    <div class="ci-body">
+      <div class="moods">
+        <app-mood-option
+          *ngFor="let m of moods"
+          [mood]="m"
+          [selected]="m.value === seleccionado()"
+          (elegir)="seleccionar($event)"
+        >
+        </app-mood-option>
+      </div>
+
+      <textarea
+        class="note"
+        [formControl]="notaCtrl"
+        placeholder="Añade una nota (opcional)"
+      ></textarea>
+    </div>
+
+    <footer class="ci-actions">
+      <p class="small falta" [class.oculto]="seleccionado() !== 0">
+        Elige la carita que más se parezca a cómo te sientes.
+      </p>
+      <a
+        routerLink="/checkin/sueno"
+        (click)="guardar()"
+        class="btn btn-primary"
+        [class.deshabilitado]="seleccionado() === 0"
+        >Siguiente <span class="icon sm i-arrow"></span
+      ></a>
+    </footer>
+  </section>
+</main>

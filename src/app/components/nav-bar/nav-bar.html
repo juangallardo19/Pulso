@@ -1,0 +1,63 @@
+<!-- =========================
+     BARRA LATERAL (computador)
+========================== -->
+<aside class="sidebar">
+  <a routerLink="/inicio" class="brand">
+    <span class="logo"><span class="logo-mark"></span></span>
+    Pulso
+  </a>
+
+  <nav class="side-links" aria-label="Navegación principal">
+    <a routerLink="/inicio" routerLinkActive="active" class="side-link pressable">
+      <span class="icon i-home"></span> Inicio
+    </a>
+    <a routerLink="/estadisticas" routerLinkActive="active" class="side-link pressable">
+      <span class="icon i-chart"></span> Estadísticas
+    </a>
+    <a routerLink="/respira" routerLinkActive="active" class="side-link pressable">
+      <span class="icon i-wind"></span> Respira
+    </a>
+    <a routerLink="/historial" routerLinkActive="active" class="side-link pressable">
+      <span class="icon i-calendar"></span> Historial
+    </a>
+    <a routerLink="/bienestar" routerLinkActive="active" class="side-link pressable">
+      <span class="icon i-heart"></span> Bienestar U
+    </a>
+    <a routerLink="/recordatorios" routerLinkActive="active" class="side-link pressable">
+      <span class="icon i-bell"></span> Recordatorios
+    </a>
+    <a routerLink="/perfil" routerLinkActive="active" class="side-link pressable">
+      <span class="icon i-user"></span> Perfil
+    </a>
+  </nav>
+
+  <a routerLink="/checkin/animo" class="btn btn-primary">
+    <span class="icon sm i-plus"></span> Check-in
+  </a>
+</aside>
+
+<!-- =========================
+     BARRA INFERIOR (celular)
+========================== -->
+<nav class="bottom-nav" aria-label="Navegación principal">
+  <a routerLink="/inicio" routerLinkActive="active" class="tab pressable" aria-label="Inicio">
+    <span class="icon i-home"></span>
+  </a>
+  <a
+    routerLink="/estadisticas"
+    routerLinkActive="active"
+    class="tab pressable"
+    aria-label="Estadísticas"
+  >
+    <span class="icon i-chart"></span>
+  </a>
+  <a routerLink="/respira" class="tab-main pressable" aria-label="Respira">
+    <span class="icon i-wind"></span>
+  </a>
+  <a routerLink="/historial" routerLinkActive="active" class="tab pressable" aria-label="Historial">
+    <span class="icon i-calendar"></span>
+  </a>
+  <a routerLink="/perfil" routerLinkActive="active" class="tab pressable" aria-label="Perfil">
+    <span class="icon i-user"></span>
+  </a>
+</nav>

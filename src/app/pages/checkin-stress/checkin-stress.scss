@@ -1,0 +1,31 @@
+.amount {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+}
+
+.limits {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bajo {
+  color: var(--secondary);
+}
+
+.medio {
+  color: var(--primary);
+}
+
+.alto {
+  color: var(--accent);
+}

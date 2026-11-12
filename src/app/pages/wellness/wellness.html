@@ -1,0 +1,58 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header">
+      <h1>Bienestar U</h1>
+      <a href="tel:6027370660" class="icon-btn" aria-label="Llamar al conmutador del campus"
+        ><span class="icon i-phone"></span
+      ></a>
+    </header>
+
+    <p class="muted sede">
+      {{ datos.sede.nombre }} · {{ datos.sede.direccion }} · Conmutador {{ datos.sede.conmutador }}
+    </p>
+
+    <div class="chips filters">
+      <app-chip-option
+        *ngFor="let c of categorias"
+        [label]="c"
+        [active]="c === filtro()"
+        (alternar)="filtro.set($event)"
+      >
+      </app-chip-option>
+    </div>
+
+    <section class="wellness-grid">
+      <article class="card tint bg-coral hotline">
+        <div class="row">
+          <span class="bubble"><span class="icon i-heart c-accent"></span></span>
+          <div class="grow">
+            <h3>¿Necesitas hablar con alguien?</h3>
+            <p class="small">Atención gratuita, en cualquier momento.</p>
+          </div>
+        </div>
+        <div class="lines">
+          <a
+            *ngFor="let linea of datos.lineas"
+            [href]="'tel:' + linea.telefono"
+            class="line pressable"
+            ><span class="icon sm i-phone c-accent"></span> {{ linea.nombre }} ·
+            {{ linea.detalle }}</a
+          >
+        </div>
+      </article>
+      <app-service-card
+        *ngFor="let s of serviciosFiltrados()"
+        [service]="s"
+        (contactar)="contactar($event)"
+      >
+      </app-service-card>
+    </section>
+
+    <p class="small fuente">
+      Datos de {{ datos.fuente }}, consultados en {{ datos.consultado }}. El bloque y el piso de
+      cada oficina no están publicados: confírmalos llamando al conmutador.
+    </p>
+  </div>
+</main>

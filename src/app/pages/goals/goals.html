@@ -1,0 +1,95 @@
+<main class="page auth">
+  <aside class="auth-side">
+    <div class="faces">
+      <img src="moods/1.svg" alt="" /><img src="moods/2.svg" alt="" /><img
+        src="moods/3.svg"
+        alt=""
+      /><img src="moods/4.svg" alt="" /><img src="moods/5.svg" alt="" />
+    </div>
+    <h2>Metas a tu medida</h2>
+    <p>Empieza con algo alcanzable. Podrás ajustarlas cuando quieras desde tu perfil.</p>
+  </aside>
+
+  <section class="auth-main">
+    <div class="back-row">
+      <a routerLink="/perfil" class="icon-btn" aria-label="Volver" [class.oculto]="!editando"
+        ><span class="icon i-left"></span
+      ></a>
+      <span class="small" [class.oculto]="editando">Paso 2 de 2</span>
+    </div>
+
+    <div>
+      <h1>{{ editando ? 'Edita tus metas' : '¿Cuáles son tus metas?' }}</h1>
+      <p class="muted">Mueve cada barra para elegir tu meta. Puedes cambiarlas cuando quieras.</p>
+    </div>
+
+    <form class="goals-form" [formGroup]="goalsForm">
+      <article class="card tint bg-blue goal">
+        <div class="row">
+          <span class="bubble"><span class="icon i-moon c-sleep"></span></span>
+          <h3 class="grow">Sueño</h3>
+          <span class="metric">{{ goalsForm.value.sleepHours ?? '—' }}</span
+          ><span class="small">h / noche</span>
+        </div>
+        <input
+          type="range"
+          class="range sleep"
+          [class.sin-elegir]="goalsForm.value.sleepHours === null"
+          min="4"
+          max="12"
+          formControlName="sleepHours"
+          aria-label="Horas de sueño"
+        />
+        <div class="limits"><span>4 h</span><span>12 h</span></div>
+      </article>
+
+      <article class="card tint bg-mint goal">
+        <div class="row">
+          <span class="bubble"><span class="icon i-droplet c-secondary"></span></span>
+          <h3 class="grow">Agua</h3>
+          <span class="metric">{{ goalsForm.value.waterGlasses ?? '—' }}</span
+          ><span class="small">vasos</span>
+        </div>
+        <input
+          type="range"
+          class="range water"
+          [class.sin-elegir]="goalsForm.value.waterGlasses === null"
+          min="1"
+          max="15"
+          formControlName="waterGlasses"
+          aria-label="Vasos de agua"
+        />
+        <div class="limits"><span>1</span><span>15</span></div>
+      </article>
+
+      <article class="card tint bg-coral goal">
+        <div class="row">
+          <span class="bubble"><span class="icon i-flame c-accent"></span></span>
+          <h3 class="grow">Ejercicio</h3>
+          <span class="metric">{{ goalsForm.value.exerciseMinutes ?? '—' }}</span
+          ><span class="small">min / día</span>
+        </div>
+        <input
+          type="range"
+          class="range exercise"
+          [class.sin-elegir]="goalsForm.value.exerciseMinutes === null"
+          min="0"
+          max="120"
+          formControlName="exerciseMinutes"
+          aria-label="Minutos de ejercicio"
+        />
+        <div class="limits"><span>0</span><span>120 min</span></div>
+      </article>
+    </form>
+
+    <p class="small falta" [class.oculto]="goalsForm.valid">Elige las tres metas para continuar.</p>
+
+    <a
+      [routerLink]="destino()"
+      class="btn btn-primary"
+      [class.deshabilitado]="goalsForm.invalid"
+      (click)="guardarMetas()"
+      >{{ editando ? 'Guardar metas' : 'Continuar' }} <span class="icon sm i-arrow"></span
+    ></a>
+  </section>
+</main>

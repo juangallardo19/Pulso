@@ -1,0 +1,67 @@
+<main class="session" [class.pausado]="pausado()" [class.terminada]="terminado()">
+  <span class="blob one"></span>
+  <span class="blob two"></span>
+
+  <header class="top">
+    <a routerLink="/respira" class="icon-btn" aria-label="Cerrar"><span class="icon i-x"></span></a>
+    <div class="title">
+      <h3>{{ sesion.name }}</h3>
+      <p class="small restante">
+        {{ terminado() ? sesion.minutes + ' min completados' : tiempoRestante() + ' restantes' }}
+      </p>
+    </div>
+    <span class="spacer"></span>
+  </header>
+
+  <!-- El círculo crece al inhalar y se encoge al exhalar, con la duración real de cada fase -->
+  <section class="circle-wrap">
+    <span
+      class="layer outer"
+      [style.transform]="'scale(' + escala() + ')'"
+      [style.transition-duration.s]="pasoActual().segundos"
+    ></span>
+    <span
+      class="layer middle"
+      [style.transform]="'scale(' + escala() + ')'"
+      [style.transition-duration.s]="pasoActual().segundos"
+    ></span>
+    <span
+      class="core"
+      [style.transform]="'scale(' + escala() + ')'"
+      [style.transition-duration.s]="pasoActual().segundos"
+    >
+      <span class="word">{{ terminado() ? '¡Listo!' : pasoActual().nombre }}</span>
+      <span class="cuenta" [class.oculto]="terminado()">{{ segundosDelPaso() }}</span>
+    </span>
+  </section>
+
+  <section class="steps" [class.oculto]="terminado()">
+    <div
+      *ngFor="let paso of tecnica.pasos; index as i"
+      class="step"
+      [class.activo]="i === indicePaso()"
+    >
+      <strong>{{ paso.segundos }}</strong
+      ><span>{{ paso.nombre }}</span>
+    </div>
+  </section>
+
+  <section class="fin" [class.oculto]="!terminado()">
+    <h2>Sesión completa</h2>
+    <p class="small">Tómate un momento antes de volver a tus actividades.</p>
+    <div class="fin-acciones">
+      <button class="btn btn-secondary" type="button" (click)="reiniciar()">Repetir</button>
+      <a routerLink="/respira" class="btn btn-primary">Volver a Respira</a>
+    </div>
+  </section>
+
+  <button
+    class="pause"
+    type="button"
+    [class.oculto]="terminado()"
+    [attr.aria-label]="pausado() ? 'Reanudar' : 'Pausar'"
+    (click)="alternarPausa()"
+  >
+    <span class="icon lg" [ngClass]="pausado() ? 'i-play' : 'i-pause'"></span>
+  </button>
+</main>

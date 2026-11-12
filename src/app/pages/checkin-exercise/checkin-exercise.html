@@ -1,0 +1,59 @@
+<main class="page">
+  <section class="ci">
+    <header class="ci-top">
+      <a routerLink="/checkin/agua" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <app-stepper [paso]="4"></app-stepper>
+      <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
+        ><span class="icon i-x"></span
+      ></a>
+    </header>
+
+    <div class="ci-head">
+      <span class="eyebrow">Paso 4 de 6</span>
+      <h1>¿Te moviste hoy?</h1>
+      <p class="muted">Cualquier movimiento suma: caminar también cuenta.</p>
+    </div>
+
+    <div class="ci-body">
+      <article class="card tint bg-coral amount">
+        <div class="big-number">
+          <span class="metric">{{ minutosCtrl.value }}</span
+          ><span class="muted">minutos</span>
+        </div>
+        <input
+          type="range"
+          class="range exercise"
+          min="0"
+          max="120"
+          [formControl]="minutosCtrl"
+          aria-label="Minutos de ejercicio"
+        />
+        <div class="limits">
+          <span>0</span><span>Meta {{ metaMinutos }} min</span><span>120</span>
+        </div>
+      </article>
+
+      <div class="group">
+        <span class="label">Tipo de actividad</span>
+        <div class="chips">
+          <app-chip-option
+            *ngFor="let t of tipos"
+            [label]="t"
+            [active]="elegidos().includes(t)"
+            (alternar)="alternarTipo($event)"
+          >
+          </app-chip-option>
+        </div>
+      </div>
+    </div>
+
+    <footer class="ci-actions">
+      <a routerLink="/checkin/estres" (click)="guardar()" class="btn btn-primary"
+        >Siguiente <span class="icon sm i-arrow"></span
+      ></a>
+      <a routerLink="/checkin/estres" (click)="guardar()" class="btn btn-ghost">Omitir</a>
+    </footer>
+  </section>
+</main>

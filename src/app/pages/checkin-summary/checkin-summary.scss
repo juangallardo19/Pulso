@@ -1,0 +1,26 @@
+.summary {
+  padding: 6px 16px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  border-bottom: 1px solid var(--line);
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+.item strong {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.face-sm {
+  width: 36px;
+  height: 36px;
+}

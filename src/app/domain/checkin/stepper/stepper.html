@@ -1,0 +1,3 @@
+<div class="stepper" [attr.aria-label]="'Paso ' + paso + ' de ' + total">
+  <span *ngFor="let p of puntos" [class.done]="p <= paso"></span>
+</div>

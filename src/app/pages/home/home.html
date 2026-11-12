@@ -1,0 +1,137 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <!-- Saludo -->
+    <header class="page-header">
+      <div class="row">
+        <span class="avatar"><span class="icon i-user"></span></span>
+        <div>
+          <p class="small">{{ fecha }}</p>
+          <h2>{{ saludo() }}, {{ nombre }}</h2>
+        </div>
+      </div>
+      <a routerLink="/recordatorios" class="icon-btn" aria-label="Recordatorios">
+        <span class="icon i-bell"></span
+        ><span class="dot" [class.oculto]="!hayRecordatorios()"></span>
+      </a>
+    </header>
+
+    <section class="home-grid">
+      <!-- Check-in rápido de ánimo -->
+      <article class="hero">
+        <div class="hero-text">
+          <span class="hero-pista"
+            ><span class="icon sm i-sparkle"></span> Toca una carita para empezar tu check-in</span
+          >
+          <h3>Hola, {{ nombre }}</h3>
+          <p>¿Cómo te sientes hoy?</p>
+        </div>
+        <div class="hero-panel">
+          <a
+            *ngFor="let m of moods"
+            routerLink="/checkin/animo"
+            class="mood-option"
+            (click)="elegirAnimo(m.value)"
+            [class.selected]="m.value === hoy.mood"
+            ><img [src]="m.image" alt="" /><span>{{ m.label }}</span></a
+          >
+        </div>
+      </article>
+
+      <!-- Progreso del día -->
+      <article class="card rings-card">
+        <div class="section-title">
+          <h3>Tu día</h3>
+          <span class="link">{{ progreso() }} %</span>
+        </div>
+        <div class="rings">
+          <div class="ring-item">
+            <div class="ring sleep-ring" [style.--avance]="avanceSueno() + '%'">
+              <div class="ring-hole"><span class="icon i-moon c-sleep"></span></div>
+            </div>
+            <strong>{{ horas() }} h</strong>
+            <span class="small">Sueño</span>
+          </div>
+          <div class="ring-item">
+            <div class="ring water-ring" [style.--avance]="avanceAgua() + '%'">
+              <div class="ring-hole"><span class="icon i-droplet c-secondary"></span></div>
+            </div>
+            <strong>{{ vasos() }} / {{ metas.waterGlasses }}</strong>
+            <span class="small">Agua</span>
+          </div>
+          <div class="ring-item">
+            <div class="ring exercise-ring" [style.--avance]="avanceEjercicio() + '%'">
+              <div class="ring-hole"><span class="icon i-flame c-accent"></span></div>
+            </div>
+            <strong>{{ hoy.exerciseMinutes }} min</strong>
+            <span class="small">Ejercicio</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Bento -->
+      <article class="card tint bg-coral mini lift">
+        <span class="bubble sm"><span class="icon sm i-flame c-accent"></span></span>
+        <div>
+          <span class="metric">{{ racha }}</span>
+          <p class="small">días de racha</p>
+        </div>
+      </article>
+
+      <article class="card tint bg-mint mini lift">
+        <div class="section-title">
+          <span class="bubble sm"><span class="icon sm i-droplet c-secondary"></span></span>
+          <span class="small">Agua</span>
+        </div>
+        <div class="counter">
+          <button class="round-btn" type="button" (click)="quitar()" aria-label="Quitar un vaso">
+            <span class="icon sm i-minus"></span>
+          </button>
+          <span class="metric">{{ vasos() }}</span>
+          <button class="round-btn add" type="button" (click)="sumar()" aria-label="Sumar un vaso">
+            <span class="icon sm i-plus"></span>
+          </button>
+        </div>
+      </article>
+
+      <article class="card tint bg-blue mini lift desktop-only">
+        <span class="bubble sm"><span class="icon sm i-moon c-sleep"></span></span>
+        <div>
+          <span class="metric">{{ horas() }} h</span>
+          <p class="small">dormiste anoche</p>
+        </div>
+      </article>
+
+      <article class="card tint bg-lav mini lift desktop-only">
+        <span class="bubble sm"><span class="icon sm i-activity c-primary"></span></span>
+        <div>
+          <span class="metric">{{ hoy.stress }} / 10</span>
+          <p class="small">nivel de estrés</p>
+        </div>
+      </article>
+
+      <!-- Respira 1 minuto -->
+      <a routerLink="/respira" class="card tint bg-lav breathe-card lift">
+        <span class="bubble"><span class="icon i-wind c-primary"></span></span>
+        <div class="grow">
+          <h3>Respira 1 minuto</h3>
+          <p class="small">Una pausa para calmar la mente</p>
+        </div>
+        <span class="play"><span class="icon sm i-play"></span></span>
+      </a>
+
+      <!-- Alerta empática (RF-16): se muestra tras 3 días con ánimo "Muy mal" -->
+      <article class="card alert" [class.oculto]="!mostrarAlerta()">
+        <span class="bubble"><span class="icon i-heart c-primary"></span></span>
+        <div class="grow">
+          <h3>No tienes que pasarlo solo</h3>
+          <p class="small">
+            Estos días han sido pesados. Hablar con alguien de bienestar puede ayudarte.
+          </p>
+          <a routerLink="/bienestar" class="link">Ver servicios de bienestar</a>
+        </div>
+      </article>
+    </section>
+  </div>
+</main>

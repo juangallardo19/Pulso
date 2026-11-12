@@ -1,0 +1,41 @@
+.goal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+}
+
+.goal .metric {
+  font-size: 1.75rem;
+}
+
+.limits {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+// El <form> no debe cambiar el layout de las tarjetas
+.goals-form {
+  display: contents;
+}
+
+// Barra que todavía no se ha movido: se ve apagada hasta elegir un valor
+.range.sin-elegir {
+  opacity: 0.45;
+}
+
+.falta {
+  text-align: center;
+  color: var(--muted);
+}
+
+.deshabilitado {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.oculto {
+  display: none !important;
+}

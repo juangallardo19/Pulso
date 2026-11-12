@@ -1,0 +1,46 @@
+<main class="page with-nav">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="page-inner">
+    <header class="page-header">
+      <h1>Respira</h1>
+    </header>
+
+    <p class="muted">Elige una técnica y tómate un minuto para ti.</p>
+
+    <section class="techniques">
+      <article
+        *ngFor="let t of tecnicas; index as i"
+        class="card tint technique lift pressable"
+        [ngClass]="t.tint"
+        [class.selected]="i === seleccionada()"
+        (click)="seleccionada.set(i)"
+      >
+        <div class="art" [ngClass]="t.color"><span></span><span></span><span></span></div>
+        <div class="grow">
+          <h3>{{ t.name }}</h3>
+          <p class="small">{{ t.description }}</p>
+          <div class="phases">
+            <span *ngFor="let f of t.phases">{{ f }}</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="duration">
+      <span class="label">Duración</span>
+      <div class="chips">
+        <app-chip-option
+          *ngFor="let d of duraciones"
+          [label]="d"
+          [active]="d === duracion()"
+          (alternar)="duracion.set($event)"
+        ></app-chip-option>
+      </div>
+    </div>
+
+    <a routerLink="/respira/sesion" class="btn btn-primary start" (click)="comenzar()"
+      >Comenzar <span class="icon sm i-play"></span
+    ></a>
+  </div>
+</main>

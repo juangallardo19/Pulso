@@ -1,0 +1,109 @@
+.techniques {
+  display: grid;
+  gap: 14px;
+}
+
+.technique {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  border: 2.5px solid transparent;
+}
+
+.technique.selected {
+  border-color: var(--primary);
+}
+
+.art {
+  position: relative;
+  flex-shrink: 0;
+  width: 78px;
+  height: 78px;
+}
+
+.art span {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.art.secondary span {
+  background: var(--secondary);
+}
+
+.art span:nth-child(1) {
+  width: 100%;
+  height: 100%;
+  opacity: 0.25;
+}
+
+.art span:nth-child(2) {
+  width: 70%;
+  height: 70%;
+  opacity: 0.55;
+}
+
+.art span:nth-child(3) {
+  width: 40%;
+  height: 40%;
+}
+
+.phases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.phases span {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+.duration {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-weight: 500;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.85);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}
+
+@media (min-width: 1024px) {
+  .techniques {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .technique {
+    padding: 28px;
+  }
+
+  .art {
+    width: 110px;
+    height: 110px;
+  }
+
+  .start {
+    max-width: 320px;
+  }
+}

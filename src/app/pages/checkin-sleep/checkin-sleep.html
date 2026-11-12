@@ -1,0 +1,71 @@
+<main class="page">
+  <section class="ci">
+    <header class="ci-top">
+      <a routerLink="/checkin/animo" class="icon-btn" aria-label="Volver"
+        ><span class="icon i-left"></span
+      ></a>
+      <app-stepper [paso]="2"></app-stepper>
+      <a routerLink="/inicio" class="icon-btn" aria-label="Cerrar"
+        ><span class="icon i-x"></span
+      ></a>
+    </header>
+
+    <div class="ci-head">
+      <span class="eyebrow">Paso 2 de 6</span>
+      <h1>¿Cómo dormiste anoche?</h1>
+      <p class="muted">Cuéntanos a qué hora te acostaste y te levantaste.</p>
+    </div>
+
+    <div class="ci-body">
+      <div class="times">
+        <label class="card time" (click)="abrirSelectorDeHora(dormi)">
+          <span class="row small"><span class="icon sm i-moon c-sleep"></span> Me dormí</span>
+          <input #dormi type="time" [formControl]="inicioCtrl" />
+        </label>
+        <label class="card time" (click)="abrirSelectorDeHora(desperte)">
+          <span class="row small"><span class="icon sm i-sun c-sleep"></span> Desperté</span>
+          <input #desperte type="time" [formControl]="finCtrl" />
+        </label>
+      </div>
+
+      <article class="card tint bg-blue row">
+        <span class="bubble"><span class="icon i-moon c-sleep"></span></span>
+        <div class="grow">
+          <p class="small">Dormiste</p>
+          <h2>{{ horasDormidas() }}</h2>
+        </div>
+        <span class="small">Meta {{ metaSueno }} h</span>
+      </article>
+
+      <div class="quality">
+        <span class="label">Calidad del sueño</span>
+        <div class="dots-row">
+          <span
+            *ngFor="let n of niveles"
+            class="q pressable"
+            role="button"
+            [class.on]="n <= calidad()"
+            [attr.aria-label]="'Calidad ' + n + ' de 5'"
+            (click)="elegirCalidad(n)"
+            >{{ n }}</span
+          >
+        </div>
+        <div class="limits"><span>Mala</span><span>Excelente</span></div>
+      </div>
+    </div>
+
+    <footer class="ci-actions">
+      <p class="small falta" [class.oculto]="completo()">
+        Escribe a qué hora te dormiste, a qué hora despertaste y elige la calidad.
+      </p>
+      <a
+        routerLink="/checkin/agua"
+        (click)="guardar()"
+        class="btn btn-primary"
+        [class.deshabilitado]="!completo()"
+        >Siguiente <span class="icon sm i-arrow"></span
+      ></a>
+      <a routerLink="/checkin/agua" (click)="guardar()" class="btn btn-ghost">Omitir</a>
+    </footer>
+  </section>
+</main>

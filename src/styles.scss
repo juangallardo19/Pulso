@@ -1,1 +1,1167 @@
-/* You can add global styles to this file, and also import other style files */
+/* =========================
+   VARIABLES GENERALES (modo claro)
+========================== */
+:root {
+  --bg: #f7f6fc;
+  --surface: #ffffff;
+  --text: #22223b;
+  --muted: #6b6b85;
+  --line: #eceaf6;
+
+  --primary: #7c6cf2;
+  --on-primary: #ffffff;
+  --secondary: #5ec8b8;
+  --accent: #ff9e80;
+  --sleep: #6c8cf5;
+  --error: #e5484d;
+
+  --tint-lav: #e6e2fd;
+  --tint-mint: #ddf3ef;
+  --tint-coral: #ffe8df;
+  --tint-blue: #e1e8fd;
+  --tint-sand: #fbf3e2;
+
+  --mood-1: #e5484d;
+  --mood-2: #ff9e80;
+  --mood-3: #f5c26b;
+  --mood-4: #8bd3a6;
+  --mood-5: #5ec8b8;
+
+  --radius-sm: 14px;
+  --radius: 24px;
+  --shadow: 0 4px 16px rgba(124, 108, 242, 0.12);
+  --shadow-strong: 0 8px 24px rgba(124, 108, 242, 0.25);
+
+  --font-title: 'Poppins', Arial, Helvetica, sans-serif;
+  --font-body: 'Inter', Arial, Helvetica, sans-serif;
+
+  --sidebar: 248px;
+}
+
+/* =========================
+   MODO OSCURO
+   Se activa con la clase "tema-oscuro" en <html>. La pone la app según el interruptor del
+   perfil; si la persona nunca lo tocó, sigue la configuración del sistema.
+========================== */
+:root.tema-oscuro {
+  color-scheme: dark;
+
+  --bg: #14131f;
+  --surface: #1f1d2e;
+  --text: #ecebf5;
+  --muted: #a3a1b8;
+  --line: #2e2c42;
+
+  --primary: #9d90ff;
+  --on-primary: #14131f;
+  --secondary: #6fdccb;
+  --accent: #ffb199;
+  --sleep: #8aa5ff;
+  --error: #ff6b6e;
+
+  --tint-lav: #2b2748;
+  --tint-mint: #1f3a3a;
+  --tint-coral: #3f2b2a;
+  --tint-blue: #252d4a;
+  --tint-sand: #3a3322;
+
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* =========================
+   RESET BÁSICO
+========================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-title);
+  font-weight: 600;
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 1.3;
+}
+
+h2 {
+  font-size: 1.375rem;
+  line-height: 1.35;
+}
+
+h3 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.eyebrow {
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.metric {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+/* =========================
+   PÁGINAS Y FONDO CON MANCHAS
+========================== */
+.page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at -5% -5%, var(--tint-lav) 0, transparent 38%),
+    radial-gradient(circle at 105% 18%, var(--tint-mint) 0, transparent 32%),
+    radial-gradient(circle at -5% 100%, var(--tint-coral) 0, transparent 34%), var(--bg);
+}
+
+.page-inner {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 20px 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+}
+
+.page-header h1 {
+  font-size: 1.625rem;
+}
+
+.page-header.centered h3 {
+  flex: 1;
+  text-align: center;
+}
+
+/* Vista de computador: barra lateral + contenido más ancho */
+@media (min-width: 1024px) {
+  .page.with-nav {
+    padding-left: var(--sidebar);
+  }
+
+  .with-nav .page-inner {
+    max-width: 1080px;
+    padding: 40px 48px 48px;
+    gap: 24px;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+}
+
+/* =========================
+   ÍCONOS (SVG de línea usados como máscara)
+========================== */
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  background-color: currentColor;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+.icon.sm {
+  width: 18px;
+  height: 18px;
+}
+
+.icon.lg {
+  width: 32px;
+  height: 32px;
+}
+
+$icons:
+  home, chart, calendar, user, wind, moon, droplet, flame, activity, bell, plus, minus, left, right,
+  x, check, search, arrow, heart, phone, pin, clock, shield, logout, pause, play, edit, trash, mail,
+  lock, eye, medic, sparkle, sun, book, mind, dumbbell;
+
+@each $name in $icons {
+  .i-#{$name} {
+    mask-image: url('/icons/#{$name}.svg');
+    -webkit-mask-image: url('/icons/#{$name}.svg');
+  }
+}
+
+/* Logo de Pulso */
+.logo {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-strong);
+}
+
+.logo-mark {
+  display: inline-block;
+  width: 60%;
+  height: 60%;
+  background-color: currentColor;
+  mask: url('/logo.svg') center / contain no-repeat;
+  -webkit-mask: url('/logo.svg') center / contain no-repeat;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+/* Caras de ánimo */
+.face {
+  display: block;
+  width: 56px;
+  height: 56px;
+}
+
+/* =========================
+   TARJETAS
+========================== */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.card.tint {
+  box-shadow: none;
+}
+
+.bg-lav {
+  background: var(--tint-lav);
+}
+
+.bg-mint {
+  background: var(--tint-mint);
+}
+
+.bg-coral {
+  background: var(--tint-coral);
+}
+
+.bg-blue {
+  background: var(--tint-blue);
+}
+
+.bg-sand {
+  background: var(--tint-sand);
+}
+
+.c-primary {
+  color: var(--primary);
+}
+
+.c-secondary {
+  color: var(--secondary);
+}
+
+.c-accent {
+  color: var(--accent);
+}
+
+.c-sleep {
+  color: var(--sleep);
+}
+
+.c-error {
+  color: var(--error);
+}
+
+.c-muted {
+  color: var(--muted);
+}
+
+.bubble {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.bubble.sm {
+  width: 36px;
+  height: 36px;
+}
+
+.bubble.lg {
+  width: 72px;
+  height: 72px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
+/* =========================
+   BOTONES
+========================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 1rem;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-strong);
+}
+
+.btn-secondary {
+  background: var(--tint-lav);
+  color: var(--primary);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  min-height: 40px;
+}
+
+.btn-danger {
+  background: var(--surface);
+  color: var(--error);
+  border: 2px solid var(--error);
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(124, 108, 242, 0.08);
+}
+
+.icon-btn .dot {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+}
+
+.round-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* =========================
+   CHIPS, SEGMENTOS Y TOGGLE
+========================== */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+.segmented {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.segmented button {
+  flex: 1;
+  height: 36px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-title);
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.segmented button.active {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 28px;
+  padding: 3px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.toggle::after {
+  content: '';
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.toggle.on {
+  background: var(--primary);
+}
+
+.toggle.on::after {
+  transform: translateX(20px);
+}
+
+/* =========================
+   FORMULARIOS
+========================== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.field:focus-within {
+  border: 2px solid var(--primary);
+}
+
+.field.error {
+  border: 2px solid var(--error);
+}
+
+.field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+}
+
+.field input::placeholder {
+  color: var(--muted);
+}
+
+/* Campos de hora con los colores de Pulso (recordatorios y sueño) */
+input[type='time'] {
+  font-family: var(--font-title);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  color-scheme: light;
+}
+
+:root.tema-oscuro input[type='time'] {
+  color-scheme: dark;
+}
+
+/* Cada parte (hora, minutos, a. m./p. m.) se resalta al editarla */
+input[type='time']::-webkit-datetime-edit-hour-field,
+input[type='time']::-webkit-datetime-edit-minute-field,
+input[type='time']::-webkit-datetime-edit-ampm-field {
+  padding: 2px 4px;
+  border-radius: 8px;
+}
+
+input[type='time']::-webkit-datetime-edit-hour-field:focus,
+input[type='time']::-webkit-datetime-edit-minute-field:focus,
+input[type='time']::-webkit-datetime-edit-ampm-field:focus {
+  background: var(--tint-lav);
+  color: var(--primary);
+}
+
+/* El ícono del reloj del navegador, en morado y con mano */
+input[type='time']::-webkit-calendar-picker-indicator {
+  padding: 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.7;
+  filter: invert(48%) sepia(62%) saturate(2350%) hue-rotate(228deg) brightness(98%) contrast(92%);
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
+}
+
+input[type='time']::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  background-color: var(--tint-lav);
+}
+
+/* Mientras no tiene hora, el "--:--" se ve más suave */
+input[type='time']:invalid,
+input[type='time'][value=''] {
+  color: var(--muted);
+}
+
+.field:has(input[type='time']):hover {
+  border-color: var(--primary);
+}
+
+.error-text {
+  font-size: 0.8125rem;
+  color: var(--error);
+}
+
+textarea.note {
+  width: 100%;
+  min-height: 76px;
+  padding: 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  resize: none;
+  outline: none;
+}
+
+textarea.note:focus {
+  border-color: var(--primary);
+}
+
+/* Slider con los colores de Pulso */
+.range {
+  width: 100%;
+  accent-color: var(--primary);
+}
+
+.range.sleep {
+  accent-color: var(--sleep);
+}
+
+.range.water {
+  accent-color: var(--secondary);
+}
+
+.range.exercise {
+  accent-color: var(--accent);
+}
+
+/* =========================
+   ANILLOS DE PROGRESO
+========================== */
+.ring {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+}
+
+.ring-hole {
+  display: grid;
+  place-items: center;
+  width: 74%;
+  height: 74%;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+/* =========================
+   UTILIDADES DE ACCESIBILIDAD
+========================== */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* =========================
+   ANIMACIONES (solo CSS)
+========================== */
+
+/* Al presionar, el elemento se hace un poco más pequeño */
+.btn,
+.icon-btn,
+.round-btn,
+.chip,
+.toggle,
+.mood-option,
+.pressable {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.btn:active,
+.icon-btn:active,
+.round-btn:active,
+.chip:active,
+.toggle:active,
+.mood-option:active,
+.pressable:active {
+  transform: scale(0.94);
+}
+
+/* Las tarjetas se elevan un poco al pasar el mouse */
+.card.lift {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card.lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-strong);
+}
+
+/* =========================
+   INTERACCIÓN
+   Todo lo que se puede tocar muestra la "mano", reacciona al pasar el mouse
+   y se encoge un poco al hacer clic.
+========================== */
+a[href],
+button:not(:disabled),
+label[for],
+.chip,
+.pressable,
+.mood,
+.mood-option,
+.q,
+.technique,
+.setting,
+.toggle,
+input[type='range'],
+input[type='checkbox'],
+input[type='time'] {
+  cursor: pointer;
+}
+
+.btn,
+.icon-btn,
+.round-btn,
+.chip,
+.segmented button,
+.mood,
+.mood-option,
+.q,
+.line,
+.setting,
+.link {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    filter 0.2s ease;
+}
+
+/* Solo en dispositivos con mouse (en el celular el hover se quedaría "pegado") */
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06) saturate(1.05);
+    box-shadow: 0 14px 30px rgba(124, 108, 242, 0.38);
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    background: color-mix(in srgb, var(--tint-lav) 78%, var(--primary));
+  }
+
+  .btn-ghost:hover {
+    color: var(--text);
+    background: var(--tint-lav);
+  }
+
+  .btn-danger:hover {
+    background: var(--error);
+    color: #ffffff;
+  }
+
+  .icon-btn:hover,
+  .round-btn:hover {
+    transform: translateY(-2px);
+    color: var(--primary);
+    box-shadow: var(--shadow);
+  }
+
+  .chip:not(.active):hover {
+    border-color: var(--primary);
+    background: var(--tint-lav);
+    color: var(--primary);
+  }
+
+  .chip.active:hover {
+    filter: brightness(1.08);
+  }
+
+  .segmented button:not(.active):hover {
+    background: var(--tint-lav);
+    color: var(--primary);
+  }
+
+  .mood:hover,
+  .mood-option:hover {
+    transform: translateY(-4px);
+  }
+
+  .q:not(.on):hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .setting:hover {
+    background: color-mix(in srgb, var(--tint-lav) 60%, transparent);
+  }
+
+  .line:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+
+  .toggle:hover {
+    filter: brightness(0.94);
+  }
+
+  .link:hover,
+  .auth-footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Al hacer clic, el clic gana sobre el hover */
+  .btn:hover:active,
+  .icon-btn:hover:active,
+  .round-btn:hover:active,
+  .chip:hover:active,
+  .mood:hover:active,
+  .mood-option:hover:active,
+  .line:hover:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Lo que está deshabilitado no reacciona */
+.deshabilitado {
+  cursor: not-allowed;
+}
+
+/* Entrada suave del contenido de cada página */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* "backwards" (no "both"): al terminar la animación suelta el elemento,
+   así el hover puede levantarlo (con "both" el transform quedaba fijo) */
+.page-inner > * {
+  animation: fade-up 0.45s ease backwards;
+}
+
+.page-inner > *:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.page-inner > *:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.page-inner > *:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.page-inner > *:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+.page-inner > *:nth-child(n + 6) {
+  animation-delay: 0.25s;
+}
+
+/* Respetar a quien prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* =========================
+   AUTENTICACIÓN (login / registro / metas)
+========================== */
+.auth {
+  min-height: 100vh;
+  display: grid;
+}
+
+.auth-side {
+  display: none;
+}
+
+.auth-main {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 32px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-footer {
+  text-align: center;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.auth-footer a,
+.link {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.back-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+  .auth {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Panel: el diseño pastel de siempre (degradado, sol y colinas) con la foto encima
+     en baja opacidad, para que se mezcle en vez de verse como una imagen aparte */
+  .auth-side {
+    position: sticky;
+    top: 20px;
+    height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 16px;
+    margin: 20px;
+    padding: 48px;
+    border-radius: 40px;
+    overflow: hidden;
+    isolation: isolate;
+    color: #22223b;
+    background: linear-gradient(160deg, #e6e2fd 0%, #ddf3ef 100%);
+  }
+
+  /* La foto (Unsplash, licencia libre) apenas se asoma y se acerca muy despacio */
+  .auth-side::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: url('/images/fondo-acceso.webp') center / cover no-repeat;
+    opacity: 0.38;
+    mix-blend-mode: multiply;
+    animation: acercar 26s ease-in-out infinite alternate;
+  }
+
+  /* Un velo claro abajo para que el texto se lea siempre */
+  .auth-side::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, transparent 45%, rgba(237, 234, 253, 0.85) 100%);
+  }
+
+  .auth-side h2 {
+    position: relative;
+    max-width: 440px;
+    font-size: 2.2rem;
+    line-height: 1.15;
+  }
+
+  .auth-side p {
+    position: relative;
+    max-width: 400px;
+    color: #4a4a63;
+  }
+
+  /* Caritas dentro de una píldora de vidrio claro */
+  .auth-side .faces {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+  }
+
+  .auth-side .faces img {
+    width: 42px;
+    height: 42px;
+    transition: transform 0.2s ease;
+  }
+
+  .auth-side .faces img:hover {
+    transform: translateY(-4px) scale(1.08);
+  }
+
+  .auth-main {
+    justify-content: center;
+    padding: 48px;
+  }
+}
+
+@keyframes acercar {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.08);
+  }
+}
+
+/* =========================
+   CHECK-IN POR PASOS
+========================== */
+.ci {
+  width: 100%;
+  max-width: 560px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.ci-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.stepper {
+  display: flex;
+  flex: 1;
+  gap: 5px;
+}
+
+.stepper span {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--tint-lav);
+}
+
+.stepper span.done {
+  background: var(--primary);
+}
+
+.ci-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ci-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.ci-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.big-number {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+}
+
+.big-number .metric {
+  font-size: 3.5rem;
+  line-height: 1.1;
+}
+
+.label {
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+@media (min-width: 1024px) {
+  .ci {
+    min-height: auto;
+    margin: 40px auto;
+    padding: 32px 40px;
+    border-radius: 32px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+}
