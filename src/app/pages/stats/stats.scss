@@ -209,3 +209,9 @@
     height: 34px;
   }
 }
+
+// Flechas cuando no hay más registros hacia ese lado
+.arrows .deshabilitado {
+  opacity: 0.35;
+  pointer-events: none;
+}
