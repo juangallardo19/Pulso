@@ -4,10 +4,14 @@
   <div class="page-inner">
     <header class="page-header">
       <h1>Bienestar U</h1>
-      <a href="tel:106" class="icon-btn" aria-label="Llamar a la línea 106"
+      <a href="tel:6027370660" class="icon-btn" aria-label="Llamar al conmutador del campus"
         ><span class="icon i-phone"></span
       ></a>
     </header>
+
+    <p class="muted sede">
+      {{ datos.sede.nombre }} · {{ datos.sede.direccion }} · Conmutador {{ datos.sede.conmutador }}
+    </p>
 
     <div class="chips filters">
       <app-chip-option
@@ -29,11 +33,12 @@
           </div>
         </div>
         <div class="lines">
-          <a href="tel:106" class="line pressable"
-            ><span class="icon sm i-phone c-accent"></span> Línea 106</a
-          >
-          <a href="tel:192" class="line pressable"
-            ><span class="icon sm i-phone c-accent"></span> 192 · opción 4</a
+          <a
+            *ngFor="let linea of datos.lineas"
+            [href]="'tel:' + linea.telefono"
+            class="line pressable"
+            ><span class="icon sm i-phone c-accent"></span> {{ linea.nombre }} ·
+            {{ linea.detalle }}</a
           >
         </div>
       </article>
@@ -44,5 +49,10 @@
       >
       </app-service-card>
     </section>
+
+    <p class="small fuente">
+      Datos de {{ datos.fuente }}, consultados en {{ datos.consultado }}. El bloque y el piso de
+      cada oficina no están publicados: confírmalos llamando al conmutador.
+    </p>
   </div>
 </main>

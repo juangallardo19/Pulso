@@ -1,0 +1,45 @@
+{
+  "fuente": "ucc.edu.co (Directorio Campus Pasto, Campus Pasto y Directorio de Bienestar)",
+  "consultado": "noviembre de 2026",
+  "sede": {
+    "nombre": "Universidad Cooperativa de Colombia · Campus Pasto",
+    "direccion": "Calle 18 N.º 45-150, Torobajo",
+    "conmutador": "602 7370660"
+  },
+  "lineas": [
+    { "nombre": "192 · opción 4", "detalle": "Salud mental", "telefono": "192" },
+    { "nombre": "Línea 123", "detalle": "Emergencias", "telefono": "123" }
+  ],
+  "servicios": [
+    {
+      "name": "Bienestar Universitario",
+      "category": "Bienestar",
+      "description": "Acompañamiento a estudiantes, inclusión, interculturalidad y programas de bienestar del campus.",
+      "place": "Campus Pasto · Torobajo (oficina: confirmar en el conmutador)",
+      "hours": "Lun a vie · 8:00–12:00 y 2:00–5:30 p. m.",
+      "phone": "602 7370660 ext. 2198",
+      "icon": "i-heart",
+      "bubble": "bg-lav"
+    },
+    {
+      "name": "Clínica Odontológica",
+      "category": "Salud",
+      "description": "Atención odontológica para la comunidad universitaria, con cita previa.",
+      "place": "Campus Pasto · Torobajo (consultorio: confirmar al pedir la cita)",
+      "hours": "Con cita previa",
+      "phone": "602 7370660 ext. 2390 o 2298",
+      "icon": "i-medic",
+      "bubble": "bg-mint"
+    },
+    {
+      "name": "Conmutador del campus",
+      "category": "Contacto",
+      "description": "Recepción general: te comunican con cualquier dependencia, incluida la oficina de Bienestar.",
+      "place": "Calle 18 N.º 45-150, Torobajo",
+      "hours": "Horario de atención del campus",
+      "phone": "602 7370660",
+      "icon": "i-phone",
+      "bubble": "bg-coral"
+    }
+  ]
+}
