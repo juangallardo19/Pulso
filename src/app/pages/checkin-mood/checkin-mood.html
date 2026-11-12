@@ -35,7 +35,14 @@
     </div>
 
     <footer class="ci-actions">
-      <a routerLink="/checkin/sueno" (click)="guardar()" class="btn btn-primary"
+      <p class="small falta" [class.oculto]="seleccionado() !== 0">
+        Elige la carita que más se parezca a cómo te sientes.
+      </p>
+      <a
+        routerLink="/checkin/sueno"
+        (click)="guardar()"
+        class="btn btn-primary"
+        [class.deshabilitado]="seleccionado() === 0"
         >Siguiente <span class="icon sm i-arrow"></span
       ></a>
     </footer>

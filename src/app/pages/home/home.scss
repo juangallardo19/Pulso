@@ -138,16 +138,17 @@
   font-weight: 600;
 }
 
+/* El relleno de cada anillo sale de --avance (0 % a 100 %), que calcula el componente */
 .sleep-ring {
-  background: conic-gradient(var(--sleep) 94%, var(--tint-blue) 0);
+  background: conic-gradient(var(--sleep) var(--avance, 0%), var(--tint-blue) 0);
 }
 
 .water-ring {
-  background: conic-gradient(var(--secondary) 75%, var(--tint-mint) 0);
+  background: conic-gradient(var(--secondary) var(--avance, 0%), var(--tint-mint) 0);
 }
 
 .exercise-ring {
-  background: conic-gradient(var(--accent) 66%, var(--tint-coral) 0);
+  background: conic-gradient(var(--accent) var(--avance, 0%), var(--tint-coral) 0);
 }
 
 /* Tarjetas pequeñas */

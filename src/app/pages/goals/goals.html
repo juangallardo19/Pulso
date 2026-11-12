@@ -15,15 +15,15 @@
 
   <section class="auth-main">
     <div class="back-row">
-      <a routerLink="/registro" class="icon-btn" aria-label="Volver"
+      <a routerLink="/perfil" class="icon-btn" aria-label="Volver" [class.oculto]="!editando"
         ><span class="icon i-left"></span
       ></a>
-      <span class="small">Paso 2 de 2</span>
+      <span class="small" [class.oculto]="editando">Paso 2 de 2</span>
     </div>
 
     <div>
-      <h1>¿Cuáles son tus metas?</h1>
-      <p class="muted">Puedes cambiarlas cuando quieras.</p>
+      <h1>{{ editando ? 'Edita tus metas' : '¿Cuáles son tus metas?' }}</h1>
+      <p class="muted">Mueve cada barra para elegir tu meta. Puedes cambiarlas cuando quieras.</p>
     </div>
 
     <form class="goals-form" [formGroup]="goalsForm">
@@ -31,12 +31,13 @@
         <div class="row">
           <span class="bubble"><span class="icon i-moon c-sleep"></span></span>
           <h3 class="grow">Sueño</h3>
-          <span class="metric">{{ goalsForm.value.sleepHours }}</span
+          <span class="metric">{{ goalsForm.value.sleepHours ?? '—' }}</span
           ><span class="small">h / noche</span>
         </div>
         <input
           type="range"
           class="range sleep"
+          [class.sin-elegir]="goalsForm.value.sleepHours === null"
           min="4"
           max="12"
           formControlName="sleepHours"
@@ -49,12 +50,13 @@
         <div class="row">
           <span class="bubble"><span class="icon i-droplet c-secondary"></span></span>
           <h3 class="grow">Agua</h3>
-          <span class="metric">{{ goalsForm.value.waterGlasses }}</span
+          <span class="metric">{{ goalsForm.value.waterGlasses ?? '—' }}</span
           ><span class="small">vasos</span>
         </div>
         <input
           type="range"
           class="range water"
+          [class.sin-elegir]="goalsForm.value.waterGlasses === null"
           min="1"
           max="15"
           formControlName="waterGlasses"
@@ -67,12 +69,13 @@
         <div class="row">
           <span class="bubble"><span class="icon i-flame c-accent"></span></span>
           <h3 class="grow">Ejercicio</h3>
-          <span class="metric">{{ goalsForm.value.exerciseMinutes }}</span
+          <span class="metric">{{ goalsForm.value.exerciseMinutes ?? '—' }}</span
           ><span class="small">min / día</span>
         </div>
         <input
           type="range"
           class="range exercise"
+          [class.sin-elegir]="goalsForm.value.exerciseMinutes === null"
           min="0"
           max="120"
           formControlName="exerciseMinutes"
@@ -82,8 +85,14 @@
       </article>
     </form>
 
-    <a routerLink="/inicio" class="btn btn-primary" (click)="guardarMetas()"
-      >Continuar <span class="icon sm i-arrow"></span
+    <p class="small falta" [class.oculto]="goalsForm.valid">Elige las tres metas para continuar.</p>
+
+    <a
+      [routerLink]="destino()"
+      class="btn btn-primary"
+      [class.deshabilitado]="goalsForm.invalid"
+      (click)="guardarMetas()"
+      >{{ editando ? 'Guardar metas' : 'Continuar' }} <span class="icon sm i-arrow"></span
     ></a>
   </section>
 </main>

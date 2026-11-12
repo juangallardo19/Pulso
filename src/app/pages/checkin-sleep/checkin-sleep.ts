@@ -20,16 +20,20 @@ export class CheckinSleep {
   finCtrl = new FormControl(this.checkin.sleepEnd, { nonNullable: true });
 
   niveles = [1, 2, 3, 4, 5];
-  calidad = signal(this.checkin.sleepQuality ?? 4);
+  calidad = signal(this.checkin.sleepQuality ?? 0);
   metaSueno: number = JSON.parse(localStorage.getItem('pulso-goals') ?? '{}').sleepHours ?? 8;
 
   elegirCalidad(nivel: number) {
     this.calidad.set(nivel);
   }
 
+  completo() {
+    return !!this.inicioCtrl.value && !!this.finCtrl.value && this.calidad() > 0;
+  }
+
   horasDormidas() {
     if (!this.inicioCtrl.value || !this.finCtrl.value) {
-      return '0 h';
+      return '—';
     }
     const [hi, mi] = this.inicioCtrl.value.split(':').map(Number);
     const [hf, mf] = this.finCtrl.value.split(':').map(Number);

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { conSesion, sinSesion } from './guards/sesion.guard';
 
 import { Splash } from './pages/splash/splash';
 import { Onboarding } from './pages/onboarding/onboarding';
@@ -24,26 +25,26 @@ import { Profile } from './pages/profile/profile';
 import { Privacy } from './pages/privacy/privacy';
 
 export const routes: Routes = [
-  { path: '', component: Splash },
-  { path: 'onboarding', component: Onboarding },
-  { path: 'login', component: Login },
-  { path: 'registro', component: Register },
-  { path: 'metas', component: Goals },
-  { path: 'inicio', component: Home },
-  { path: 'checkin/animo', component: CheckinMood },
-  { path: 'checkin/sueno', component: CheckinSleep },
-  { path: 'checkin/agua', component: CheckinWater },
-  { path: 'checkin/ejercicio', component: CheckinExercise },
-  { path: 'checkin/estres', component: CheckinStress },
-  { path: 'checkin/resumen', component: CheckinSummary },
-  { path: 'checkin/listo', component: CheckinDone },
-  { path: 'estadisticas', component: Stats },
-  { path: 'historial', component: History },
-  { path: 'historial/dia', component: DayDetail },
-  { path: 'respira', component: Breathe },
-  { path: 'respira/sesion', component: BreatheSession },
-  { path: 'recordatorios', component: Reminders },
-  { path: 'bienestar', component: Wellness },
-  { path: 'perfil', component: Profile },
-  { path: 'privacidad', component: Privacy },
+  { path: '', component: Splash, canActivate: [sinSesion] },
+  { path: 'onboarding', component: Onboarding, canActivate: [sinSesion] },
+  { path: 'login', component: Login, canActivate: [sinSesion] },
+  { path: 'registro', component: Register, canActivate: [sinSesion] },
+  { path: 'metas', component: Goals, canActivate: [conSesion] },
+  { path: 'inicio', component: Home, canActivate: [conSesion] },
+  { path: 'checkin/animo', component: CheckinMood, canActivate: [conSesion] },
+  { path: 'checkin/sueno', component: CheckinSleep, canActivate: [conSesion] },
+  { path: 'checkin/agua', component: CheckinWater, canActivate: [conSesion] },
+  { path: 'checkin/ejercicio', component: CheckinExercise, canActivate: [conSesion] },
+  { path: 'checkin/estres', component: CheckinStress, canActivate: [conSesion] },
+  { path: 'checkin/resumen', component: CheckinSummary, canActivate: [conSesion] },
+  { path: 'checkin/listo', component: CheckinDone, canActivate: [conSesion] },
+  { path: 'estadisticas', component: Stats, canActivate: [conSesion] },
+  { path: 'historial', component: History, canActivate: [conSesion] },
+  { path: 'historial/dia', component: DayDetail, canActivate: [conSesion] },
+  { path: 'respira', component: Breathe, canActivate: [conSesion] },
+  { path: 'respira/sesion', component: BreatheSession, canActivate: [conSesion] },
+  { path: 'recordatorios', component: Reminders, canActivate: [conSesion] },
+  { path: 'bienestar', component: Wellness, canActivate: [conSesion] },
+  { path: 'perfil', component: Profile, canActivate: [conSesion] },
+  { path: 'privacidad', component: Privacy, canActivate: [conSesion] },
 ];

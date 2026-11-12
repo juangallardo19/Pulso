@@ -36,11 +36,24 @@ export class CheckinSummary {
   }
 
   moodLabel() {
-    return MOODS.find((m) => m.value === this.checkin.mood)?.label ?? '';
+    return MOODS.find((m) => m.value === this.checkin.mood)?.label ?? 'Sin registrar';
   }
 
   moodImage() {
-    return 'moods/' + this.checkin.mood + '.svg';
+    return 'moods/' + (this.checkin.mood || 3) + '.svg';
+  }
+
+  textoSueno() {
+    if (!this.checkin.sleepStart || !this.checkin.sleepEnd) {
+      return 'Sin registrar';
+    }
+    const calidad = this.checkin.sleepQuality ? ' · calidad ' + this.checkin.sleepQuality : '';
+    return this.horasDormidas() + calidad;
+  }
+
+  textoEjercicio() {
+    const tipos = this.checkin.exerciseTypes.join(', ');
+    return this.checkin.exerciseMinutes + ' min' + (tipos ? ' · ' + tipos : '');
   }
 
   horasDormidas() {

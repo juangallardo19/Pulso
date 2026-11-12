@@ -14,11 +14,14 @@ const tomarAgua: Reminder = {
   isActive: true,
 };
 
-// Abre el formulario, lo llena y toca "Guardar"
-async function crear(p: Pantalla<Reminders>, titulo: string, hora: string) {
+// Abre el formulario, lo llena (con los días indicados) y toca "Guardar"
+async function crear(p: Pantalla<Reminders>, titulo: string, hora: string, dias = [0, 2]) {
   await p.clic('.new');
   await p.escribir('form input[type="text"]', titulo);
   await p.escribir('form input[type="time"]', hora);
+  for (const dia of dias) {
+    await p.clic('.dia', dia);
+  }
   await p.clic('form .btn-primary');
 }
 
@@ -51,13 +54,53 @@ describe('Reminders', () => {
     expect(p.visible('form')).toBe(false);
   });
 
-  it('"Guardar" está deshabilitado hasta escribir título y hora', async () => {
+  it('"Guardar" está deshabilitado hasta escribir título, hora y elegir al menos un día', async () => {
     const p = await montar(Reminders);
     await p.clic('.new');
     expect(p.tieneClase('form .btn-primary', 'deshabilitado')).toBe(true);
     await p.escribir('form input[type="text"]', 'Estirar la espalda');
     await p.escribir('form input[type="time"]', '16:00');
+    expect(p.tieneClase('form .btn-primary', 'deshabilitado')).toBe(true);
+    await p.clic('.dia', 0);
     expect(p.tieneClase('form .btn-primary', 'deshabilitado')).toBe(false);
+  });
+
+  it('tocar un día lo marca y tocarlo otra vez lo desmarca', async () => {
+    const p = await montar(Reminders);
+    await p.clic('.new');
+    expect(p.cuantos('.dia')).toBe(7);
+    expect(p.cuantos('.dia.on')).toBe(0);
+    await p.clic('.dia', 4);
+    expect(p.tieneClase('.dia', 'on', 4)).toBe(true);
+    expect(p.atributo('.dia', 'aria-label', 4)).toBe('Viernes');
+    await p.clic('.dia', 4);
+    expect(p.tieneClase('.dia', 'on', 4)).toBe(false);
+  });
+
+  it('los atajos eligen todos los días o de lunes a viernes', async () => {
+    const p = await montar(Reminders);
+    await p.clic('.new');
+    await p.clic('.atajo', 0);
+    expect(p.cuantos('.dia.on')).toBe(7);
+    await p.clic('.atajo', 1);
+    expect(p.todos('.dia.on').map((d) => d.textContent?.trim())).toEqual(['L', 'M', 'X', 'J', 'V']);
+  });
+
+  it('el recordatorio guarda solo los días elegidos, en orden', async () => {
+    const p = await montar(Reminders);
+    await crear(p, 'Estirar la espalda', '16:00', [4, 0]);
+    expect(leer('pulso-recordatorios')[0].activeDays).toEqual(['L', 'V']);
+    expect(p.todos('app-reminder-card .day.on').map((d) => d.textContent)).toEqual(['L', 'V']);
+  });
+
+  it('tocar cualquier parte del campo de hora enfoca el selector de hora', async () => {
+    const p = await montar(Reminders);
+    await p.clic('.new');
+    const hora = p.el('#hora') as HTMLInputElement;
+    hora.showPicker = vi.fn();
+    await p.clic('.campo-hora');
+    expect(document.activeElement).toBe(hora);
+    expect(hora.showPicker).toHaveBeenCalled();
   });
 
   it('crear un recordatorio lo agrega a la lista, lo guarda y cierra el formulario', async () => {

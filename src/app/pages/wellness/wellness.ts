@@ -4,6 +4,7 @@ import { NavBar } from '../../components/nav-bar/nav-bar';
 import { ChipOption } from '../../domain/checkin/chip-option/chip-option';
 import { ServiceCard } from '../../domain/wellness/service-card/service-card';
 import { WellnessService } from '../../models/wellness-service.model';
+import bienestar from '../../data/bienestar.json';
 
 @Component({
   selector: 'app-wellness',
@@ -12,39 +13,12 @@ import { WellnessService } from '../../models/wellness-service.model';
   styleUrl: './wellness.scss',
 })
 export class Wellness {
-  servicios: WellnessService[] = [
-    {
-      name: 'Psicología',
-      category: 'Psicología',
-      description: 'Orientación individual y grupal',
-      place: 'Bloque B, piso 2',
-      hours: 'L–V · 8:00–17:00',
-      phone: '601 555 0101',
-      icon: 'i-mind c-primary',
-      bubble: 'bg-lav',
-    },
-    {
-      name: 'Enfermería',
-      category: 'Enfermería',
-      description: 'Primeros auxilios y consulta',
-      place: 'Edificio central',
-      hours: 'L–V · 7:00–19:00',
-      phone: '601 555 0102',
-      icon: 'i-medic c-secondary',
-      bubble: 'bg-mint',
-    },
-    {
-      name: 'Deportes',
-      category: 'Deportes',
-      description: 'Gimnasio, yoga y pausas activas',
-      place: 'Coliseo',
-      hours: 'L–S · 6:00–20:00',
-      phone: '601 555 0103',
-      icon: 'i-dumbbell c-accent',
-      bubble: 'bg-coral',
-    },
-  ];
-  categorias = ['Todos', 'Psicología', 'Enfermería', 'Deportes'];
+  // Datos reales del campus Pasto, guardados en src/app/data/bienestar.json
+  datos = bienestar;
+  servicios: WellnessService[] = bienestar.servicios;
+
+  // "Todos" + las categorías que existan en el JSON, sin repetir
+  categorias = ['Todos', ...new Set(bienestar.servicios.map((s) => s.category))];
   filtro = signal('Todos');
 
   serviciosFiltrados() {
@@ -54,6 +28,6 @@ export class Wellness {
   }
 
   contactar(telefono: string) {
-    alert('Puedes comunicarte al ' + telefono);
+    alert('Comunícate al ' + telefono);
   }
 }

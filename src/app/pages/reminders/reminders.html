@@ -24,18 +24,61 @@
       </app-reminder-card>
     </section>
 
-    <form class="card" [formGroup]="nuevoForm" [class.oculto]="!formularioVisible()">
+    <form class="card nuevo" [formGroup]="nuevoForm" [class.oculto]="!formularioVisible()">
+      <h3>Nuevo recordatorio</h3>
+
+      <label class="etiqueta" for="titulo">¿Qué quieres recordar?</label>
       <div class="field">
-        <input type="text" formControlName="title" placeholder="Ej. Estirar la espalda" />
+        <span class="icon sm i-bell"></span>
+        <input
+          id="titulo"
+          type="text"
+          formControlName="title"
+          placeholder="Ej. Estirar la espalda"
+        />
       </div>
-      <div class="field"><input type="time" formControlName="time" /></div>
+
+      <label class="etiqueta" for="hora">¿A qué hora?</label>
+      <div class="field campo-hora" (click)="abrirSelectorDeHora(hora)">
+        <span class="icon sm i-clock"></span>
+        <input #hora id="hora" type="time" formControlName="time" />
+      </div>
+
+      <span class="etiqueta">¿Qué días?</span>
+      <div class="dias">
+        <button
+          *ngFor="let d of semana"
+          type="button"
+          class="dia"
+          [class.on]="diasElegidos().includes(d)"
+          [attr.aria-label]="nombresDias[d]"
+          [attr.aria-pressed]="diasElegidos().includes(d)"
+          (click)="alternarDia(d)"
+        >
+          {{ d }}
+        </button>
+      </div>
+      <div class="atajos">
+        <button type="button" class="atajo" (click)="elegirDias(semana)">Todos los días</button>
+        <button type="button" class="atajo" (click)="elegirDias(['L', 'M', 'X', 'J', 'V'])">
+          De lunes a viernes
+        </button>
+      </div>
+
+      <p class="small aviso" [class.oculto]="estadoAvisos() === 'no'">
+        Te avisaremos con una notificación del navegador mientras Pulso esté abierto.
+      </p>
+      <p class="small aviso" [class.oculto]="estadoAvisos() !== 'no'">
+        Los avisos del navegador están bloqueados; actívalos en la configuración del sitio.
+      </p>
+
       <button
-        class="btn btn-primary"
+        class="btn btn-primary guardar"
         type="button"
         (click)="agregar()"
-        [class.deshabilitado]="nuevoForm.invalid"
+        [class.deshabilitado]="!puedeGuardar()"
       >
-        Guardar
+        Guardar recordatorio
       </button>
     </form>
 

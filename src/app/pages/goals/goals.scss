@@ -20,3 +20,22 @@
 .goals-form {
   display: contents;
 }
+
+// Barra que todavía no se ha movido: se ve apagada hasta elegir un valor
+.range.sin-elegir {
+  opacity: 0.45;
+}
+
+.falta {
+  text-align: center;
+  color: var(--muted);
+}
+
+.deshabilitado {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.oculto {
+  display: none !important;
+}

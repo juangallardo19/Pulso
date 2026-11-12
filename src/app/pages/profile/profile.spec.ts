@@ -4,7 +4,10 @@ import { guardar, leer, montar } from '../../../testing/dom';
 // Perfil: todo se prueba tocando y leyendo el HTML
 describe('Profile', () => {
   beforeEach(() => localStorage.clear());
-  afterEach(() => localStorage.clear());
+  afterEach(() => {
+    localStorage.clear();
+    document.documentElement.classList.remove('tema-oscuro');
+  });
 
   it('muestra el nombre y el correo de la cuenta', async () => {
     guardar('pulso-user', { name: 'Laura Gómez', email: 'laura@uni.edu.co' });
@@ -48,12 +51,16 @@ describe('Profile', () => {
     expect(p.texto('.goals .link')).toBe('Editar');
   });
 
-  it('el interruptor de modo oscuro se enciende, se apaga y se guarda', async () => {
+  it('el interruptor de modo oscuro cambia el tema de toda la app y se guarda', async () => {
     const p = await montar(Profile);
+    const html = document.documentElement;
     await p.clic('app-toggle-switch .toggle');
     expect(p.tieneClase('app-toggle-switch .toggle', 'on')).toBe(true);
+    expect(html.classList.contains('tema-oscuro')).toBe(true);
     expect(leer('pulso-ajustes').darkMode).toBe(true);
+
     await p.clic('app-toggle-switch .toggle');
+    expect(html.classList.contains('tema-oscuro')).toBe(false);
     expect(leer('pulso-ajustes').darkMode).toBe(false);
   });
 

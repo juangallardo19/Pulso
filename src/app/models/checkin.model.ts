@@ -1,10 +1,10 @@
 export interface CheckinEntry {
   date: string;
-  mood: number;
+  mood: number; // 1 a 5 (0 = sin elegir)
   note: string;
   sleepStart: string;
   sleepEnd: string;
-  sleepQuality?: number; // 1 a 5 (opcional: los registros viejos no lo tienen)
+  sleepQuality?: number; // 1 a 5 (0 o vacío = sin elegir)
   water: number;
   exerciseMinutes: number;
   exerciseTypes: string[];
@@ -12,15 +12,16 @@ export interface CheckinEntry {
   stressCauses: string[];
 }
 
+// Un check-in nuevo empieza sin nada elegido: la persona elige cada dato
 export const CHECKIN_VACIO: CheckinEntry = {
   date: '',
-  mood: 4,
+  mood: 0,
   note: '',
-  sleepStart: '23:30',
-  sleepEnd: '07:00',
-  sleepQuality: 4,
+  sleepStart: '',
+  sleepEnd: '',
+  sleepQuality: 0,
   water: 0,
-  exerciseMinutes: 30,
+  exerciseMinutes: 0,
   exerciseTypes: [],
   stress: 5,
   stressCauses: [],

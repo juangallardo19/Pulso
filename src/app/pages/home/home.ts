@@ -96,11 +96,22 @@ export class Home {
     return Math.round((minutos / 60) * 10) / 10;
   }
 
+  // Cuánto de cada meta se cumplió hoy (0 a 100): llena los anillos de "Tu día"
+  avanceSueno() {
+    return Math.round(Math.min(100, (this.horas() / this.metas.sleepHours) * 100));
+  }
+
+  avanceAgua() {
+    return Math.round(Math.min(100, (this.vasos() / this.metas.waterGlasses) * 100));
+  }
+
+  avanceEjercicio() {
+    const meta = this.metas.exerciseMinutes || 1;
+    return Math.round(Math.min(100, (this.hoy.exerciseMinutes / meta) * 100));
+  }
+
   progreso() {
-    const agua = Math.min(100, (this.vasos() / this.metas.waterGlasses) * 100);
-    const ejercicio = Math.min(100, (this.hoy.exerciseMinutes / this.metas.exerciseMinutes) * 100);
-    const sueno = Math.min(100, (this.horas() / this.metas.sleepHours) * 100);
-    return Math.round((agua + ejercicio + sueno) / 3);
+    return Math.round((this.avanceSueno() + this.avanceAgua() + this.avanceEjercicio()) / 3);
   }
 
   mostrarAlerta() {

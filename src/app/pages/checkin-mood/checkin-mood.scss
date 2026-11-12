@@ -4,3 +4,17 @@
   justify-content: center;
   gap: 18px 16px;
 }
+
+.deshabilitado {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.oculto {
+  display: none !important;
+}
+
+.falta {
+  text-align: center;
+  color: var(--muted);
+}

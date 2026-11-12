@@ -58,3 +58,17 @@
   font-size: 0.75rem;
   color: var(--muted);
 }
+
+.deshabilitado {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.oculto {
+  display: none !important;
+}
+
+.falta {
+  text-align: center;
+  color: var(--muted);
+}

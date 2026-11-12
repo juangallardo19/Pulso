@@ -39,32 +39,34 @@
 }
 
 /* =========================
-   MODO OSCURO (según el sistema)
+   MODO OSCURO
+   Se activa con la clase "tema-oscuro" en <html>. La pone la app según el interruptor del
+   perfil; si la persona nunca lo tocó, sigue la configuración del sistema.
 ========================== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #14131f;
-    --surface: #1f1d2e;
-    --text: #ecebf5;
-    --muted: #a3a1b8;
-    --line: #2e2c42;
+:root.tema-oscuro {
+  color-scheme: dark;
 
-    --primary: #9d90ff;
-    --on-primary: #14131f;
-    --secondary: #6fdccb;
-    --accent: #ffb199;
-    --sleep: #8aa5ff;
-    --error: #ff6b6e;
+  --bg: #14131f;
+  --surface: #1f1d2e;
+  --text: #ecebf5;
+  --muted: #a3a1b8;
+  --line: #2e2c42;
 
-    --tint-lav: #2b2748;
-    --tint-mint: #1f3a3a;
-    --tint-coral: #3f2b2a;
-    --tint-blue: #252d4a;
-    --tint-sand: #3a3322;
+  --primary: #9d90ff;
+  --on-primary: #14131f;
+  --secondary: #6fdccb;
+  --accent: #ffb199;
+  --sleep: #8aa5ff;
+  --error: #ff6b6e;
 
-    --shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-    --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.45);
-  }
+  --tint-lav: #2b2748;
+  --tint-mint: #1f3a3a;
+  --tint-coral: #3f2b2a;
+  --tint-blue: #252d4a;
+  --tint-sand: #3a3322;
+
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
 /* =========================
