@@ -40,7 +40,7 @@
 
       <div class="form-group">
         <label for="email">Correo</label>
-        <div class="field" [class.error]="campoInvalido('email')">
+        <div class="field" [class.error]="campoInvalido('email') || correoYaRegistrado()">
           <span class="icon sm i-mail"></span>
           <input
             id="email"
@@ -52,6 +52,10 @@
         <app-field-error
           mensaje="Escribe un correo válido"
           [visible]="campoInvalido('email')"
+        ></app-field-error>
+        <app-field-error
+          mensaje="Ya existe una cuenta con este correo. Inicia sesión."
+          [visible]="correoYaRegistrado()"
         ></app-field-error>
       </div>
 
@@ -113,7 +117,7 @@
       <a
         routerLink="/metas"
         class="btn btn-primary"
-        [class.deshabilitado]="registerForm.invalid || !contrasenasCoinciden()"
+        [class.deshabilitado]="!puedeCrear()"
         (click)="crearCuenta()"
         >Crear cuenta</a
       >

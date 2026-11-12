@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FieldError } from '../../domain/account/field-error/field-error';
+import { abrirSesion, buscarCuenta, leerCuentas } from '../../models/cuenta.model';
 
 @Component({
   selector: 'app-login',
@@ -24,13 +25,29 @@ export class Login {
 
   // No hay ninguna cuenta creada en este navegador
   sinCuenta() {
-    return localStorage.getItem('pulso-user') === null;
+    return leerCuentas().length === 0;
   }
 
+  private cuenta() {
+    return buscarCuenta(this.loginForm.value.email ?? '');
+  }
+
+  // El correo está bien escrito pero no pertenece a ninguna cuenta
   correoNoRegistrado() {
-    const guardado = JSON.parse(localStorage.getItem('pulso-user') ?? 'null');
-    const correo = this.loginForm.value.email ?? '';
-    return guardado !== null && correo !== '' && guardado.email !== correo;
+    const email = this.loginForm.get('email');
+    return !this.sinCuenta() && !!email && email.valid && !this.cuenta();
+  }
+
+  // Hay cuenta con ese correo, pero la contraseña escrita no es la suya
+  claveIncorrecta() {
+    const clave = this.loginForm.get('password');
+    const cuenta = this.cuenta();
+    return !!cuenta && !!clave && clave.valid && clave.value !== cuenta.password;
+  }
+
+  puedeEntrar() {
+    const cuenta = this.cuenta();
+    return this.loginForm.valid && !!cuenta && cuenta.password === this.loginForm.value.password;
   }
 
   verClave = signal(false);
@@ -39,15 +56,19 @@ export class Login {
     this.verClave.update((v) => !v);
   }
 
-  // No hay servidor: la contraseña no se guarda en ningún lado, así que no se puede recuperar
+  // No hay servidor ni correo de recuperación: las cuentas viven en este navegador
   olvideClave() {
     alert(
-      'Pulso guarda tu cuenta solo en este dispositivo y no almacena tu contraseña. ' +
-        'Si la olvidaste, crea una cuenta nueva desde "Regístrate".',
+      'Pulso guarda tu cuenta solo en este navegador y no tiene correo de recuperación. ' +
+        'Si olvidaste tu contraseña, crea una cuenta nueva desde "Regístrate".',
     );
   }
 
+  // Abre la sesión y carga los datos de esa cuenta
   entrar() {
-    console.log('.:: Login:', this.loginForm.value.email);
+    const cuenta = this.cuenta();
+    if (this.puedeEntrar() && cuenta) {
+      abrirSesion(cuenta);
+    }
   }
 }

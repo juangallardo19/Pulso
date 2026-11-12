@@ -5,6 +5,7 @@ import { ToggleSwitch } from '../../domain/settings/toggle-switch/toggle-switch'
 import { User } from '../../models/user.model';
 import { Goals, METAS_POR_DEFECTO } from '../../models/goals.model';
 import { AJUSTES_POR_DEFECTO, Settings } from '../../models/settings.model';
+import { cerrarSesion as cerrarSesionDeCuenta } from '../../models/cuenta.model';
 
 @Component({
   selector: 'app-profile',
@@ -37,8 +38,9 @@ export class Profile {
     localStorage.setItem('pulso-ajustes', JSON.stringify(this.ajustes()));
   }
 
+  // Guarda los datos en la cuenta y cierra la sesión (la cuenta sigue existiendo)
   cerrarSesion() {
-    localStorage.removeItem('pulso-user');
+    cerrarSesionDeCuenta();
     this.tieneCuenta = false;
     this.usuario = { name: 'Invitado', email: '' };
   }

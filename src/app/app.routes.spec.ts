@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { routes } from './app.routes';
+import { conSesion, sinSesion } from './guards/sesion.guard';
 
 import { Splash } from './pages/splash/splash';
 import { Onboarding } from './pages/onboarding/onboarding';
@@ -73,9 +74,10 @@ describe('Rutas de la app', () => {
     expect(componenteDe('privacidad')).toBe(Privacy);
   });
 
-  describe('navegación', () => {
+  describe('navegación con sesión', () => {
     beforeEach(() => {
       localStorage.clear();
+      localStorage.setItem('pulso-user', JSON.stringify({ name: 'Laura', email: 'l@u.co' }));
       TestBed.configureTestingModule({ providers: [provideRouter(routes)] });
     });
 
@@ -83,8 +85,7 @@ describe('Rutas de la app', () => {
 
     it('navega a /inicio y muestra Home', async () => {
       const harness = await RouterTestingHarness.create();
-      const pagina = await harness.navigateByUrl('/inicio', Home);
-      expect(pagina).toBeInstanceOf(Home);
+      expect(await harness.navigateByUrl('/inicio', Home)).toBeInstanceOf(Home);
     });
 
     it('navega a /checkin/animo y muestra CheckinMood', async () => {
@@ -95,8 +96,43 @@ describe('Rutas de la app', () => {
 
     it('navega a /historial y muestra History', async () => {
       const harness = await RouterTestingHarness.create();
-      const pagina = await harness.navigateByUrl('/historial', History);
-      expect(pagina).toBeInstanceOf(History);
+      expect(await harness.navigateByUrl('/historial', History)).toBeInstanceOf(History);
     });
+
+    it('con sesión abierta, /login lleva directo al inicio', async () => {
+      const harness = await RouterTestingHarness.create();
+      expect(await harness.navigateByUrl('/login', Home)).toBeInstanceOf(Home);
+    });
+  });
+
+  describe('navegación sin sesión', () => {
+    beforeEach(() => {
+      localStorage.clear();
+      TestBed.configureTestingModule({ providers: [provideRouter(routes)] });
+    });
+
+    afterEach(() => localStorage.clear());
+
+    it('/estadisticas sin sesión manda al login', async () => {
+      const harness = await RouterTestingHarness.create();
+      expect(await harness.navigateByUrl('/estadisticas', Login)).toBeInstanceOf(Login);
+    });
+
+    it('/inicio sin sesión manda al login', async () => {
+      const harness = await RouterTestingHarness.create();
+      expect(await harness.navigateByUrl('/inicio', Login)).toBeInstanceOf(Login);
+    });
+
+    it('la bienvenida y el registro sí se pueden abrir sin sesión', async () => {
+      const harness = await RouterTestingHarness.create();
+      expect(await harness.navigateByUrl('/', Splash)).toBeInstanceOf(Splash);
+      expect(await harness.navigateByUrl('/registro', Register)).toBeInstanceOf(Register);
+    });
+  });
+
+  it('solo bienvenida, onboarding, login y registro son públicas', () => {
+    const publicas = routes.filter((r) => r.canActivate?.includes(sinSesion)).map((r) => r.path);
+    expect(publicas).toEqual(['', 'onboarding', 'login', 'registro']);
+    expect(routes.filter((r) => r.canActivate?.includes(conSesion)).length).toBe(18);
   });
 });

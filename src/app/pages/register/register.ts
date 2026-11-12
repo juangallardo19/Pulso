@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FieldError } from '../../domain/account/field-error/field-error';
-import { User } from '../../models/user.model';
+import { buscarCuenta, registrarCuenta } from '../../models/cuenta.model';
 
 @Component({
   selector: 'app-register',
@@ -57,11 +57,23 @@ export class Register {
     return ['', 'Débil', 'Media', 'Fuerte'][this.fuerza()];
   }
 
+  // Ya existe una cuenta con ese correo en este navegador
+  correoYaRegistrado() {
+    return !!buscarCuenta(this.registerForm.value.email ?? '');
+  }
+
+  puedeCrear() {
+    return this.registerForm.valid && this.contrasenasCoinciden() && !this.correoYaRegistrado();
+  }
+
+  // Guarda la cuenta (nombre, correo y contraseña) y abre su sesión
   crearCuenta() {
-    const usuario: User = {
-      name: this.registerForm.value.name ?? '',
-      email: this.registerForm.value.email ?? '',
-    };
-    localStorage.setItem('pulso-user', JSON.stringify(usuario));
+    if (this.puedeCrear()) {
+      registrarCuenta(
+        this.registerForm.value.name ?? '',
+        this.registerForm.value.email ?? '',
+        this.registerForm.value.password ?? '',
+      );
+    }
   }
 }
