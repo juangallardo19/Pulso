@@ -6,7 +6,7 @@ import { CheckinWater } from '../pages/checkin-water/checkin-water';
 import { Login } from '../pages/login/login';
 import { leer, montar } from '../../testing/dom';
 
-// Se registra y pone una meta de 6 vasos, todo desde los formularios
+// Se registra y elige sus metas (8 h, 6 vasos, 30 min), todo desde los formularios
 async function registrarYPonerMetas() {
   const registro = await montar(Register);
   await registro.escribir('#name', 'Laura Gómez');
@@ -17,7 +17,9 @@ async function registrarYPonerMetas() {
   await registro.clic('.btn-primary');
 
   const metas = await montar(Goals);
+  await metas.mover('input.sleep', 8);
   await metas.mover('input.water', 6);
+  await metas.mover('input.exercise', 30);
   await metas.clic('.btn-primary');
 }
 
