@@ -12,16 +12,20 @@ describe('CheckinMood', () => {
     expect(p.atributo('.stepper', 'aria-label')).toBe('Paso 1 de 6');
   });
 
-  it('sin check-in empezado, "Bien" aparece elegido', async () => {
+  it('empieza sin ninguna carita elegida y con "Siguiente" bloqueado', async () => {
     const p = await montar(CheckinMood);
-    expect(p.texto('.mood.selected')).toBe('Bien');
+    expect(p.existe('.mood.selected')).toBe(false);
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(true);
+    expect(p.visible('.falta')).toBe(true);
   });
 
-  it('tocar una carita la elige y deja solo una seleccionada', async () => {
+  it('tocar una carita la elige, deja solo una seleccionada y habilita "Siguiente"', async () => {
     const p = await montar(CheckinMood);
     await p.clic('.mood', 0);
     expect(p.texto('.mood.selected')).toBe('Muy mal');
     expect(p.cuantos('.mood.selected')).toBe(1);
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(false);
+    expect(p.visible('.falta')).toBe(false);
   });
 
   it('"Siguiente" guarda la carita, la nota y la fecha de hoy', async () => {

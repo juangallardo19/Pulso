@@ -24,8 +24,7 @@
         </div>
         <div class="item">
           <span class="bubble sm bg-blue"><span class="icon sm i-moon c-sleep"></span></span
-          ><span class="grow muted">Sueño</span
-          ><strong>{{ horasDormidas() }} · calidad {{ checkin.sleepQuality ?? 4 }}</strong>
+          ><span class="grow muted">Sueño</span><strong>{{ textoSueno() }}</strong>
         </div>
         <div class="item">
           <span class="bubble sm bg-mint"><span class="icon sm i-droplet c-secondary"></span></span
@@ -33,10 +32,7 @@
         </div>
         <div class="item">
           <span class="bubble sm bg-coral"><span class="icon sm i-flame c-accent"></span></span
-          ><span class="grow muted">Ejercicio</span
-          ><strong
-            >{{ checkin.exerciseMinutes }} min · {{ checkin.exerciseTypes.join(', ') }}</strong
-          >
+          ><span class="grow muted">Ejercicio</span><strong>{{ textoEjercicio() }}</strong>
         </div>
         <div class="item">
           <span class="bubble sm bg-lav"><span class="icon sm i-activity c-primary"></span></span

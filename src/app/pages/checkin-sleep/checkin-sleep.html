@@ -55,7 +55,14 @@
     </div>
 
     <footer class="ci-actions">
-      <a routerLink="/checkin/agua" (click)="guardar()" class="btn btn-primary"
+      <p class="small falta" [class.oculto]="completo()">
+        Escribe a qué hora te dormiste, a qué hora despertaste y elige la calidad.
+      </p>
+      <a
+        routerLink="/checkin/agua"
+        (click)="guardar()"
+        class="btn btn-primary"
+        [class.deshabilitado]="!completo()"
         >Siguiente <span class="icon sm i-arrow"></span
       ></a>
       <a routerLink="/checkin/agua" (click)="guardar()" class="btn btn-ghost">Omitir</a>

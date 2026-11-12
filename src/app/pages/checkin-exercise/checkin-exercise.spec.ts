@@ -6,11 +6,12 @@ describe('CheckinExercise', () => {
   beforeEach(() => localStorage.clear());
   afterEach(() => localStorage.clear());
 
-  it('se crea con el paso 4 de 6, 30 minutos y 6 tipos de actividad', async () => {
+  it('se crea con el paso 4 de 6, en 0 minutos y sin tipos elegidos', async () => {
     const p = await montar(CheckinExercise);
     expect(p.atributo('.stepper', 'aria-label')).toBe('Paso 4 de 6');
-    expect(p.texto('.metric')).toBe('30');
+    expect(p.texto('.metric')).toBe('0');
     expect(p.cuantos('.chip')).toBe(6);
+    expect(p.cuantos('.chip.active')).toBe(0);
   });
 
   it('mover el slider cambia los minutos en pantalla', async () => {
@@ -55,7 +56,7 @@ describe('CheckinExercise', () => {
   it('"Omitir" también guarda y sigue al estrés', async () => {
     const p = await montar(CheckinExercise);
     await p.clic('.btn-ghost');
-    expect(leer('pulso-checkin-hoy').exerciseMinutes).toBe(30);
+    expect(leer('pulso-checkin-hoy').exerciseMinutes).toBe(0);
     expect(p.href('.btn-ghost')).toBe('/checkin/estres');
   });
 });
