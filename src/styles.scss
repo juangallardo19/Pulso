@@ -602,6 +602,61 @@ $icons:
   color: var(--muted);
 }
 
+/* Campos de hora con los colores de Pulso (recordatorios y sueño) */
+input[type='time'] {
+  font-family: var(--font-title);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  color-scheme: light;
+}
+
+:root.tema-oscuro input[type='time'] {
+  color-scheme: dark;
+}
+
+/* Cada parte (hora, minutos, a. m./p. m.) se resalta al editarla */
+input[type='time']::-webkit-datetime-edit-hour-field,
+input[type='time']::-webkit-datetime-edit-minute-field,
+input[type='time']::-webkit-datetime-edit-ampm-field {
+  padding: 2px 4px;
+  border-radius: 8px;
+}
+
+input[type='time']::-webkit-datetime-edit-hour-field:focus,
+input[type='time']::-webkit-datetime-edit-minute-field:focus,
+input[type='time']::-webkit-datetime-edit-ampm-field:focus {
+  background: var(--tint-lav);
+  color: var(--primary);
+}
+
+/* El ícono del reloj del navegador, en morado y con mano */
+input[type='time']::-webkit-calendar-picker-indicator {
+  padding: 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.7;
+  filter: invert(48%) sepia(62%) saturate(2350%) hue-rotate(228deg) brightness(98%) contrast(92%);
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
+}
+
+input[type='time']::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  background-color: var(--tint-lav);
+}
+
+/* Mientras no tiene hora, el "--:--" se ve más suave */
+input[type='time']:invalid,
+input[type='time'][value=''] {
+  color: var(--muted);
+}
+
+.field:has(input[type='time']):hover {
+  border-color: var(--primary);
+}
+
 .error-text {
   font-size: 0.8125rem;
   color: var(--error);

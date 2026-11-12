@@ -28,6 +28,15 @@ describe('CheckinSleep', () => {
     expect(p.texto('.bg-blue h2')).toBe('7 h 30 min');
   });
 
+  it('tocar cualquier parte de una tarjeta de hora abre su selector', async () => {
+    const p = await montar(CheckinSleep);
+    const desperte = p.el('input[type="time"]', 1) as HTMLInputElement;
+    desperte.showPicker = vi.fn();
+    await p.clic('.time .row', 1);
+    expect(document.activeElement).toBe(desperte);
+    expect(desperte.showPicker).toHaveBeenCalled();
+  });
+
   it('cuenta bien una noche que cruza la medianoche', async () => {
     const p = await montar(CheckinSleep);
     await llenarHoras(p, '01:00', '06:00');

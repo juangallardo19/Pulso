@@ -18,13 +18,13 @@
 
     <div class="ci-body">
       <div class="times">
-        <label class="card time">
+        <label class="card time" (click)="abrirSelectorDeHora(dormi)">
           <span class="row small"><span class="icon sm i-moon c-sleep"></span> Me dormí</span>
-          <input type="time" [formControl]="inicioCtrl" />
+          <input #dormi type="time" [formControl]="inicioCtrl" />
         </label>
-        <label class="card time">
+        <label class="card time" (click)="abrirSelectorDeHora(desperte)">
           <span class="row small"><span class="icon sm i-sun c-sleep"></span> Desperté</span>
-          <input type="time" [formControl]="finCtrl" />
+          <input #desperte type="time" [formControl]="finCtrl" />
         </label>
       </div>
 

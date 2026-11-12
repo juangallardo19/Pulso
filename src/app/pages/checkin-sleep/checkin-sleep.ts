@@ -27,6 +27,18 @@ export class CheckinSleep {
     this.calidad.set(nivel);
   }
 
+  // Al tocar cualquier parte de la tarjeta se abre el selector de hora del navegador
+  abrirSelectorDeHora(campo: HTMLInputElement) {
+    campo.focus();
+    if (typeof campo.showPicker === 'function') {
+      try {
+        campo.showPicker();
+      } catch {
+        // Algunos navegadores solo lo permiten con un clic directo: el campo igual queda enfocado
+      }
+    }
+  }
+
   completo() {
     return !!this.inicioCtrl.value && !!this.finCtrl.value && this.calidad() > 0;
   }
