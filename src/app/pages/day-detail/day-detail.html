@@ -7,7 +7,11 @@
         ><span class="icon i-left"></span
       ></a>
       <h3 class="fecha">{{ fechaBonita() }}</h3>
-      <a routerLink="/checkin/animo" class="icon-btn" aria-label="Acción"
+      <a
+        routerLink="/checkin/animo"
+        class="icon-btn"
+        aria-label="Editar registro"
+        (click)="editar()"
         ><span class="icon i-edit"></span
       ></a>
     </header>
@@ -28,7 +32,9 @@
         <span class="bubble sm"><span class="icon sm i-moon c-sleep"></span></span>
         <div>
           <span class="metric">{{ horasDormidas() }}</span>
-          <p class="small">Sueño · {{ registro.sleepStart }} a {{ registro.sleepEnd }}</p>
+          <p class="small">
+            Sueño · {{ registro.sleepStart }} a {{ registro.sleepEnd }}{{ textoCalidad() }}
+          </p>
         </div>
       </article>
       <article class="card tint bg-mint mini lift">
@@ -62,7 +68,7 @@
         <span class="chip" *ngFor="let c of registro.stressCauses">{{ c }}</span>
       </div>
 
-      <a routerLink="/checkin/animo" class="btn btn-secondary edit"
+      <a routerLink="/checkin/animo" class="btn btn-secondary edit" (click)="editar()"
         >Editar registro <span class="icon sm i-edit"></span
       ></a>
     </section>

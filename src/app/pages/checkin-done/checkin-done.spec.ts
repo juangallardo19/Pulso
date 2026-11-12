@@ -1,41 +1,43 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 import { CheckinDone } from './checkin-done';
+import { guardar, haceDias, montar } from '../../../testing/dom';
 
+// Pantalla final del check-in: todo se prueba leyendo el HTML
 describe('CheckinDone', () => {
-  let component: CheckinDone;
-  let fixture: ComponentFixture<CheckinDone>;
-
-  async function crear() {
-    await TestBed.configureTestingModule({
-      imports: [CheckinDone],
-      providers: [provideRouter([])],
-    }).compileComponents();
-    fixture = TestBed.createComponent(CheckinDone);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  }
-
   beforeEach(() => localStorage.clear());
-
   afterEach(() => localStorage.clear());
 
-  it('se crea', async () => {
-    await crear();
-    expect(component).toBeTruthy();
+  it('se crea y dice "Check-in guardado"', async () => {
+    const p = await montar(CheckinDone);
+    expect(p.texto('h1')).toBe('Check-in guardado');
   });
 
-  it('con 3 días en el historial la racha es 3', async () => {
-    localStorage.setItem(
-      'pulso-historial',
-      JSON.stringify([{ date: '2026-11-09' }, { date: '2026-11-10' }, { date: '2026-11-11' }]),
-    );
-    await crear();
-    expect(component.racha).toBe(3);
+  it('muestra la racha de días seguidos', async () => {
+    guardar('pulso-historial', [
+      { date: haceDias(2) },
+      { date: haceDias(1) },
+      { date: haceDias(0) },
+    ]);
+    const p = await montar(CheckinDone);
+    expect(p.texto('.streak .metric')).toBe('3 días');
+  });
+
+  it('un día sin check-in corta la racha', async () => {
+    guardar('pulso-historial', [
+      { date: haceDias(5) },
+      { date: haceDias(4) },
+      { date: haceDias(0) },
+    ]);
+    const p = await montar(CheckinDone);
+    expect(p.texto('.streak .metric')).toBe('1 día');
   });
 
   it('sin historial la racha es 0', async () => {
-    await crear();
-    expect(component.racha).toBe(0);
+    const p = await montar(CheckinDone);
+    expect(p.texto('.streak .metric')).toBe('0 días');
+  });
+
+  it('"Ir al inicio" lleva a /inicio', async () => {
+    const p = await montar(CheckinDone);
+    expect(p.href('.btn-primary')).toBe('/inicio');
   });
 });

@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 import { Privacy } from '../pages/privacy/privacy';
 import { History } from '../pages/history/history';
 import { Reminders } from '../pages/reminders/reminders';
 import { Stats } from '../pages/stats/stats';
+import { Profile } from '../pages/profile/profile';
 import { CheckinEntry, CHECKIN_VACIO } from '../models/checkin.model';
 import { Reminder } from '../models/reminder.model';
+import { guardar, leer, montar } from '../../testing/dom';
 
 // Fechas del mes actual para que caigan en el calendario del historial
 const hoy = new Date();
@@ -30,25 +30,22 @@ const recordatorioDePrueba: Reminder = {
   isActive: true,
 };
 
+// Toca "Eliminar mis datos" en Privacidad, aceptando (o no) la confirmación
+async function eliminarDatos(confirmar: boolean) {
+  vi.spyOn(window, 'confirm').mockReturnValue(confirmar);
+  const privacidad = await montar(Privacy);
+  await privacidad.clic('.btn-danger');
+  return privacidad;
+}
+
 // Une privacidad (juangallardo19) con historial, recordatorios y estadísticas (andresc1108)
 describe('Integración: eliminar datos desde privacidad', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem('pulso-historial', JSON.stringify(historialDePrueba));
-    localStorage.setItem('pulso-recordatorios', JSON.stringify([recordatorioDePrueba]));
-    localStorage.setItem(
-      'pulso-goals',
-      JSON.stringify({ sleepHours: 7, waterGlasses: 6, exerciseMinutes: 20 }),
-    );
-    localStorage.setItem(
-      'pulso-ajustes',
-      JSON.stringify({ darkMode: true, shareAnonymousData: true, showInsights: false }),
-    );
-
-    await TestBed.configureTestingModule({
-      imports: [Privacy, History, Reminders, Stats],
-      providers: [provideRouter([])],
-    }).compileComponents();
+    guardar('pulso-historial', historialDePrueba);
+    guardar('pulso-recordatorios', [recordatorioDePrueba]);
+    guardar('pulso-goals', { sleepHours: 7, waterGlasses: 6, exerciseMinutes: 20 });
+    guardar('pulso-ajustes', { darkMode: true, shareAnonymousData: true, showInsights: false });
   });
 
   afterEach(() => {
@@ -56,46 +53,41 @@ describe('Integración: eliminar datos desde privacidad', () => {
     localStorage.clear();
   });
 
-  function eliminarConfirmando() {
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
-    const privacidad = TestBed.createComponent(Privacy).componentInstance;
-    privacidad.eliminarDatos();
-    return privacidad;
-  }
-
-  it('al confirmar, eliminarDatos() marca eliminado y borra las llaves', () => {
-    const privacidad = eliminarConfirmando();
-    expect(privacidad.eliminado()).toBe(true);
-    expect(localStorage.getItem('pulso-historial')).toBeNull();
-    expect(localStorage.getItem('pulso-recordatorios')).toBeNull();
-    expect(localStorage.getItem('pulso-goals')).toBeNull();
-    expect(localStorage.getItem('pulso-ajustes')).toBeNull();
+  it('al confirmar, avisa que se borró y quita todos los datos', async () => {
+    const privacidad = await eliminarDatos(true);
+    expect(privacidad.visible('.eliminado')).toBe(true);
+    expect(leer('pulso-historial')).toBeNull();
+    expect(leer('pulso-recordatorios')).toBeNull();
+    expect(leer('pulso-goals')).toBeNull();
+    expect(leer('pulso-ajustes')).toBeNull();
   });
 
-  it('después de borrar, el historial queda sin registros', () => {
-    eliminarConfirmando();
-    const historia = TestBed.createComponent(History).componentInstance;
-    expect(historia.dias.every((d) => d.mood === 0)).toBe(true);
+  it('después de borrar, el historial queda sin caritas y con el aviso', async () => {
+    await eliminarDatos(true);
+    const historial = await montar(History);
+    expect(historial.visible('.empty')).toBe(true);
+    expect(historial.texto('.total .metric')).toBe('0');
   });
 
-  it('después de borrar, recordatorios vuelve a los 4 de ejemplo', () => {
-    eliminarConfirmando();
-    const recordatorios = TestBed.createComponent(Reminders).componentInstance;
-    expect(recordatorios.recordatorios().length).toBe(4);
-    expect(recordatorios.recordatorios().some((r) => r.id === 99)).toBe(false);
+  it('después de borrar, recordatorios queda vacío', async () => {
+    await eliminarDatos(true);
+    const recordatorios = await montar(Reminders);
+    expect(recordatorios.cuantos('app-reminder-card')).toBe(0);
+    expect(recordatorios.visible('.vacio')).toBe(true);
   });
 
-  it('después de borrar, las estadísticas no tienen datos', () => {
-    eliminarConfirmando();
-    const estadisticas = TestBed.createComponent(Stats).componentInstance;
-    expect(estadisticas.animoPromedio()).toBe('Sin datos');
+  it('después de borrar, estadísticas y perfil no muestran datos viejos', async () => {
+    await eliminarDatos(true);
+    const estadisticas = await montar(Stats);
+    expect(estadisticas.texto('.mood-card h3')).toBe('Sin datos en promedio');
+
+    const perfil = await montar(Profile);
+    expect(perfil.texto('.goals')).toContain('Sin definir');
   });
 
-  it('si no se confirma, eliminarDatos() no borra el historial', () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(false);
-    const privacidad = TestBed.createComponent(Privacy).componentInstance;
-    privacidad.eliminarDatos();
-    expect(privacidad.eliminado()).toBe(false);
-    expect(JSON.parse(localStorage.getItem('pulso-historial') ?? '[]').length).toBe(3);
+  it('si no se confirma, no borra nada', async () => {
+    const privacidad = await eliminarDatos(false);
+    expect(privacidad.visible('.eliminado')).toBe(false);
+    expect(leer('pulso-historial').length).toBe(3);
   });
 });

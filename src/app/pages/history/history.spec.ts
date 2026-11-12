@@ -1,70 +1,104 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 import { History } from './history';
-import { CheckinEntry, CHECKIN_VACIO } from '../../models/checkin.model';
+import { CHECKIN_VACIO } from '../../models/checkin.model';
+import { guardar, leer, montar } from '../../../testing/dom';
 
-// Fechas del mes actual para que siempre caigan en el calendario
 const hoy = new Date();
-const fechaDelMes = (n: number) =>
-  new Date(hoy.getFullYear(), hoy.getMonth(), n).toLocaleDateString('en-CA');
+// Fecha AAAA-MM-DD de un día del mes actual (o de hace N meses)
+const fecha = (dia: number, mesesAtras = 0) =>
+  new Date(hoy.getFullYear(), hoy.getMonth() - mesesAtras, dia).toLocaleDateString('en-CA');
+const nombreMes = (mesesAtras: number) =>
+  new Date(hoy.getFullYear(), hoy.getMonth() - mesesAtras, 1).toLocaleDateString('es-CO', {
+    month: 'long',
+    year: 'numeric',
+  });
+const caras = (p: { todos: (s: string) => HTMLElement[] }) =>
+  p.todos('app-day-cell img').filter((img) => !img.classList.contains('oculto'));
 
-const historialDePrueba: CheckinEntry[] = [
-  { ...CHECKIN_VACIO, date: fechaDelMes(1), mood: 3 },
-  { ...CHECKIN_VACIO, date: fechaDelMes(2), mood: 5 },
-  { ...CHECKIN_VACIO, date: fechaDelMes(3), mood: 2 },
-];
-
+// Historial: todo se prueba tocando y leyendo el HTML
 describe('History', () => {
-  let component: History;
-  let fixture: ComponentFixture<History>;
-
-  async function crear() {
-    await TestBed.configureTestingModule({
-      imports: [History],
-      providers: [provideRouter([])],
-    }).compileComponents();
-    fixture = TestBed.createComponent(History);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  }
-
   beforeEach(() => localStorage.clear());
   afterEach(() => localStorage.clear());
 
-  it('se crea', async () => {
-    await crear();
-    expect(component).toBeTruthy();
+  it('muestra el mes actual con todos sus días', async () => {
+    const p = await montar(History);
+    const diasDelMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
+    expect(p.texto('.nombre-mes')).toBe(nombreMes(0));
+    expect(p.cuantos('app-day-cell')).toBe(diasDelMes);
   });
 
-  it('dias tiene tantos elementos como días del mes', async () => {
-    await crear();
-    const totalDelMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
-    expect(component.dias.length).toBe(totalDelMes);
+  it('sin registros muestra el aviso para hacer el primer check-in', async () => {
+    const p = await montar(History);
+    expect(p.visible('.empty')).toBe(true);
+    expect(p.href('.empty a')).toBe('/checkin/animo');
+    expect(caras(p).length).toBe(0);
   });
 
-  it('un día guardado tiene su mood y uno sin guardar tiene mood 0', async () => {
-    localStorage.setItem('pulso-historial', JSON.stringify(historialDePrueba));
-    await crear();
-    expect(component.dias[1].mood).toBe(5);
-    expect(component.dias[9].mood).toBe(0);
+  it('pone la carita de cada día registrado y cuenta los ánimos', async () => {
+    guardar('pulso-historial', [
+      { ...CHECKIN_VACIO, date: fecha(1), mood: 4 },
+      { ...CHECKIN_VACIO, date: fecha(2), mood: 4 },
+      { ...CHECKIN_VACIO, date: fecha(3), mood: 1 },
+    ]);
+    const p = await montar(History);
+    expect(p.visible('.empty')).toBe(false);
+    expect(caras(p).map((img) => img.getAttribute('src'))).toEqual([
+      'moods/4.svg',
+      'moods/4.svg',
+      'moods/1.svg',
+    ]);
+    expect(p.todos('.count strong').map((c) => c.textContent)).toEqual(['1', '0', '0', '2', '0']);
+    expect(p.texto('.total .metric')).toBe('3');
   });
 
-  it('elegirDia() guarda la fecha en pulso-dia-seleccionado', async () => {
-    await crear();
-    component.elegirDia(component.dias[0]);
-    expect(localStorage.getItem('pulso-dia-seleccionado')).toBe(fechaDelMes(1));
+  it('marca el día de hoy', async () => {
+    const p = await montar(History);
+    expect(p.cuantos('app-day-cell .today')).toBe(1);
+    expect(p.texto('app-day-cell .today')).toBe(String(hoy.getDate()));
   });
 
-  it('sin historial se ve el mensaje de primer check-in', async () => {
-    await crear();
-    const mensaje: HTMLElement = fixture.nativeElement.querySelector('.empty');
-    expect(mensaje.classList.contains('oculto')).toBe(false);
-    expect(mensaje.textContent).toContain('Aún no tienes registros');
+  it('"Mes anterior" muestra el mes pasado con sus registros', async () => {
+    guardar('pulso-historial', [{ ...CHECKIN_VACIO, date: fecha(5, 1), mood: 2 }]);
+    const p = await montar(History);
+    expect(caras(p).length).toBe(0);
+    await p.clic('[aria-label="Mes anterior"]');
+    expect(p.texto('.nombre-mes')).toBe(nombreMes(1));
+    expect(caras(p).length).toBe(1);
+    expect(p.cuantos('app-day-cell .today')).toBe(0);
   });
 
-  it('con historial el mensaje está oculto', async () => {
-    localStorage.setItem('pulso-historial', JSON.stringify(historialDePrueba));
-    await crear();
-    expect(fixture.nativeElement.querySelector('.empty').classList.contains('oculto')).toBe(true);
+  it('"Mes siguiente" vuelve al mes actual y no deja pasar de ahí', async () => {
+    const p = await montar(History);
+    expect(p.tieneClase('[aria-label="Mes siguiente"]', 'deshabilitado')).toBe(true);
+    await p.clic('[aria-label="Mes anterior"]');
+    expect(p.tieneClase('[aria-label="Mes siguiente"]', 'deshabilitado')).toBe(false);
+    await p.clic('[aria-label="Mes siguiente"]');
+    expect(p.texto('.nombre-mes')).toBe(nombreMes(0));
+    await p.clic('[aria-label="Mes siguiente"]');
+    expect(p.texto('.nombre-mes')).toBe(nombreMes(0));
+  });
+
+  it('se puede retroceder hasta el año anterior', async () => {
+    const p = await montar(History);
+    for (let i = 0; i <= hoy.getMonth(); i++) {
+      await p.clic('[aria-label="Mes anterior"]');
+    }
+    expect(p.texto('.nombre-mes')).toContain('diciembre');
+    expect(p.texto('.nombre-mes')).toContain(String(hoy.getFullYear() - 1));
+  });
+
+  it('tocar un día guarda su fecha y lleva al detalle', async () => {
+    guardar('pulso-historial', [{ ...CHECKIN_VACIO, date: fecha(5), mood: 4 }]);
+    const p = await montar(History);
+    await p.clic('app-day-cell a', 4);
+    expect(localStorage.getItem('pulso-dia-seleccionado')).toBe(fecha(5));
+    expect(p.href('app-day-cell a', 4)).toBe('/historial/dia');
+    expect(leer('pulso-historial').length).toBe(1);
+  });
+
+  it('los accesos llevan a estadísticas y al check-in', async () => {
+    const p = await montar(History);
+    expect(p.href('[aria-label="Ver estadísticas"]')).toBe('/estadisticas');
+    expect(p.href('.more')).toBe('/estadisticas');
+    expect(p.href('.fab')).toBe('/checkin/animo');
   });
 });

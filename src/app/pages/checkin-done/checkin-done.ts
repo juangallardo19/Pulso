@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CheckinEntry } from '../../models/checkin.model';
+import { calcularRacha, CheckinEntry } from '../../models/checkin.model';
 
 @Component({
   selector: 'app-checkin-done',
@@ -10,5 +10,5 @@ import { CheckinEntry } from '../../models/checkin.model';
 })
 export class CheckinDone {
   private historial: CheckinEntry[] = JSON.parse(localStorage.getItem('pulso-historial') ?? '[]');
-  racha = this.historial.length;
+  racha = calcularRacha(this.historial);
 }

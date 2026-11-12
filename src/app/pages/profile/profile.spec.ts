@@ -1,71 +1,84 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-
 import { Profile } from './profile';
+import { guardar, leer, montar } from '../../../testing/dom';
 
+// Perfil: todo se prueba tocando y leyendo el HTML
 describe('Profile', () => {
-  let component: Profile;
-  let fixture: ComponentFixture<Profile>;
-
-  async function crear() {
-    await TestBed.configureTestingModule({
-      imports: [Profile],
-      providers: [provideRouter([])],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Profile);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  }
-
   beforeEach(() => localStorage.clear());
   afterEach(() => localStorage.clear());
 
-  it('se crea', async () => {
-    await crear();
-    expect(component).toBeTruthy();
+  it('muestra el nombre y el correo de la cuenta', async () => {
+    guardar('pulso-user', { name: 'Laura Gómez', email: 'laura@uni.edu.co' });
+    const p = await montar(Profile);
+    expect(p.texto('.identity h2')).toBe('Laura Gómez');
+    expect(p.texto('.identity')).toContain('laura@uni.edu.co');
+    expect(p.visible('.identity a')).toBe(false);
   });
 
-  it('muestra el nombre y el correo guardados', async () => {
-    localStorage.setItem(
-      'pulso-user',
-      JSON.stringify({ name: 'Laura Gómez', email: 'laura@uni.edu.co' }),
-    );
-    await crear();
-    const texto = fixture.nativeElement.textContent;
-    expect(texto).toContain('Laura Gómez');
-    expect(texto).toContain('laura@uni.edu.co');
+  it('no inventa datos: no muestra carrera ni semestre', async () => {
+    guardar('pulso-user', { name: 'Laura Gómez', email: 'laura@uni.edu.co' });
+    const p = await montar(Profile);
+    expect(p.texto('.identity')).not.toMatch(/Ingenier|semestre/);
   });
 
-  it('sin usuario guardado dice Estudiante', async () => {
-    await crear();
-    expect(fixture.nativeElement.textContent).toContain('Estudiante');
+  it('sin cuenta muestra "Invitado" y un enlace para crearla', async () => {
+    const p = await montar(Profile);
+    expect(p.texto('.identity h2')).toBe('Invitado');
+    expect(p.visible('.identity a')).toBe(true);
+    expect(p.href('.identity a')).toBe('/registro');
+  });
+
+  it('sin metas guardadas dice "Sin definir" en vez de inventar valores', async () => {
+    const p = await montar(Profile);
+    expect(p.todos('.goal strong').map((g) => g.textContent?.trim())).toEqual([
+      'Sin definir',
+      'Sin definir',
+      'Sin definir',
+    ]);
+    expect(p.texto('.goals .link')).toBe('Definir');
   });
 
   it('muestra las metas guardadas', async () => {
-    localStorage.setItem(
-      'pulso-goals',
-      JSON.stringify({ sleepHours: 7, waterGlasses: 6, exerciseMinutes: 45 }),
-    );
-    await crear();
-    const texto = fixture.nativeElement.textContent;
-    expect(texto).toContain('7 h');
-    expect(texto).toContain('6 vasos');
-    expect(texto).toContain('45 min');
+    guardar('pulso-goals', { sleepHours: 7, waterGlasses: 6, exerciseMinutes: 45 });
+    const p = await montar(Profile);
+    expect(p.todos('.goal strong').map((g) => g.textContent?.trim())).toEqual([
+      '7 h',
+      '6 vasos',
+      '45 min',
+    ]);
+    expect(p.texto('.goals .link')).toBe('Editar');
   });
 
-  it('cambiarModoOscuro(true) guarda darkMode en pulso-ajustes', async () => {
-    await crear();
-    component.cambiarModoOscuro(true);
-    expect(component.ajustes().darkMode).toBe(true);
-    const guardado = JSON.parse(localStorage.getItem('pulso-ajustes') ?? '{}');
-    expect(guardado.darkMode).toBe(true);
+  it('el interruptor de modo oscuro se enciende, se apaga y se guarda', async () => {
+    const p = await montar(Profile);
+    await p.clic('app-toggle-switch .toggle');
+    expect(p.tieneClase('app-toggle-switch .toggle', 'on')).toBe(true);
+    expect(leer('pulso-ajustes').darkMode).toBe(true);
+    await p.clic('app-toggle-switch .toggle');
+    expect(leer('pulso-ajustes').darkMode).toBe(false);
   });
 
-  it('cerrarSesion borra pulso-user', async () => {
-    localStorage.setItem('pulso-user', JSON.stringify({ name: 'Laura', email: 'l@u.co' }));
-    await crear();
-    component.cerrarSesion();
-    expect(localStorage.getItem('pulso-user')).toBeNull();
+  it('el modo oscuro guardado aparece encendido al volver', async () => {
+    guardar('pulso-ajustes', { darkMode: true });
+    const p = await montar(Profile);
+    expect(p.tieneClase('app-toggle-switch .toggle', 'on')).toBe(true);
+  });
+
+  it('"Cerrar sesión" borra la cuenta, muestra "Invitado" y lleva al login', async () => {
+    guardar('pulso-user', { name: 'Laura Gómez', email: 'laura@uni.edu.co' });
+    const p = await montar(Profile);
+    await p.clic('.logout');
+    expect(leer('pulso-user')).toBeNull();
+    expect(p.texto('.identity h2')).toBe('Invitado');
+    expect(p.href('.logout')).toBe('/login');
+  });
+
+  it('los accesos del perfil llevan a su página', async () => {
+    const p = await montar(Profile);
+    expect(p.todos('.settings a').map((a) => a.getAttribute('href'))).toEqual([
+      '/recordatorios',
+      '/bienestar',
+      '/privacidad',
+    ]);
+    expect(p.href('.goals .link')).toBe('/metas');
   });
 });

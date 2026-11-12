@@ -16,6 +16,25 @@ export class CheckinSummary {
     ...JSON.parse(localStorage.getItem('pulso-checkin-hoy') ?? '{}'),
   };
 
+  // Compara el agua de este check-in con el día anterior; si no hay día anterior, con la meta
+  mensajeAgua() {
+    const historial: CheckinEntry[] = JSON.parse(localStorage.getItem('pulso-historial') ?? '[]');
+    const fecha = new Date(
+      (this.checkin.date || new Date().toLocaleDateString('en-CA')) + 'T00:00',
+    );
+    fecha.setDate(fecha.getDate() - 1);
+    const ayer = historial.find((d) => d.date === fecha.toLocaleDateString('en-CA'));
+    if (ayer && ayer.water > 0) {
+      const cambio = Math.round(((this.checkin.water - ayer.water) / ayer.water) * 100);
+      if (cambio > 0) return 'Tomaste ' + cambio + ' % más agua que ayer. ¡Sigue así!';
+      if (cambio < 0) return 'Tomaste ' + Math.abs(cambio) + ' % menos agua que ayer.';
+      return 'Tomaste la misma cantidad de agua que ayer.';
+    }
+    const meta: number = JSON.parse(localStorage.getItem('pulso-goals') ?? '{}').waterGlasses ?? 8;
+    if (this.checkin.water >= meta) return '¡Cumpliste tu meta de agua de hoy!';
+    return 'Te faltaron ' + (meta - this.checkin.water) + ' vasos para tu meta de agua.';
+  }
+
   moodLabel() {
     return MOODS.find((m) => m.value === this.checkin.mood)?.label ?? '';
   }

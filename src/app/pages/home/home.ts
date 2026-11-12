@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NavBar } from '../../components/nav-bar/nav-bar';
-import { CHECKIN_VACIO, CheckinEntry } from '../../models/checkin.model';
+import { calcularRacha, CHECKIN_VACIO, CheckinEntry } from '../../models/checkin.model';
 import { Goals, METAS_POR_DEFECTO } from '../../models/goals.model';
 import { MOODS } from '../../models/mood.model';
 import { User } from '../../models/user.model';
@@ -15,7 +15,7 @@ import { User } from '../../models/user.model';
 })
 export class Home {
   usuario: User = JSON.parse(localStorage.getItem('pulso-user') ?? 'null') ?? {
-    name: 'Estudiante',
+    name: 'Invitado',
     email: '',
   };
   nombre = this.usuario.name.split(' ')[0];
@@ -27,18 +27,50 @@ export class Home {
   fecha = this.fechaLarga.charAt(0).toUpperCase() + this.fechaLarga.slice(1);
   moods = MOODS;
   historial: CheckinEntry[] = JSON.parse(localStorage.getItem('pulso-historial') ?? '[]');
+  private fechaHoy = new Date().toLocaleDateString('en-CA');
+  // "Tu día" muestra solo datos de hoy: el check-in en curso (si es de hoy)
+  // o el registro de hoy en el historial. Si no hay nada, empieza en cero.
   hoy: CheckinEntry = {
     ...CHECKIN_VACIO,
-    ...(JSON.parse(localStorage.getItem('pulso-checkin-hoy') ?? 'null') ??
-      this.historial[this.historial.length - 1] ??
-      {}),
+    ...(this.registroDeHoy() ?? {
+      mood: 0,
+      sleepStart: '',
+      sleepEnd: '',
+      exerciseMinutes: 0,
+      stress: 0,
+    }),
   };
   metas: Goals = {
     ...METAS_POR_DEFECTO,
     ...JSON.parse(localStorage.getItem('pulso-goals') ?? '{}'),
   };
-  racha = this.historial.length;
+  racha = calcularRacha(this.historial);
   vasos = signal(this.hoy.water);
+
+  private registroDeHoy(): CheckinEntry | null {
+    const enCurso = JSON.parse(localStorage.getItem('pulso-checkin-hoy') ?? 'null');
+    if (enCurso && (!enCurso.date || enCurso.date === this.fechaHoy)) {
+      return enCurso;
+    }
+    return this.historial.find((d) => d.date === this.fechaHoy) ?? null;
+  }
+
+  // Tocar una carita empieza el check-in con ese ánimo ya elegido
+  elegirAnimo(valor: number) {
+    const actual: CheckinEntry = {
+      ...CHECKIN_VACIO,
+      ...(this.registroDeHoy() ?? {}),
+      date: this.fechaHoy,
+      mood: valor,
+    };
+    localStorage.setItem('pulso-checkin-hoy', JSON.stringify(actual));
+  }
+
+  // El punto de la campana solo aparece si hay recordatorios activos
+  hayRecordatorios() {
+    const guardados = JSON.parse(localStorage.getItem('pulso-recordatorios') ?? '[]');
+    return guardados.some((r: { isActive: boolean }) => r.isActive);
+  }
 
   saludo() {
     const hora = new Date().getHours();
@@ -90,7 +122,7 @@ export class Home {
     const actual: CheckinEntry = {
       ...CHECKIN_VACIO,
       ...JSON.parse(localStorage.getItem('pulso-checkin-hoy') ?? '{}'),
-      date: new Date().toLocaleDateString('en-CA'),
+      date: this.fechaHoy,
       water: this.vasos(),
     };
     localStorage.setItem('pulso-checkin-hoy', JSON.stringify(actual));

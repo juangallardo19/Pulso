@@ -7,3 +7,22 @@
   pointer-events: none;
   opacity: 0.5;
 }
+
+// Botón del ojo para mostrar u ocultar la contraseña
+.ver-clave {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.ver-clave.activo {
+  color: var(--primary);
+}
+
+.forgot {
+  cursor: pointer;
+}

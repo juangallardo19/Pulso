@@ -26,10 +26,19 @@ export class CheckinMood {
     this.seleccionado.set(valor);
   }
 
+  // Si se está editando un día que ya está en el historial, se conserva su fecha.
+  // Si no, el check-in es de hoy.
+  private fechaDelRegistro() {
+    const historial: CheckinEntry[] = JSON.parse(localStorage.getItem('pulso-historial') ?? '[]');
+    const editando =
+      this.checkin.date !== '' && historial.some((d) => d.date === this.checkin.date);
+    return editando ? this.checkin.date : new Date().toLocaleDateString('en-CA');
+  }
+
   guardar() {
     const actualizado: CheckinEntry = {
       ...this.checkin,
-      date: new Date().toLocaleDateString('en-CA'),
+      date: this.fechaDelRegistro(),
       mood: this.seleccionado(),
       note: this.notaCtrl.value,
     };

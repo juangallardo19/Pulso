@@ -45,6 +45,21 @@ export class DayDetail {
     return resto === 0 ? horas + ' h' : horas + ' h ' + resto + ' min';
   }
 
+  // Los registros anteriores a este cambio no tienen calidad
+  textoCalidad() {
+    return this.registro.sleepQuality ? ' · calidad ' + this.registro.sleepQuality : '';
+  }
+
+  // Carga este día en el check-in para corregirlo. Si el día no tiene registro,
+  // el check-in empieza vacío para el día de hoy.
+  editar() {
+    if (this.existe) {
+      localStorage.setItem('pulso-checkin-hoy', JSON.stringify(this.registro));
+    } else {
+      localStorage.removeItem('pulso-checkin-hoy');
+    }
+  }
+
   tiposEjercicio() {
     return this.registro.exerciseTypes.join(', ').toLowerCase();
   }

@@ -43,14 +43,31 @@
           mensaje="Este correo no está registrado"
           [visible]="correoNoRegistrado()"
         ></app-field-error>
+        <app-field-error
+          mensaje="Todavía no hay una cuenta en este dispositivo. Regístrate primero."
+          [visible]="sinCuenta()"
+        ></app-field-error>
       </div>
 
       <div class="form-group">
         <label for="password">Contraseña</label>
         <div class="field" [class.error]="campoInvalido('password')">
           <span class="icon sm i-lock"></span>
-          <input id="password" type="password" placeholder="••••••••" formControlName="password" />
-          <span class="icon sm i-eye"></span>
+          <input
+            id="password"
+            [attr.type]="verClave() ? 'text' : 'password'"
+            placeholder="••••••••"
+            formControlName="password"
+          />
+          <button
+            type="button"
+            class="ver-clave"
+            [class.activo]="verClave()"
+            [attr.aria-label]="verClave() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            (click)="alternarClave()"
+          >
+            <span class="icon sm i-eye"></span>
+          </button>
         </div>
         <app-field-error
           mensaje="Mínimo 8 caracteres"
@@ -58,12 +75,12 @@
         ></app-field-error>
       </div>
 
-      <a class="link forgot">¿Olvidaste tu contraseña?</a>
+      <a class="link forgot" (click)="olvideClave()">¿Olvidaste tu contraseña?</a>
 
       <a
         routerLink="/inicio"
         class="btn btn-primary"
-        [class.deshabilitado]="loginForm.invalid || correoNoRegistrado()"
+        [class.deshabilitado]="loginForm.invalid || sinCuenta() || correoNoRegistrado()"
         (click)="entrar()"
         >Iniciar sesión</a
       >

@@ -10,7 +10,7 @@ describe('DayCell', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DayCell],
-      providers: [provideRouter([])],
+      providers: [provideRouter([{ path: '**', children: [] }])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DayCell);
@@ -43,9 +43,9 @@ describe('DayCell', () => {
     expect(fixture.nativeElement.querySelector('.cell.today')).not.toBeNull();
   });
 
-  it('al seleccionar emite el Day', () => {
+  it('al tocar la celda emite el Day', () => {
     const espia = vi.spyOn(component.elegir, 'emit');
-    component.seleccionar();
+    (fixture.nativeElement.querySelector('a.cell') as HTMLElement).click();
     expect(espia).toHaveBeenCalledWith({ number: 5, mood: 4, date: '2026-11-05' });
   });
 });

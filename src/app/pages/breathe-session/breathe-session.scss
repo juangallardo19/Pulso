@@ -63,7 +63,8 @@
   position: absolute;
   border-radius: 50%;
   background: var(--primary);
-  animation: breathe 19s ease-in-out infinite;
+  transform: scale(0.7);
+  transition: transform linear;
 }
 
 .layer.outer {
@@ -74,7 +75,6 @@
 .layer.middle {
   inset: 11%;
   opacity: 0.22;
-  animation-delay: 0.15s;
 }
 
 .core {
@@ -87,27 +87,20 @@
   background: var(--primary);
   color: var(--on-primary);
   box-shadow: var(--shadow-strong);
-  animation: breathe 19s ease-in-out infinite;
+  transform: scale(0.7);
+  transition: transform linear;
 }
 
 .word {
-  grid-area: 1 / 1;
   font-family: var(--font-title);
   font-weight: 600;
   font-size: 1.75rem;
-  opacity: 0;
 }
 
-.inhale {
-  animation: show-inhale 19s infinite;
-}
-
-.hold {
-  animation: show-hold 19s infinite;
-}
-
-.exhale {
-  animation: show-exhale 19s infinite;
+.cuenta {
+  font-family: var(--font-title);
+  font-size: 1.125rem;
+  opacity: 0.85;
 }
 
 .steps {
@@ -134,16 +127,9 @@
   font-size: 1.375rem;
 }
 
-.s-inhale {
-  animation: step-inhale 19s infinite;
-}
-
-.s-hold {
-  animation: step-hold 19s infinite;
-}
-
-.s-exhale {
-  animation: step-exhale 19s infinite;
+.step.activo {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .pause {
@@ -165,108 +151,26 @@
   transform: scale(0.9);
 }
 
-/* 0–21 %: inhala (4 s) · 21–58 %: sostén (7 s) · 58–100 %: exhala (8 s) */
-@keyframes breathe {
-  0% {
-    transform: scale(0.7);
-  }
-
-  21%,
-  58% {
-    transform: scale(1);
-  }
-
-  100% {
-    transform: scale(0.7);
-  }
+/* Al pausar se congela el círculo donde está */
+.pausado .layer,
+.pausado .core {
+  transition-duration: 0s !important;
 }
 
-@keyframes show-inhale {
-  0%,
-  20% {
-    opacity: 1;
-  }
-
-  21%,
-  100% {
-    opacity: 0;
-  }
+.fin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
 }
 
-@keyframes show-hold {
-  0%,
-  20% {
-    opacity: 0;
-  }
-
-  21%,
-  57% {
-    opacity: 1;
-  }
-
-  58%,
-  100% {
-    opacity: 0;
-  }
+.fin-acciones {
+  display: flex;
+  gap: 10px;
 }
 
-@keyframes show-exhale {
-  0%,
-  57% {
-    opacity: 0;
-  }
-
-  58%,
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes step-inhale {
-  0%,
-  20% {
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-
-  21%,
-  100% {
-    border-color: transparent;
-  }
-}
-
-@keyframes step-hold {
-  0%,
-  20% {
-    border-color: transparent;
-  }
-
-  21%,
-  57% {
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-
-  58%,
-  100% {
-    border-color: transparent;
-  }
-}
-
-@keyframes step-exhale {
-  0%,
-  57% {
-    border-color: transparent;
-  }
-
-  58%,
-  100% {
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-}
-
-/* Al pausar se congelan todas las animaciones del círculo y de los pasos */
-.pausado * {
-  animation-play-state: paused !important;
+.oculto {
+  display: none !important;
 }

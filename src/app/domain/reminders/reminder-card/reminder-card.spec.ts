@@ -58,8 +58,10 @@ describe('ReminderCard', () => {
     expect(espia).toHaveBeenCalledWith(1);
   });
 
-  it('claseDia marca solo los días activos', () => {
-    expect(component.claseDia('L')).toBe('on primary');
-    expect(component.claseDia('M')).toBe('');
+  it('solo los días activos aparecen encendidos y con el color del recordatorio', () => {
+    const dias: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('.day'));
+    expect(dias.map((d) => d.textContent)).toEqual(['L', 'M', 'X', 'J', 'V', 'S', 'D']);
+    expect(dias[0].className).toBe('day on primary');
+    expect(dias[1].className).toBe('day');
   });
 });

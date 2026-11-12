@@ -1,75 +1,83 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-
 import { Register } from './register';
+import { leer, montar, Pantalla } from '../../../testing/dom';
 
-const datosValidos = {
-  name: 'Laura Gómez',
-  email: 'laura@uni.edu.co',
-  password: '12345678',
-  confirm: '12345678',
-  consent: true,
-};
+async function llenar(p: Pantalla<Register>, confirmacion = '12345678', aceptar = true) {
+  await p.escribir('#name', 'Laura Gómez');
+  await p.escribir('#email', 'laura@uni.edu.co');
+  await p.escribir('#password', '12345678');
+  await p.escribir('#confirm', confirmacion);
+  if (aceptar) {
+    await p.clic('.consent input');
+  }
+}
 
+// Registro: todo se prueba escribiendo y tocando el HTML
 describe('Register', () => {
-  let component: Register;
-  let fixture: ComponentFixture<Register>;
-
-  beforeEach(async () => {
-    localStorage.clear();
-    await TestBed.configureTestingModule({
-      imports: [Register],
-      providers: [provideRouter([])],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Register);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
+  beforeEach(() => localStorage.clear());
   afterEach(() => localStorage.clear());
 
-  it('se crea', () => {
-    expect(component).toBeTruthy();
+  it('el botón "Crear cuenta" empieza deshabilitado y el formulario vacío', async () => {
+    const p = await montar(Register);
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(true);
+    expect((p.el('#confirm') as HTMLInputElement).value).toBe('');
+    expect((p.el('.consent input') as HTMLInputElement).checked).toBe(false);
   });
 
-  it('es válido con todos los datos correctos', () => {
-    component.registerForm.setValue(datosValidos);
-    expect(component.registerForm.valid).toBe(true);
+  it('con todo bien escrito se habilita "Crear cuenta"', async () => {
+    const p = await montar(Register);
+    await llenar(p);
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(false);
   });
 
-  it('es inválido si no acepta el aviso de privacidad', () => {
-    component.registerForm.setValue({ ...datosValidos, consent: false });
-    expect(component.registerForm.valid).toBe(false);
+  it('sin aceptar el aviso de privacidad no se puede crear la cuenta', async () => {
+    const p = await montar(Register);
+    await llenar(p, '12345678', false);
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(true);
   });
 
-  it('detecta cuando las contraseñas no coinciden', () => {
-    component.registerForm.setValue({ ...datosValidos, confirm: '87654321' });
-    expect(component.contrasenasCoinciden()).toBe(false);
+  it('si las contraseñas no coinciden lo marca y no deja continuar', async () => {
+    const p = await montar(Register);
+    await llenar(p, '87654321');
+    expect(p.texto('.error-text.show')).toBe('Las contraseñas no coinciden');
+    expect(p.tieneClase('.field', 'error', 3)).toBe(true);
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(true);
   });
 
-  it('calcula la fuerza de la contraseña según su largo', () => {
-    component.registerForm.get('password')?.setValue('1234');
-    expect(component.textoFuerza()).toBe('Débil');
-    component.registerForm.get('password')?.setValue('12345678');
-    expect(component.textoFuerza()).toBe('Media');
-    component.registerForm.get('password')?.setValue('123456789012');
-    expect(component.textoFuerza()).toBe('Fuerte');
+  it('un nombre de 2 letras muestra el error del nombre', async () => {
+    const p = await montar(Register);
+    await p.escribir('#name', 'La');
+    expect(p.texto('.error-text.show')).toContain('mínimo 3 letras');
   });
 
-  it('crearCuenta guarda el nombre y el correo en pulso-user', () => {
-    component.registerForm.setValue(datosValidos);
-    component.crearCuenta();
-    const guardado = JSON.parse(localStorage.getItem('pulso-user') ?? 'null');
-    expect(guardado.name).toBe('Laura Gómez');
-    expect(guardado.email).toBe('laura@uni.edu.co');
+  it('la barra de fuerza cambia mientras se escribe la contraseña', async () => {
+    const p = await montar(Register);
+    await p.escribir('#password', '1234');
+    expect(p.texto('.strength small')).toBe('Débil');
+    expect(p.cuantos('.strength span.on')).toBe(1);
+    await p.escribir('#password', '12345678');
+    expect(p.texto('.strength small')).toBe('Media');
+    await p.escribir('#password', '123456789012');
+    expect(p.texto('.strength small')).toBe('Fuerte');
+    expect(p.cuantos('.strength span.on')).toBe(3);
   });
 
-  it('nunca guarda la contraseña', () => {
-    component.registerForm.setValue(datosValidos);
-    component.crearCuenta();
-    const guardado = JSON.parse(localStorage.getItem('pulso-user') ?? 'null');
-    expect(guardado.password).toBeUndefined();
-    expect(guardado.confirm).toBeUndefined();
+  it('el ojo muestra las dos contraseñas a la vez', async () => {
+    const p = await montar(Register);
+    await p.clic('.ver-clave');
+    expect((p.el('#password') as HTMLInputElement).type).toBe('text');
+    expect((p.el('#confirm') as HTMLInputElement).type).toBe('text');
+  });
+
+  it('"Crear cuenta" guarda nombre y correo, sin la contraseña, y lleva a /metas', async () => {
+    const p = await montar(Register);
+    await llenar(p);
+    await p.clic('.btn-primary');
+    expect(leer('pulso-user')).toEqual({ name: 'Laura Gómez', email: 'laura@uni.edu.co' });
+    expect(p.href('.btn-primary')).toBe('/metas');
+  });
+
+  it('"Inicia sesión" lleva al login', async () => {
+    const p = await montar(Register);
+    expect(p.href('.auth-footer a')).toBe('/login');
   });
 });

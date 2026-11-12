@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { NavBar } from '../../components/nav-bar/nav-bar';
 import { ChipOption } from '../../domain/checkin/chip-option/chip-option';
 import { ServiceCard } from '../../domain/wellness/service-card/service-card';
@@ -8,7 +7,7 @@ import { WellnessService } from '../../models/wellness-service.model';
 
 @Component({
   selector: 'app-wellness',
-  imports: [CommonModule, RouterLink, NavBar, ChipOption, ServiceCard],
+  imports: [CommonModule, NavBar, ChipOption, ServiceCard],
   templateUrl: './wellness.html',
   styleUrl: './wellness.scss',
 })

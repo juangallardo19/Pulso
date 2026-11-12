@@ -1,45 +1,61 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 import { CheckinExercise } from './checkin-exercise';
+import { guardar, leer, montar } from '../../../testing/dom';
 
+// Paso 4 del check-in: todo se prueba tocando el HTML
 describe('CheckinExercise', () => {
-  let component: CheckinExercise;
-  let fixture: ComponentFixture<CheckinExercise>;
-
-  async function crear() {
-    await TestBed.configureTestingModule({
-      imports: [CheckinExercise],
-      providers: [provideRouter([])],
-    }).compileComponents();
-    fixture = TestBed.createComponent(CheckinExercise);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  }
-
   beforeEach(() => localStorage.clear());
-
   afterEach(() => localStorage.clear());
 
-  it('se crea', async () => {
-    await crear();
-    expect(component).toBeTruthy();
+  it('se crea con el paso 4 de 6, 30 minutos y 6 tipos de actividad', async () => {
+    const p = await montar(CheckinExercise);
+    expect(p.atributo('.stepper', 'aria-label')).toBe('Paso 4 de 6');
+    expect(p.texto('.metric')).toBe('30');
+    expect(p.cuantos('.chip')).toBe(6);
   });
 
-  it('alternarTipo agrega y quita Yoga', async () => {
-    await crear();
-    component.alternarTipo('Yoga');
-    expect(component.elegidos()).toContain('Yoga');
-    component.alternarTipo('Yoga');
-    expect(component.elegidos()).not.toContain('Yoga');
+  it('mover el slider cambia los minutos en pantalla', async () => {
+    const p = await montar(CheckinExercise);
+    await p.mover('input[type="range"]', 60);
+    expect(p.texto('.metric')).toBe('60');
   });
 
-  it('guardar() escribe los minutos y los tipos', async () => {
-    await crear();
-    component.minutosCtrl.setValue(45);
-    component.alternarTipo('Correr');
-    component.guardar();
-    const hoy = JSON.parse(localStorage.getItem('pulso-checkin-hoy') ?? '{}');
-    expect(hoy.exerciseMinutes).toBe(45);
-    expect(hoy.exerciseTypes).toEqual(['Correr']);
+  it('muestra la meta de ejercicio guardada', async () => {
+    guardar('pulso-goals', { exerciseMinutes: 45 });
+    const p = await montar(CheckinExercise);
+    expect(p.texto('.limits')).toContain('Meta 45 min');
+  });
+
+  it('tocar un tipo lo activa y tocarlo otra vez lo desactiva', async () => {
+    const p = await montar(CheckinExercise);
+    await p.clic('.chip', 1);
+    expect(p.tieneClase('.chip', 'active', 1)).toBe(true);
+    await p.clic('.chip', 1);
+    expect(p.tieneClase('.chip', 'active', 1)).toBe(false);
+  });
+
+  it('se pueden elegir varios tipos', async () => {
+    const p = await montar(CheckinExercise);
+    await p.clic('.chip', 0);
+    await p.clic('.chip', 4);
+    expect(p.cuantos('.chip.active')).toBe(2);
+  });
+
+  it('"Siguiente" guarda minutos y tipos', async () => {
+    const p = await montar(CheckinExercise);
+    await p.mover('input[type="range"]', 50);
+    await p.clic('.chip', 0);
+    await p.clic('.chip', 4);
+    await p.clic('.btn-primary');
+    const enCurso = leer('pulso-checkin-hoy');
+    expect(enCurso.exerciseMinutes).toBe(50);
+    expect(enCurso.exerciseTypes).toEqual(['Caminar', 'Yoga']);
+    expect(p.href('.btn-primary')).toBe('/checkin/estres');
+  });
+
+  it('"Omitir" también guarda y sigue al estrés', async () => {
+    const p = await montar(CheckinExercise);
+    await p.clic('.btn-ghost');
+    expect(leer('pulso-checkin-hoy').exerciseMinutes).toBe(30);
+    expect(p.href('.btn-ghost')).toBe('/checkin/estres');
   });
 });
