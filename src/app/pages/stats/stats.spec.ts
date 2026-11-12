@@ -120,6 +120,72 @@ describe('Stats', () => {
     expect(p.texto('.insight p')).toBe('Esos días dormiste 3 h 0 min menos que el resto.');
   });
 
+  it('muestra el rango de fechas del periodo', async () => {
+    guardar('pulso-historial', historialDe(3));
+    const p = await montar(Stats);
+    expect(p.texto('.rango')).toBe('9 nov – 11 nov');
+  });
+
+  it('el resumen muestra días registrados, agua y minutos de ejercicio', async () => {
+    guardar('pulso-historial', [
+      { ...CHECKIN_VACIO, date: '2026-11-10', water: 4, exerciseMinutes: 20 },
+      { ...CHECKIN_VACIO, date: '2026-11-11', water: 6, exerciseMinutes: 0 },
+    ]);
+    const p = await montar(Stats);
+    expect(p.todos('.kpi .metric').map((m) => m.textContent?.trim())).toEqual([
+      '2',
+      expect.any(String),
+      '5',
+      '20',
+    ]);
+  });
+
+  it('cada tarjeta explica su dato con una frase', async () => {
+    guardar('pulso-goals', { sleepHours: 7 });
+    guardar('pulso-historial', [
+      {
+        ...CHECKIN_VACIO,
+        date: '2026-11-09',
+        mood: 2,
+        stress: 3,
+        stressCauses: ['Parcial'],
+        sleepStart: '23:00',
+        sleepEnd: '07:00',
+      },
+      {
+        ...CHECKIN_VACIO,
+        date: '2026-11-10',
+        mood: 2,
+        stress: 9,
+        stressCauses: ['Parcial', 'Dinero'],
+        sleepStart: '02:00',
+        sleepEnd: '06:00',
+      },
+      { ...CHECKIN_VACIO, date: '2026-11-11', mood: 5, stress: 4, stressCauses: [] },
+    ]);
+    const p = await montar(Stats);
+    const frases = p.todos('.explica').map((e) => e.textContent?.trim());
+    expect(frases[0]).toBe('Lo que más sentiste fue "mal" (2 días).');
+    expect(frases[1]).toBe('Llegaste a tu meta de 7 h en 1 de 2 noches.');
+    expect(frases[2]).toBe(
+      'Tu día más tenso fue el martes (9/10). Lo que más te estresó: parcial.',
+    );
+  });
+
+  it('las barras de agua y ejercicio se llenan frente a las metas', async () => {
+    guardar('pulso-goals', { waterGlasses: 8, exerciseMinutes: 40 });
+    guardar('pulso-historial', [
+      { ...CHECKIN_VACIO, date: '2026-11-10', water: 4, exerciseMinutes: 20 },
+      { ...CHECKIN_VACIO, date: '2026-11-11', water: 8, exerciseMinutes: 0 },
+    ]);
+    const p = await montar(Stats);
+    expect(p.texto('.metas-card')).toContain('6 / 8 vasos');
+    expect(p.texto('.metas-card')).toContain('10 / 40 min');
+    expect(p.el('.barra .agua').style.width).toBe('75%');
+    expect(p.el('.barra .ejercicio').style.width).toBe('25%');
+    expect(p.texto('.metas-card')).toContain('Hiciste ejercicio 1 de 2 días.');
+  });
+
   it('el calendario del encabezado lleva al historial', async () => {
     const p = await montar(Stats);
     expect(p.href('.page-header a')).toBe('/historial');

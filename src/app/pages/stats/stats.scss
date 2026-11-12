@@ -216,3 +216,86 @@
   opacity: 0.35;
   pointer-events: none;
 }
+
+/* Fechas del periodo que se está viendo */
+.rango {
+  margin: -4px 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* Resumen: cuatro números grandes */
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+}
+
+.kpi .metric {
+  font-size: 1.75rem;
+}
+
+/* Frase debajo del título de cada tarjeta */
+.explica {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+/* Barras de progreso de agua y ejercicio */
+.metas-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.progreso {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progreso-titulo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.barra {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.barra span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+.barra .agua {
+  background: var(--secondary);
+}
+
+.barra .ejercicio {
+  background: var(--accent);
+}
+
+@media (min-width: 1024px) {
+  .resumen {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .kpi {
+    padding: 20px;
+  }
+}

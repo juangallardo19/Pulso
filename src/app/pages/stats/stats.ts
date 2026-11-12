@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NavBar } from '../../components/nav-bar/nav-bar';
-import { CheckinEntry } from '../../models/checkin.model';
+import { calcularRacha, CheckinEntry } from '../../models/checkin.model';
 import { MOODS } from '../../models/mood.model';
 
 @Component({
@@ -16,7 +16,11 @@ export class Stats {
   historial: CheckinEntry[] = (
     JSON.parse(localStorage.getItem('pulso-historial') ?? '[]') as CheckinEntry[]
   ).sort((a, b) => a.date.localeCompare(b.date));
-  metaSueno: number = JSON.parse(localStorage.getItem('pulso-goals') ?? '{}').sleepHours ?? 8;
+  private metas = JSON.parse(localStorage.getItem('pulso-goals') ?? '{}');
+  metaSueno: number = this.metas.sleepHours ?? 8;
+  metaAgua: number = this.metas.waterGlasses ?? 8;
+  metaEjercicio: number = this.metas.exerciseMinutes ?? 30;
+  racha = calcularRacha(this.historial);
 
   periodo = signal<'semana' | 'mes'>('semana');
   // 0 = los registros más recientes, 1 = el bloque anterior, etc.
@@ -167,5 +171,97 @@ export class Stats {
 
   estresPromedio() {
     return Math.round(this.promedio('stress') * 10) / 10;
+  }
+
+  // ---------- Resumen del periodo ----------
+
+  // "5 nov – 11 nov" (las fechas del primer y del último registro que se ven)
+  rangoTexto() {
+    const lista = this.registros();
+    if (lista.length === 0) return 'Sin registros todavía';
+    // "5 nov" (sin el "de" ni el punto que agrega el navegador)
+    const corta = (fecha: string) => {
+      const dia = new Date(fecha + 'T00:00');
+      const mes = dia.toLocaleDateString('es-CO', { month: 'short' }).replace('.', '');
+      return dia.getDate() + ' ' + mes;
+    };
+    const inicio = corta(lista[0].date);
+    const fin = corta(lista[lista.length - 1].date);
+    return inicio === fin ? inicio : inicio + ' – ' + fin;
+  }
+
+  aguaPromedio() {
+    return Math.round(this.promedio('water') * 10) / 10;
+  }
+
+  avanceAgua() {
+    return Math.min(100, Math.round((this.promedio('water') / this.metaAgua) * 100));
+  }
+
+  ejercicioPromedio() {
+    return Math.round(this.promedio('exerciseMinutes'));
+  }
+
+  avanceEjercicio() {
+    const meta = this.metaEjercicio || 1;
+    return Math.min(100, Math.round((this.promedio('exerciseMinutes') / meta) * 100));
+  }
+
+  ejercicioTotal() {
+    return this.registros().reduce((suma, d) => suma + d.exerciseMinutes, 0);
+  }
+
+  diasConEjercicio() {
+    return this.registros().filter((d) => d.exerciseMinutes > 0).length;
+  }
+
+  // ---------- Frases que explican cada tarjeta ----------
+
+  // El valor que más se repite en una lista (y cuántas veces)
+  private masFrecuente<T>(valores: T[]): { valor: T; veces: number } | null {
+    const conteo = new Map<T, number>();
+    valores.forEach((v) => conteo.set(v, (conteo.get(v) ?? 0) + 1));
+    let mejor: { valor: T; veces: number } | null = null;
+    conteo.forEach((veces, valor) => {
+      if (!mejor || veces > mejor.veces) mejor = { valor, veces };
+    });
+    return mejor;
+  }
+
+  explicacionAnimo() {
+    const frecuente = this.masFrecuente(
+      this.registros()
+        .map((d) => d.mood)
+        .filter((m) => m > 0),
+    );
+    if (!frecuente) return 'Haz tu check-in para ver cómo cambia tu ánimo.';
+    const nombre = MOODS[frecuente.valor - 1]?.label.toLowerCase();
+    const dias = frecuente.veces === 1 ? '1 día' : frecuente.veces + ' días';
+    return 'Lo que más sentiste fue "' + nombre + '" (' + dias + ').';
+  }
+
+  explicacionSueno() {
+    const lista = this.registros().filter((d) => this.horas(d) > 0);
+    if (lista.length === 0) return 'Registra tus horas de sueño en el check-in.';
+    const cumplidos = lista.filter((d) => this.cumpleMeta(d)).length;
+    return (
+      'Llegaste a tu meta de ' +
+      this.metaSueno +
+      ' h en ' +
+      cumplidos +
+      ' de ' +
+      lista.length +
+      ' noches.'
+    );
+  }
+
+  explicacionEstres() {
+    const lista = this.registros();
+    if (lista.length === 0) return 'Aquí verás qué días te sientes más tenso.';
+    const peor = lista.reduce((a, b) => (b.stress > a.stress ? b : a));
+    const dia = new Date(peor.date + 'T00:00').toLocaleDateString('es-CO', { weekday: 'long' });
+    const causa = this.masFrecuente(lista.flatMap((d) => d.stressCauses));
+    const textoCausa = causa ? ' Lo que más te estresó: ' + causa.valor.toLowerCase() + '.' : '';
+    return 'Tu día más tenso fue el ' + dia + ' (' + peor.stress + '/10).' + textoCausa;
   }
 }

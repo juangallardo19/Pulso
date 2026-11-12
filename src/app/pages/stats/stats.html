@@ -4,7 +4,7 @@
   <div class="page-inner">
     <header class="page-header">
       <h1>Estadísticas</h1>
-      <a routerLink="/historial" class="icon-btn" aria-label="Acción"
+      <a routerLink="/historial" class="icon-btn" aria-label="Ver historial"
         ><span class="icon i-calendar"></span
       ></a>
     </header>
@@ -22,6 +22,32 @@
       </button>
     </div>
 
+    <p class="rango">{{ rangoTexto() }}</p>
+
+    <!-- Resumen del periodo -->
+    <section class="resumen">
+      <article class="card kpi lift">
+        <span class="bubble sm bg-lav"><span class="icon sm i-calendar c-primary"></span></span>
+        <span class="metric">{{ registros().length }}</span>
+        <p class="small">días registrados</p>
+      </article>
+      <article class="card kpi lift">
+        <span class="bubble sm bg-coral"><span class="icon sm i-flame c-accent"></span></span>
+        <span class="metric">{{ racha }}</span>
+        <p class="small">días de racha</p>
+      </article>
+      <article class="card kpi lift">
+        <span class="bubble sm bg-mint"><span class="icon sm i-droplet c-secondary"></span></span>
+        <span class="metric">{{ aguaPromedio() }}</span>
+        <p class="small">vasos al día</p>
+      </article>
+      <article class="card kpi lift">
+        <span class="bubble sm bg-coral"><span class="icon sm i-activity c-accent"></span></span>
+        <span class="metric">{{ ejercicioTotal() }}</span>
+        <p class="small">min de ejercicio</p>
+      </article>
+    </section>
+
     <section class="stats-grid">
       <!-- Ánimo de la semana -->
       <article class="card mood-card">
@@ -29,6 +55,7 @@
           <div>
             <p class="small">Ánimo</p>
             <h3>{{ animoPromedio() }} en promedio</h3>
+            <p class="small explica">{{ explicacionAnimo() }}</p>
           </div>
           <div class="row arrows">
             <button
@@ -79,6 +106,7 @@
           <div>
             <p class="small">Sueño</p>
             <h3>{{ suenoPromedio() }} al día</h3>
+            <p class="small explica">{{ explicacionSueno() }}</p>
           </div>
           <span class="bubble sm bg-blue"><span class="icon sm i-moon c-sleep"></span></span>
         </div>
@@ -99,6 +127,7 @@
           <div>
             <p class="small">Estrés</p>
             <h3>{{ estresPromedio() }} / 10 en promedio</h3>
+            <p class="small explica">{{ explicacionEstres() }}</p>
           </div>
           <span class="bubble sm bg-lav"><span class="icon sm i-activity c-primary"></span></span>
         </div>
@@ -108,6 +137,36 @@
             ><span [style.opacity]="opacidadMaxima(i)"></span><small>{{ dia }}</small>
           </div>
         </div>
+      </article>
+
+      <!-- Agua y ejercicio frente a las metas -->
+      <article class="card metas-card">
+        <div class="section-title">
+          <div>
+            <p class="small">Agua y ejercicio</p>
+            <h3>Tus metas del periodo</h3>
+          </div>
+          <span class="bubble sm bg-mint"><span class="icon sm i-droplet c-secondary"></span></span>
+        </div>
+        <div class="progreso">
+          <div class="progreso-titulo">
+            <span>Agua</span>
+            <strong>{{ aguaPromedio() }} / {{ metaAgua }} vasos</strong>
+          </div>
+          <div class="barra"><span class="agua" [style.width.%]="avanceAgua()"></span></div>
+        </div>
+        <div class="progreso">
+          <div class="progreso-titulo">
+            <span>Ejercicio</span>
+            <strong>{{ ejercicioPromedio() }} / {{ metaEjercicio }} min</strong>
+          </div>
+          <div class="barra">
+            <span class="ejercicio" [style.width.%]="avanceEjercicio()"></span>
+          </div>
+        </div>
+        <p class="small explica">
+          Hiciste ejercicio {{ diasConEjercicio() }} de {{ registros().length }} días.
+        </p>
       </article>
 
       <!-- Hallazgo -->
