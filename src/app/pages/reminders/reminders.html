@@ -10,6 +10,10 @@
       <span class="spacer"></span>
     </header>
 
+    <p class="card vacio" [class.oculto]="recordatorios().length > 0">
+      Aún no tienes recordatorios. Toca "Nuevo recordatorio" para crear el primero.
+    </p>
+
     <section class="reminders">
       <app-reminder-card
         *ngFor="let r of recordatorios()"
