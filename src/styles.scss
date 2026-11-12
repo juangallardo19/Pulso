@@ -1043,40 +1043,6 @@ input[type='time'] {
     color: #4a4a63;
   }
 
-  .auth-side .sun {
-    position: absolute;
-    top: 64px;
-    right: 64px;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: #ffd59e;
-    opacity: 0.85;
-    box-shadow: 0 0 60px rgba(255, 213, 158, 0.7);
-  }
-
-  .auth-side .hill {
-    position: absolute;
-    border-radius: 50%;
-    background: #b7e3d2;
-    opacity: 0.6;
-  }
-
-  .auth-side .hill.one {
-    width: 520px;
-    height: 260px;
-    left: -120px;
-    top: 230px;
-  }
-
-  .auth-side .hill.two {
-    width: 460px;
-    height: 240px;
-    right: -140px;
-    top: 280px;
-    background: #9dd6c3;
-  }
-
   /* Caritas dentro de una píldora de vidrio claro */
   .auth-side .faces {
     position: relative;
@@ -1100,42 +1066,6 @@ input[type='time'] {
     transform: translateY(-4px) scale(1.08);
   }
 
-  /* Insignias que flotan arriba a la izquierda */
-  .auth-badges {
-    position: absolute;
-    top: 40px;
-    left: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .auth-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 8px 24px rgba(124, 108, 242, 0.12);
-    color: #3b3566;
-    font-size: 0.875rem;
-    font-weight: 600;
-    animation: flotar 6s ease-in-out infinite;
-  }
-
-  .auth-badge .icon {
-    color: #7c6cf2;
-  }
-
-  .auth-badge:nth-child(2) {
-    margin-left: 28px;
-    animation-delay: -3s;
-  }
-
   .auth-main {
     justify-content: center;
     padding: 48px;
@@ -1149,17 +1079,6 @@ input[type='time'] {
 
   to {
     transform: scale(1.08);
-  }
-}
-
-@keyframes flotar {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-6px);
   }
 }
 

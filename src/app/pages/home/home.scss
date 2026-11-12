@@ -47,39 +47,6 @@
   animation: deriva 30s ease-in-out infinite alternate;
 }
 
-.sun {
-  position: absolute;
-  top: 18px;
-  right: 30px;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: #ffd59e;
-  box-shadow: 0 0 40px rgba(255, 213, 158, 0.8);
-}
-
-.hill {
-  position: absolute;
-  border-radius: 50%;
-  background: #b7e3d2;
-  opacity: 0.9;
-}
-
-.hill.one {
-  width: 260px;
-  height: 120px;
-  left: -30px;
-  bottom: -60px;
-}
-
-.hill.two {
-  width: 240px;
-  height: 110px;
-  right: -50px;
-  bottom: -60px;
-  background: #9dd6c3;
-}
-
 .hero-text {
   position: relative;
   display: flex;
