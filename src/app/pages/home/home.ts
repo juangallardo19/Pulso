@@ -15,7 +15,7 @@ import { User } from '../../models/user.model';
 })
 export class Home {
   usuario: User = JSON.parse(localStorage.getItem('pulso-user') ?? 'null') ?? {
-    name: 'Estudiante',
+    name: 'Invitado',
     email: '',
   };
   nombre = this.usuario.name.split(' ')[0];
@@ -66,13 +66,9 @@ export class Home {
     localStorage.setItem('pulso-checkin-hoy', JSON.stringify(actual));
   }
 
-  // El punto de la campana solo aparece si hay recordatorios activos.
-  // Sin recordatorios guardados, la página muestra ejemplos activos.
+  // El punto de la campana solo aparece si hay recordatorios activos
   hayRecordatorios() {
-    const guardados = JSON.parse(localStorage.getItem('pulso-recordatorios') ?? 'null');
-    if (guardados === null) {
-      return true;
-    }
+    const guardados = JSON.parse(localStorage.getItem('pulso-recordatorios') ?? '[]');
     return guardados.some((r: { isActive: boolean }) => r.isActive);
   }
 

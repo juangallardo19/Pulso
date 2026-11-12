@@ -22,6 +22,11 @@ export class Login {
     return !!ctrl && ctrl.invalid && ctrl.touched;
   }
 
+  // No hay ninguna cuenta creada en este navegador
+  sinCuenta() {
+    return localStorage.getItem('pulso-user') === null;
+  }
+
   correoNoRegistrado() {
     const guardado = JSON.parse(localStorage.getItem('pulso-user') ?? 'null');
     const correo = this.loginForm.value.email ?? '';

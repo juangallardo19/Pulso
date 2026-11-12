@@ -43,6 +43,10 @@
           mensaje="Este correo no está registrado"
           [visible]="correoNoRegistrado()"
         ></app-field-error>
+        <app-field-error
+          mensaje="Todavía no hay una cuenta en este dispositivo. Regístrate primero."
+          [visible]="sinCuenta()"
+        ></app-field-error>
       </div>
 
       <div class="form-group">
@@ -76,7 +80,7 @@
       <a
         routerLink="/inicio"
         class="btn btn-primary"
-        [class.deshabilitado]="loginForm.invalid || correoNoRegistrado()"
+        [class.deshabilitado]="loginForm.invalid || sinCuenta() || correoNoRegistrado()"
         (click)="entrar()"
         >Iniciar sesión</a
       >

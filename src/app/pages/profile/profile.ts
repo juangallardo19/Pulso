@@ -13,11 +13,13 @@ import { AJUSTES_POR_DEFECTO, Settings } from '../../models/settings.model';
   styleUrl: './profile.scss',
 })
 export class Profile {
-  usuario: User = JSON.parse(localStorage.getItem('pulso-user') ?? 'null') ?? {
-    name: 'Estudiante',
-    email: '',
-  };
+  private guardado: User | null = JSON.parse(localStorage.getItem('pulso-user') ?? 'null');
+  // Sin cuenta creada no se inventa un nombre: se muestra "Invitado"
+  tieneCuenta = this.guardado !== null;
+  usuario: User = this.guardado ?? { name: 'Invitado', email: '' };
 
+  // Las metas solo se muestran si el usuario las guardó en /metas
+  tieneMetas = localStorage.getItem('pulso-goals') !== null;
   metas: Goals = {
     ...METAS_POR_DEFECTO,
     ...JSON.parse(localStorage.getItem('pulso-goals') ?? '{}'),
@@ -37,5 +39,7 @@ export class Profile {
 
   cerrarSesion() {
     localStorage.removeItem('pulso-user');
+    this.tieneCuenta = false;
+    this.usuario = { name: 'Invitado', email: '' };
   }
 }
