@@ -16,15 +16,43 @@ export class History {
   historial: CheckinEntry[] = JSON.parse(localStorage.getItem('pulso-historial') ?? '[]');
 
   hoy = new Date();
+  private fechaHoy = this.hoy.toLocaleDateString('en-CA');
+
+  // Mes que se está viendo (empieza en el mes actual)
   anio = this.hoy.getFullYear();
   mes = this.hoy.getMonth();
-  nombreMes = this.hoy.toLocaleDateString('es-CO', { month: 'long', year: 'numeric' });
+  nombreMes = '';
+  emptyDays: number[] = [];
+  totalDias = 0;
+  dias: Day[] = [];
 
-  // Lunes = primera columna
-  emptyDays = Array((new Date(this.anio, this.mes, 1).getDay() + 6) % 7).fill(0);
-  totalDias = new Date(this.anio, this.mes + 1, 0).getDate();
+  constructor() {
+    this.armarMes();
+  }
 
-  dias: Day[] = this.armarDias();
+  private armarMes() {
+    const primero = new Date(this.anio, this.mes, 1);
+    this.nombreMes = primero.toLocaleDateString('es-CO', { month: 'long', year: 'numeric' });
+    // Lunes = primera columna
+    this.emptyDays = Array((primero.getDay() + 6) % 7).fill(0);
+    this.totalDias = new Date(this.anio, this.mes + 1, 0).getDate();
+    this.dias = this.armarDias();
+  }
+
+  // delta = -1 (mes anterior) o 1 (mes siguiente). No se puede pasar del mes actual.
+  cambiarMes(delta: number) {
+    if (delta > 0 && !this.haySiguiente()) {
+      return;
+    }
+    const nuevo = new Date(this.anio, this.mes + delta, 1);
+    this.anio = nuevo.getFullYear();
+    this.mes = nuevo.getMonth();
+    this.armarMes();
+  }
+
+  haySiguiente() {
+    return this.anio < this.hoy.getFullYear() || this.mes < this.hoy.getMonth();
+  }
 
   armarDias(): Day[] {
     const lista: Day[] = [];
@@ -34,7 +62,7 @@ export class History {
       lista.push({
         number: n,
         mood: registro ? registro.mood : 0,
-        isToday: n === this.hoy.getDate(),
+        isToday: fecha === this.fechaHoy,
         date: fecha,
       });
     }

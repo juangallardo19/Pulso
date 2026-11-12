@@ -4,8 +4,8 @@
   <div class="page-inner">
     <header class="page-header">
       <h1>Historial</h1>
-      <a routerLink="/historial" class="icon-btn" aria-label="Acción"
-        ><span class="icon i-search"></span
+      <a routerLink="/estadisticas" class="icon-btn" aria-label="Ver estadísticas"
+        ><span class="icon i-chart"></span
       ></a>
     </header>
 
@@ -43,11 +43,17 @@
       <!-- Calendario -->
       <article class="card calendar">
         <div class="month">
-          <button class="icon-btn" type="button" aria-label="Mes anterior">
+          <button class="icon-btn" type="button" aria-label="Mes anterior" (click)="cambiarMes(-1)">
             <span class="icon sm i-left"></span>
           </button>
           <h3 class="nombre-mes">{{ nombreMes }}</h3>
-          <button class="icon-btn" type="button" aria-label="Mes siguiente">
+          <button
+            class="icon-btn"
+            type="button"
+            aria-label="Mes siguiente"
+            [class.deshabilitado]="!haySiguiente()"
+            (click)="cambiarMes(1)"
+          >
             <span class="icon sm i-right"></span>
           </button>
         </div>

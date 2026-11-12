@@ -165,3 +165,9 @@
     right: 40px;
   }
 }
+
+// Flecha de "mes siguiente" cuando ya se está viendo el mes actual
+.month .icon-btn.deshabilitado {
+  opacity: 0.35;
+  pointer-events: none;
+}
