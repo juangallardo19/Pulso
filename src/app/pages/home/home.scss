@@ -21,66 +21,103 @@
   grid-column: span 2;
 }
 
-/* Tarjeta principal con paisaje */
+/* Tarjeta principal: cielo al amanecer (foto de Unsplash, licencia libre) con degradado */
 .hero {
   position: relative;
-  min-height: 180px;
-  padding: 16px;
+  isolation: isolate;
+  min-height: 220px;
+  padding: 18px;
   border-radius: 28px;
   overflow: hidden;
-  color: #22223b;
-  background: linear-gradient(180deg, #ffe8d6 0%, #d9f2eb 100%);
-  box-shadow: var(--shadow);
+  color: #ffffff;
+  background: #3a3360;
+  box-shadow: var(--shadow-strong);
 }
 
-.sun {
+/* La foto se mueve muy despacio para dar vida a la tarjeta */
+.hero::before {
+  content: '';
   position: absolute;
-  top: 18px;
-  right: 30px;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: #ffd59e;
+  inset: 0;
+  z-index: -2;
+  background: url('/images/cielo-inicio.webp') center 35% / cover no-repeat;
+  animation: deriva 30s ease-in-out infinite alternate;
 }
 
-.hill {
+/* Degradado: más oscuro a la izquierda para que el saludo se lea */
+.hero::after {
+  content: '';
   position: absolute;
-  border-radius: 50%;
-  background: #b7e3d2;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    110deg,
+    rgba(43, 39, 72, 0.78) 0%,
+    rgba(43, 39, 72, 0.4) 50%,
+    rgba(43, 39, 72, 0.08) 100%
+  );
 }
 
-.hill.one {
-  width: 260px;
-  height: 120px;
-  left: -30px;
-  bottom: -60px;
-}
-
-.hill.two {
-  width: 240px;
-  height: 110px;
-  right: -50px;
-  bottom: -60px;
-  background: #9dd6c3;
+/* El sol y las colinas dibujados con CSS se reemplazan por la foto */
+.hero .sun,
+.hero .hill {
+  display: none;
 }
 
 .hero-text {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-text h3 {
+  font-size: 1.4rem;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.25);
 }
 
 .hero-text p {
-  font-size: 0.875rem;
-  color: #4a4a63;
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.88);
 }
 
+.hero-pista {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-bottom: 6px;
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Caritas sobre un panel de vidrio */
 .hero-panel {
   position: relative;
   display: flex;
   justify-content: space-between;
-  margin-top: 14px;
+  margin-top: 16px;
   padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(28, 24, 52, 0.18);
+}
+
+@keyframes deriva {
+  from {
+    transform: scale(1.02) translateX(0);
+  }
+
+  to {
+    transform: scale(1.1) translateX(-2%);
+  }
 }
 
 .mood-option {
@@ -223,12 +260,12 @@
   }
 
   .hero {
-    min-height: 250px;
+    min-height: 260px;
     padding: 28px;
   }
 
   .hero-text h3 {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .hero-panel {
