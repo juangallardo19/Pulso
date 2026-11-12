@@ -55,7 +55,27 @@ pulso-historial, pulso-goals, pulso-recordatorios, … → los datos de la cuent
 - **Avisos de recordatorios** solo mientras Pulso esté abierto y si la persona dio permiso al navegador.
 - **Bienestar U:** el bloque y el piso de cada oficina no están publicados en ucc.edu.co; hay que confirmarlos en el conmutador (602 7370660). Dos páginas oficiales dan horarios distintos para Bienestar (se usó el del directorio de Bienestar).
 
-## 6. Configuración del equipo
+## 6. Imágenes
+
+Fotos de [Unsplash](https://unsplash.com/license) (licencia libre: se pueden usar gratis, también en proyectos, sin pedir permiso). Se usan en baja opacidad, mezcladas con el diseño pastel.
+
+| Archivo | Dónde se usa | Autor |
+|---|---|---|
+| `public/images/fondo-acceso.webp` (1200×2133) | Panel de login, registro y metas | [Muhammed Evren](https://unsplash.com/@muhammed_evren) |
+| `public/images/cielo-inicio.webp` (1920×1283) | Bloque "Hola" del inicio | [Clint Patterson](https://unsplash.com/@cbpsc1) |
+
+## 7. CSS moderno que no salió en clase
+
+| Qué | Para qué |
+|---|---|
+| `@media (hover: hover)` | Los efectos al pasar el mouse solo en dispositivos con mouse |
+| `color-mix()` | Oscurecer un poco un color del tema al pasar el mouse |
+| `backdrop-filter: blur()` | Efecto de vidrio en las insignias y en el panel de caritas |
+| `:has()` | Resaltar el campo de hora al pasar el mouse |
+| `::-webkit-calendar-picker-indicator` | Pintar de morado el ícono del reloj de los campos de hora |
+| `animation-fill-mode: backwards` | La animación de entrada ya no bloquea el hover de los botones |
+
+## 8. Configuración del equipo
 
 - Si `angular.json` aparece modificado con una línea `"analytics"`, no se sube. Se evita para siempre con:
   ```bash
