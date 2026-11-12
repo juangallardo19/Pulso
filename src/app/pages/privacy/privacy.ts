@@ -4,6 +4,7 @@ import { NavBar } from '../../components/nav-bar/nav-bar';
 import { ToggleSwitch } from '../../domain/settings/toggle-switch/toggle-switch';
 import { AJUSTES_POR_DEFECTO, Settings } from '../../models/settings.model';
 import { LLAVES_DE_DATOS } from '../../models/cuenta.model';
+import { aplicarTema, temaOscuroElegido } from '../../models/settings.model';
 
 @Component({
   selector: 'app-privacy',
@@ -37,6 +38,7 @@ export class Privacy {
     if (confirm('¿Seguro? Se borrarán todos tus registros. Esta acción no se puede deshacer.')) {
       LLAVES_DE_DATOS.forEach((llave) => localStorage.removeItem(llave));
       this.ajustes.set({ ...AJUSTES_POR_DEFECTO });
+      aplicarTema(temaOscuroElegido());
       this.eliminado.set(true);
     }
   }

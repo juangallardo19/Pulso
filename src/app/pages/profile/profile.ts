@@ -4,7 +4,12 @@ import { NavBar } from '../../components/nav-bar/nav-bar';
 import { ToggleSwitch } from '../../domain/settings/toggle-switch/toggle-switch';
 import { User } from '../../models/user.model';
 import { Goals, METAS_POR_DEFECTO } from '../../models/goals.model';
-import { AJUSTES_POR_DEFECTO, Settings } from '../../models/settings.model';
+import {
+  AJUSTES_POR_DEFECTO,
+  aplicarTema,
+  Settings,
+  temaOscuroElegido,
+} from '../../models/settings.model';
 import { cerrarSesion as cerrarSesionDeCuenta } from '../../models/cuenta.model';
 
 @Component({
@@ -29,13 +34,14 @@ export class Profile {
   ajustes = signal<Settings>({
     ...AJUSTES_POR_DEFECTO,
     ...JSON.parse(localStorage.getItem('pulso-ajustes') ?? '{}'),
+    darkMode: temaOscuroElegido(),
   });
 
-  // Solo se guarda la preferencia: aplicar el tema a toda la app
-  // requeriría tocar app.html y styles.scss, que están congelados.
+  // Cambia el tema de toda la app al instante y lo guarda para la próxima vez
   cambiarModoOscuro(valor: boolean) {
     this.ajustes.update((a) => ({ ...a, darkMode: valor }));
     localStorage.setItem('pulso-ajustes', JSON.stringify(this.ajustes()));
+    aplicarTema(valor);
   }
 
   // Guarda los datos en la cuenta y cierra la sesión (la cuenta sigue existiendo)

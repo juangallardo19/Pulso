@@ -1,3 +1,5 @@
+import { aplicarTema, temaOscuroElegido } from './settings.model';
+
 // "Base de datos" de Pulso: un JSON guardado en localStorage (persiste al recargar y al cerrar
 // el navegador). No hay servidor: todo vive en el navegador de quien usa la app.
 //
@@ -59,6 +61,7 @@ export function abrirSesion(cuenta: Cuenta) {
     }
   });
   localStorage.setItem('pulso-user', JSON.stringify({ name: cuenta.name, email: cuenta.email }));
+  aplicarTema(temaOscuroElegido()); // cada cuenta tiene su propio tema
 }
 
 // Guarda los datos actuales en la cuenta abierta y los quita de las llaves de las páginas
@@ -76,4 +79,5 @@ export function cerrarSesion() {
   }
   LLAVES_DE_DATOS.forEach((llave) => localStorage.removeItem(llave));
   localStorage.removeItem('pulso-user');
+  aplicarTema(temaOscuroElegido());
 }
