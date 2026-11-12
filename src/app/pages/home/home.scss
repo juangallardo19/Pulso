@@ -21,11 +21,13 @@
   grid-column: span 2;
 }
 
-/* Tarjeta principal con paisaje */
+/* Tarjeta principal: el paisaje pastel de siempre con la foto del cielo (Unsplash, licencia
+   libre) encima en baja opacidad, para que se mezcle con el diseño */
 .hero {
   position: relative;
-  min-height: 180px;
-  padding: 16px;
+  isolation: isolate;
+  min-height: 220px;
+  padding: 18px;
   border-radius: 28px;
   overflow: hidden;
   color: #22223b;
@@ -33,54 +35,76 @@
   box-shadow: var(--shadow);
 }
 
-.sun {
+/* La foto apenas se asoma y se mueve muy despacio */
+.hero::before {
+  content: '';
   position: absolute;
-  top: 18px;
-  right: 30px;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: #ffd59e;
-}
-
-.hill {
-  position: absolute;
-  border-radius: 50%;
-  background: #b7e3d2;
-}
-
-.hill.one {
-  width: 260px;
-  height: 120px;
-  left: -30px;
-  bottom: -60px;
-}
-
-.hill.two {
-  width: 240px;
-  height: 110px;
-  right: -50px;
-  bottom: -60px;
-  background: #9dd6c3;
+  inset: 0;
+  z-index: -1;
+  background: url('/images/cielo-inicio.webp') center 35% / cover no-repeat;
+  opacity: 0.28;
+  mix-blend-mode: multiply;
+  animation: deriva 30s ease-in-out infinite alternate;
 }
 
 .hero-text {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-text h3 {
+  font-size: 1.4rem;
 }
 
 .hero-text p {
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   color: #4a4a63;
 }
 
+.hero-pista {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-bottom: 6px;
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  color: #3b3566;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.hero-pista .icon {
+  color: #7c6cf2;
+}
+
+/* Caritas sobre un panel de vidrio */
 .hero-panel {
   position: relative;
   display: flex;
   justify-content: space-between;
-  margin-top: 14px;
+  margin-top: 16px;
   padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(28, 24, 52, 0.18);
+}
+
+@keyframes deriva {
+  from {
+    transform: scale(1.02) translateX(0);
+  }
+
+  to {
+    transform: scale(1.1) translateX(-2%);
+  }
 }
 
 .mood-option {
@@ -223,12 +247,12 @@
   }
 
   .hero {
-    min-height: 250px;
+    min-height: 260px;
     padding: 28px;
   }
 
   .hero-text h3 {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .hero-panel {
