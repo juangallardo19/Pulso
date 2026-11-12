@@ -12,7 +12,8 @@
         </div>
       </div>
       <a routerLink="/recordatorios" class="icon-btn" aria-label="Recordatorios">
-        <span class="icon i-bell"></span><span class="dot"></span>
+        <span class="icon i-bell"></span
+        ><span class="dot" [class.oculto]="!hayRecordatorios()"></span>
       </a>
     </header>
 
@@ -31,6 +32,7 @@
             *ngFor="let m of moods"
             routerLink="/checkin/animo"
             class="mood-option"
+            (click)="elegirAnimo(m.value)"
             [class.selected]="m.value === hoy.mood"
             ><img [src]="m.image" alt="" /><span>{{ m.label }}</span></a
           >

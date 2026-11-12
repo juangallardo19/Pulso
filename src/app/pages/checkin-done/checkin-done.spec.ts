@@ -25,13 +25,29 @@ describe('CheckinDone', () => {
     expect(component).toBeTruthy();
   });
 
-  it('con 3 días en el historial la racha es 3', async () => {
+  // Fecha de hace N días en formato AAAA-MM-DD (la racha depende de la fecha real)
+  function haceDias(n: number) {
+    const d = new Date();
+    d.setDate(d.getDate() - n);
+    return d.toLocaleDateString('en-CA');
+  }
+
+  it('con 3 días seguidos hasta hoy la racha es 3', async () => {
     localStorage.setItem(
       'pulso-historial',
-      JSON.stringify([{ date: '2026-11-09' }, { date: '2026-11-10' }, { date: '2026-11-11' }]),
+      JSON.stringify([{ date: haceDias(2) }, { date: haceDias(1) }, { date: haceDias(0) }]),
     );
     await crear();
     expect(component.racha).toBe(3);
+  });
+
+  it('un día sin check-in corta la racha', async () => {
+    localStorage.setItem(
+      'pulso-historial',
+      JSON.stringify([{ date: haceDias(5) }, { date: haceDias(4) }, { date: haceDias(0) }]),
+    );
+    await crear();
+    expect(component.racha).toBe(1);
   });
 
   it('sin historial la racha es 0', async () => {
