@@ -708,6 +708,139 @@ textarea.note:focus {
   box-shadow: var(--shadow-strong);
 }
 
+/* =========================
+   INTERACCIÓN
+   Todo lo que se puede tocar muestra la "mano", reacciona al pasar el mouse
+   y se encoge un poco al hacer clic.
+========================== */
+a[href],
+button:not(:disabled),
+label[for],
+.chip,
+.pressable,
+.mood,
+.mood-option,
+.q,
+.technique,
+.setting,
+.toggle,
+input[type='range'],
+input[type='checkbox'],
+input[type='time'] {
+  cursor: pointer;
+}
+
+.btn,
+.icon-btn,
+.round-btn,
+.chip,
+.segmented button,
+.mood,
+.mood-option,
+.q,
+.line,
+.setting,
+.link {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    filter 0.2s ease;
+}
+
+/* Solo en dispositivos con mouse (en el celular el hover se quedaría "pegado") */
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06) saturate(1.05);
+    box-shadow: 0 14px 30px rgba(124, 108, 242, 0.38);
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    background: color-mix(in srgb, var(--tint-lav) 78%, var(--primary));
+  }
+
+  .btn-ghost:hover {
+    color: var(--text);
+    background: var(--tint-lav);
+  }
+
+  .btn-danger:hover {
+    background: var(--error);
+    color: #ffffff;
+  }
+
+  .icon-btn:hover,
+  .round-btn:hover {
+    transform: translateY(-2px);
+    color: var(--primary);
+    box-shadow: var(--shadow);
+  }
+
+  .chip:not(.active):hover {
+    border-color: var(--primary);
+    background: var(--tint-lav);
+    color: var(--primary);
+  }
+
+  .chip.active:hover {
+    filter: brightness(1.08);
+  }
+
+  .segmented button:not(.active):hover {
+    background: var(--tint-lav);
+    color: var(--primary);
+  }
+
+  .mood:hover,
+  .mood-option:hover {
+    transform: translateY(-4px);
+  }
+
+  .q:not(.on):hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .setting:hover {
+    background: color-mix(in srgb, var(--tint-lav) 60%, transparent);
+  }
+
+  .line:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+
+  .toggle:hover {
+    filter: brightness(0.94);
+  }
+
+  .link:hover,
+  .auth-footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Al hacer clic, el clic gana sobre el hover */
+  .btn:hover:active,
+  .icon-btn:hover:active,
+  .round-btn:hover:active,
+  .chip:hover:active,
+  .mood:hover:active,
+  .mood-option:hover:active,
+  .line:hover:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Lo que está deshabilitado no reacciona */
+.deshabilitado {
+  cursor: not-allowed;
+}
+
 /* Entrada suave del contenido de cada página */
 @keyframes fade-up {
   from {
