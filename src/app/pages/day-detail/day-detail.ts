@@ -45,6 +45,11 @@ export class DayDetail {
     return resto === 0 ? horas + ' h' : horas + ' h ' + resto + ' min';
   }
 
+  // Los registros anteriores a este cambio no tienen calidad
+  textoCalidad() {
+    return this.registro.sleepQuality ? ' · calidad ' + this.registro.sleepQuality : '';
+  }
+
   tiposEjercicio() {
     return this.registro.exerciseTypes.join(', ').toLowerCase();
   }

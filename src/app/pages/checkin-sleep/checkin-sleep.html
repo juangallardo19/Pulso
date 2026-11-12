@@ -34,17 +34,21 @@
           <p class="small">Dormiste</p>
           <h2>{{ horasDormidas() }}</h2>
         </div>
-        <span class="small">Meta 8 h</span>
+        <span class="small">Meta {{ metaSueno }} h</span>
       </article>
 
       <div class="quality">
         <span class="label">Calidad del sueño</span>
         <div class="dots-row">
-          <span class="q on pressable">1</span>
-          <span class="q on pressable">2</span>
-          <span class="q on pressable">3</span>
-          <span class="q on pressable">4</span>
-          <span class="q pressable">5</span>
+          <span
+            *ngFor="let n of niveles"
+            class="q pressable"
+            role="button"
+            [class.on]="n <= calidad()"
+            [attr.aria-label]="'Calidad ' + n + ' de 5'"
+            (click)="elegirCalidad(n)"
+            >{{ n }}</span
+          >
         </div>
         <div class="limits"><span>Mala</span><span>Excelente</span></div>
       </div>

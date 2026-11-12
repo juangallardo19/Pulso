@@ -18,6 +18,8 @@ export class CheckinExercise {
     ...JSON.parse(localStorage.getItem('pulso-checkin-hoy') ?? '{}'),
   };
   minutosCtrl = new FormControl(this.checkin.exerciseMinutes, { nonNullable: true });
+  metaMinutos: number =
+    JSON.parse(localStorage.getItem('pulso-goals') ?? '{}').exerciseMinutes ?? 30;
   tipos = ['Caminar', 'Correr', 'Gimnasio', 'Deporte', 'Yoga', 'Otro'];
   elegidos = signal<string[]>(this.checkin.exerciseTypes);
 
