@@ -933,6 +933,7 @@ input[type='time'] {
     grid-template-columns: 1fr 1fr;
   }
 
+  /* Panel con foto (Unsplash, licencia libre) y un degradado para que el texto se lea */
   .auth-side {
     position: sticky;
     top: 20px;
@@ -940,72 +941,140 @@ input[type='time'] {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    gap: 16px;
+    gap: 18px;
     margin: 20px;
     padding: 48px;
     border-radius: 40px;
     overflow: hidden;
-    color: #22223b;
-    background: linear-gradient(160deg, #e6e2fd 0%, #ddf3ef 100%);
+    isolation: isolate;
+    color: #ffffff;
+    background: #2b2748;
+    box-shadow: var(--shadow-strong);
+  }
+
+  /* La foto se acerca muy despacio (efecto "Ken Burns") */
+  .auth-side::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: url('/images/fondo-acceso.webp') center / cover no-repeat;
+    animation: acercar 26s ease-in-out infinite alternate;
+  }
+
+  .auth-side::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 85% 12%, rgba(255, 213, 158, 0.35) 0, transparent 38%),
+      linear-gradient(
+        180deg,
+        rgba(43, 39, 72, 0) 0%,
+        rgba(43, 39, 72, 0.15) 40%,
+        rgba(28, 24, 52, 0.85) 100%
+      );
+  }
+
+  /* El sol y las colinas dibujados con CSS se reemplazan por la foto */
+  .auth-side .sun,
+  .auth-side .hill {
+    display: none;
   }
 
   .auth-side h2 {
     position: relative;
-    font-size: 2rem;
-    max-width: 420px;
+    max-width: 440px;
+    font-size: 2.4rem;
+    line-height: 1.15;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
   }
 
   .auth-side p {
     position: relative;
     max-width: 400px;
-    color: #4a4a63;
+    color: rgba(255, 255, 255, 0.86);
   }
 
-  .auth-side .sun {
-    position: absolute;
-    top: 64px;
-    right: 64px;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: #ffd59e;
-  }
-
-  .auth-side .hill {
-    position: absolute;
-    border-radius: 50%;
-    background: #b7e3d2;
-  }
-
-  .auth-side .hill.one {
-    width: 520px;
-    height: 260px;
-    left: -120px;
-    top: 230px;
-  }
-
-  .auth-side .hill.two {
-    width: 460px;
-    height: 240px;
-    right: -140px;
-    top: 280px;
-    background: #9dd6c3;
-  }
-
+  /* Caritas dentro de una píldora de vidrio */
   .auth-side .faces {
     position: relative;
     display: flex;
-    gap: 12px;
+    gap: 10px;
+    width: fit-content;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(10px);
   }
 
   .auth-side .faces img {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
+    transition: transform 0.2s ease;
+  }
+
+  .auth-side .faces img:hover {
+    transform: translateY(-4px) scale(1.08);
+  }
+
+  /* Insignias que flotan arriba a la izquierda */
+  .auth-badges {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .auth-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+    background: rgba(28, 24, 52, 0.42);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 24px rgba(28, 24, 52, 0.2);
+    font-size: 0.875rem;
+    font-weight: 600;
+    animation: flotar 6s ease-in-out infinite;
+  }
+
+  .auth-badge:nth-child(2) {
+    margin-left: 28px;
+    animation-delay: -3s;
   }
 
   .auth-main {
     justify-content: center;
     padding: 48px;
+  }
+}
+
+@keyframes acercar {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes flotar {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
   }
 }
 
