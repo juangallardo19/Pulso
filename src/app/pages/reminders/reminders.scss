@@ -26,3 +26,89 @@
     max-width: 320px;
   }
 }
+
+/* Formulario de nuevo recordatorio */
+.nuevo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+}
+
+.etiqueta {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Todo el campo de hora se puede tocar */
+.campo-hora,
+.campo-hora input {
+  cursor: pointer;
+}
+
+.campo-hora input {
+  flex: 1;
+}
+
+.dias {
+  display: flex;
+  gap: 6px;
+}
+
+.dia {
+  flex: 1;
+  height: 40px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-title);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.dia:hover {
+  border-color: var(--primary);
+}
+
+.dia:active {
+  transform: scale(0.94);
+}
+
+.dia.on {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.atajos {
+  display: flex;
+  gap: 8px;
+}
+
+.atajo {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--tint-lav);
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.atajo:hover {
+  filter: brightness(0.95);
+}
+
+.aviso {
+  color: var(--muted);
+}
+
+.guardar {
+  margin-top: 4px;
+}
