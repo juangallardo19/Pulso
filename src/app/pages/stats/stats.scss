@@ -30,7 +30,8 @@
   stroke-width: 3;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
-  stroke-dasharray: 600;
+  // Más largo que cualquier ancho de pantalla, para que la animación dibuje la línea completa
+  stroke-dasharray: 2000;
   animation: draw 1.4s ease-out both;
 }
 
@@ -150,7 +151,7 @@
 
 @keyframes draw {
   from {
-    stroke-dashoffset: 600;
+    stroke-dashoffset: 2000;
   }
 
   to {
