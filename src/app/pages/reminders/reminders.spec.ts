@@ -1,66 +1,107 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 import { Reminders } from './reminders';
+import { Reminder } from '../../models/reminder.model';
+import { guardar, leer, montar, Pantalla } from '../../../testing/dom';
 
+const tomarAgua: Reminder = {
+  id: 1,
+  title: 'Tomar agua',
+  time: '10:00',
+  icon: 'i-droplet',
+  iconColor: 'c-secondary',
+  bubble: 'bg-mint',
+  dayColor: 'secondary',
+  activeDays: ['L', 'X'],
+  isActive: true,
+};
+
+// Abre el formulario, lo llena y toca "Guardar"
+async function crear(p: Pantalla<Reminders>, titulo: string, hora: string) {
+  await p.clic('.new');
+  await p.escribir('form input[type="text"]', titulo);
+  await p.escribir('form input[type="time"]', hora);
+  await p.clic('form .btn-primary');
+}
+
+// Recordatorios: todo se prueba tocando y escribiendo en el HTML
 describe('Reminders', () => {
-  let component: Reminders;
-  let fixture: ComponentFixture<Reminders>;
-
-  beforeEach(async () => {
-    localStorage.clear();
-
-    await TestBed.configureTestingModule({
-      imports: [Reminders],
-      providers: [provideRouter([])],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Reminders);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
+  beforeEach(() => localStorage.clear());
   afterEach(() => localStorage.clear());
 
-  it('se crea', () => {
-    expect(component).toBeTruthy();
+  it('empieza vacío (sin recordatorios inventados) y lo dice', async () => {
+    const p = await montar(Reminders);
+    expect(p.cuantos('app-reminder-card')).toBe(0);
+    expect(p.visible('.vacio')).toBe(true);
   });
 
-  it('sin datos muestra los 4 recordatorios de ejemplo', () => {
-    expect(component.recordatorios().length).toBe(4);
-    expect(fixture.nativeElement.querySelectorAll('app-reminder-card').length).toBe(4);
+  it('muestra los recordatorios guardados', async () => {
+    guardar('pulso-recordatorios', [tomarAgua]);
+    const p = await montar(Reminders);
+    expect(p.cuantos('app-reminder-card')).toBe(1);
+    expect(p.texto('app-reminder-card h3')).toBe('Tomar agua');
+    expect(p.texto('app-reminder-card .metric')).toBe('10:00');
+    expect(p.visible('.vacio')).toBe(false);
   });
 
-  it('alternar(id) cambia isActive y lo guarda', () => {
-    component.alternar(3);
-    expect(component.recordatorios().find((r) => r.id === 3)?.isActive).toBe(true);
-    const guardados = JSON.parse(localStorage.getItem('pulso-recordatorios') ?? '[]');
-    expect(guardados.find((r: { id: number }) => r.id === 3).isActive).toBe(true);
+  it('"Nuevo recordatorio" muestra y oculta el formulario', async () => {
+    const p = await montar(Reminders);
+    expect(p.visible('form')).toBe(false);
+    await p.clic('.new');
+    expect(p.visible('form')).toBe(true);
+    await p.clic('.new');
+    expect(p.visible('form')).toBe(false);
   });
 
-  it('eliminar(id) deja 3 recordatorios', () => {
-    component.eliminar(1);
-    expect(component.recordatorios().length).toBe(3);
-    expect(JSON.parse(localStorage.getItem('pulso-recordatorios') ?? '[]').length).toBe(3);
+  it('"Guardar" está deshabilitado hasta escribir título y hora', async () => {
+    const p = await montar(Reminders);
+    await p.clic('.new');
+    expect(p.tieneClase('form .btn-primary', 'deshabilitado')).toBe(true);
+    await p.escribir('form input[type="text"]', 'Estirar la espalda');
+    await p.escribir('form input[type="time"]', '16:00');
+    expect(p.tieneClase('form .btn-primary', 'deshabilitado')).toBe(false);
   });
 
-  it('agregar() con el formulario inválido no agrega', () => {
-    component.nuevoForm.setValue({ title: 'ab', time: '' });
-    component.agregar();
-    expect(component.recordatorios().length).toBe(4);
+  it('crear un recordatorio lo agrega a la lista, lo guarda y cierra el formulario', async () => {
+    const p = await montar(Reminders);
+    await crear(p, 'Estirar la espalda', '16:00');
+    expect(p.cuantos('app-reminder-card')).toBe(1);
+    expect(p.texto('app-reminder-card h3')).toBe('Estirar la espalda');
+    expect(p.visible('form')).toBe(false);
+    expect(leer('pulso-recordatorios')[0].title).toBe('Estirar la espalda');
   });
 
-  it('agregar() con el formulario válido agrega y oculta el formulario', () => {
-    component.formularioVisible.set(true);
-    component.nuevoForm.setValue({ title: 'Estirar la espalda', time: '16:00' });
-    component.agregar();
-    expect(component.recordatorios().length).toBe(5);
-    expect(component.recordatorios()[4].title).toBe('Estirar la espalda');
-    expect(component.formularioVisible()).toBe(false);
+  it('un título de menos de 3 letras no se guarda', async () => {
+    const p = await montar(Reminders);
+    await crear(p, 'Ok', '16:00');
+    expect(p.cuantos('app-reminder-card')).toBe(0);
   });
 
-  it('lee los recordatorios guardados al crearse', () => {
-    component.eliminar(1);
-    const otra = TestBed.createComponent(Reminders);
-    expect(otra.componentInstance.recordatorios().length).toBe(3);
+  it('el interruptor apaga y prende un recordatorio y lo guarda', async () => {
+    guardar('pulso-recordatorios', [tomarAgua]);
+    const p = await montar(Reminders);
+    await p.clic('app-reminder-card .toggle');
+    expect(p.tieneClase('app-reminder-card article', 'off')).toBe(true);
+    expect(leer('pulso-recordatorios')[0].isActive).toBe(false);
+    await p.clic('app-reminder-card .toggle');
+    expect(leer('pulso-recordatorios')[0].isActive).toBe(true);
+  });
+
+  it('la papelera elimina el recordatorio', async () => {
+    guardar('pulso-recordatorios', [tomarAgua, { ...tomarAgua, id: 2, title: 'Dormir' }]);
+    const p = await montar(Reminders);
+    await p.clic('[aria-label="Eliminar recordatorio"]', 0);
+    expect(p.cuantos('app-reminder-card')).toBe(1);
+    expect(p.texto('app-reminder-card h3')).toBe('Dormir');
+    expect(leer('pulso-recordatorios').length).toBe(1);
+  });
+
+  it('marca los días de la semana en que suena', async () => {
+    guardar('pulso-recordatorios', [tomarAgua]);
+    const p = await montar(Reminders);
+    expect(p.todos('.day.on').map((d) => d.textContent)).toEqual(['L', 'X']);
+  });
+
+  it('"Volver" lleva al perfil', async () => {
+    const p = await montar(Reminders);
+    expect(p.href('[aria-label="Volver"]')).toBe('/perfil');
   });
 });

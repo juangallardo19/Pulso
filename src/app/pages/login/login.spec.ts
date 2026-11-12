@@ -1,89 +1,90 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-
 import { Login } from './login';
+import { guardar, montar } from '../../../testing/dom';
 
+const laura = { name: 'Laura Gómez', email: 'laura@uni.edu.co' };
+
+// Login: todo se prueba escribiendo y tocando el HTML
 describe('Login', () => {
-  let component: Login;
-  let fixture: ComponentFixture<Login>;
-
-  async function crear() {
-    await TestBed.configureTestingModule({
-      imports: [Login],
-      providers: [provideRouter([])],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Login);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  }
-
   beforeEach(() => localStorage.clear());
-  afterEach(() => localStorage.clear());
-
-  it('se crea', async () => {
-    await crear();
-    expect(component).toBeTruthy();
+  afterEach(() => {
+    localStorage.clear();
+    vi.restoreAllMocks();
   });
 
-  it('el formulario empieza inválido', async () => {
-    await crear();
-    expect(component.loginForm.valid).toBe(false);
+  it('el botón empieza deshabilitado', async () => {
+    guardar('pulso-user', laura);
+    const p = await montar(Login);
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(true);
   });
 
-  it('es válido con un correo y una contraseña correctos', async () => {
-    await crear();
-    component.loginForm.setValue({ email: 'laura@uni.edu.co', password: '12345678' });
-    expect(component.loginForm.valid).toBe(true);
+  it('con el correo registrado y una contraseña válida se habilita y lleva al inicio', async () => {
+    guardar('pulso-user', laura);
+    const p = await montar(Login);
+    await p.escribir('#email', 'laura@uni.edu.co');
+    await p.escribir('#password', '12345678');
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(false);
+    expect(p.href('.btn-primary')).toBe('/inicio');
   });
 
-  it('es inválido con un correo sin @', async () => {
-    await crear();
-    component.loginForm.setValue({ email: 'laura.uni.edu.co', password: '12345678' });
-    expect(component.loginForm.valid).toBe(false);
+  it('un correo sin @ marca el campo en rojo y muestra el error', async () => {
+    guardar('pulso-user', laura);
+    const p = await montar(Login);
+    await p.escribir('#email', 'laura.uni.edu.co');
+    expect(p.tieneClase('.field', 'error', 0)).toBe(true);
+    expect(p.texto('.error-text.show')).toBe('Escribe un correo válido');
   });
 
-  it('es inválido con una contraseña de 5 letras', async () => {
-    await crear();
-    component.loginForm.setValue({ email: 'laura@uni.edu.co', password: '12345' });
-    expect(component.loginForm.valid).toBe(false);
+  it('una contraseña de menos de 8 caracteres muestra el error', async () => {
+    guardar('pulso-user', laura);
+    const p = await montar(Login);
+    await p.escribir('#password', '12345');
+    expect(p.texto('.error-text.show')).toBe('Mínimo 8 caracteres');
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(true);
   });
 
-  it('solo marca el correo como inválido después de tocarlo', async () => {
-    await crear();
-    expect(component.campoInvalido('email')).toBe(false);
-    component.loginForm.get('email')?.markAsTouched();
-    expect(component.campoInvalido('email')).toBe(true);
+  it('los errores no aparecen antes de escribir', async () => {
+    guardar('pulso-user', laura);
+    const p = await montar(Login);
+    expect(p.existe('.error-text.show')).toBe(false);
   });
 
-  it('avisa si el correo no es el que está registrado', async () => {
-    localStorage.setItem('pulso-user', JSON.stringify({ name: 'Laura', email: 'laura@uni.edu.co' }));
-    await crear();
-    component.loginForm.setValue({ email: 'otro@uni.edu.co', password: '12345678' });
-    expect(component.correoNoRegistrado()).toBe(true);
-    component.loginForm.setValue({ email: 'laura@uni.edu.co', password: '12345678' });
-    expect(component.correoNoRegistrado()).toBe(false);
+  it('con otro correo avisa que no está registrado y no deja entrar', async () => {
+    guardar('pulso-user', laura);
+    const p = await montar(Login);
+    await p.escribir('#email', 'otro@uni.edu.co');
+    await p.escribir('#password', '12345678');
+    expect(p.texto('.error-text.show')).toBe('Este correo no está registrado');
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(true);
   });
 
-  it('no avisa nada si no hay ningún usuario guardado', async () => {
-    await crear();
-    component.loginForm.setValue({ email: 'otro@uni.edu.co', password: '12345678' });
-    expect(component.correoNoRegistrado()).toBe(false);
+  it('sin ninguna cuenta creada pide registrarse y no deja entrar', async () => {
+    const p = await montar(Login);
+    await p.escribir('#email', 'laura@uni.edu.co');
+    await p.escribir('#password', '12345678');
+    expect(p.texto('.error-text.show')).toContain('Regístrate primero');
+    expect(p.tieneClase('.btn-primary', 'deshabilitado')).toBe(true);
   });
 
-  it('deshabilita el botón mientras el formulario es inválido', async () => {
-    await crear();
-    const boton: HTMLElement = fixture.nativeElement.querySelector('.btn-primary');
-    expect(boton.classList).toContain('deshabilitado');
+  it('el ojo muestra y oculta la contraseña', async () => {
+    const p = await montar(Login);
+    const clave = p.el('#password') as HTMLInputElement;
+    expect(clave.type).toBe('password');
+    await p.clic('.ver-clave');
+    expect(clave.type).toBe('text');
+    expect(p.atributo('.ver-clave', 'aria-label')).toBe('Ocultar contraseña');
+    await p.clic('.ver-clave');
+    expect(clave.type).toBe('password');
+  });
 
-    // Simula que el usuario escribe en los dos campos
-    const correo: HTMLInputElement = fixture.nativeElement.querySelector('#email');
-    const clave: HTMLInputElement = fixture.nativeElement.querySelector('#password');
-    correo.value = 'laura@uni.edu.co';
-    correo.dispatchEvent(new Event('input'));
-    clave.value = '12345678';
-    clave.dispatchEvent(new Event('input'));
-    await fixture.whenStable();
-    expect(boton.classList).not.toContain('deshabilitado');
+  it('"¿Olvidaste tu contraseña?" explica cómo recuperarla', async () => {
+    const aviso = vi.spyOn(window, 'alert').mockImplementation(() => {});
+    const p = await montar(Login);
+    await p.clic('.forgot');
+    expect(aviso).toHaveBeenCalledWith(expect.stringContaining('Regístrate'));
+  });
+
+  it('el link "Regístrate" lleva a /registro', async () => {
+    const p = await montar(Login);
+    expect(p.href('.auth-footer a')).toBe('/registro');
   });
 });

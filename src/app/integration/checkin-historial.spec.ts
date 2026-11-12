@@ -1,81 +1,73 @@
-import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 import { CheckinMood } from '../pages/checkin-mood/checkin-mood';
 import { CheckinWater } from '../pages/checkin-water/checkin-water';
 import { CheckinSummary } from '../pages/checkin-summary/checkin-summary';
 import { History } from '../pages/history/history';
 import { DayDetail } from '../pages/day-detail/day-detail';
 import { Stats } from '../pages/stats/stats';
-import { CheckinEntry } from '../models/checkin.model';
+import { Home } from '../pages/home/home';
+import { leer, montar } from '../../testing/dom';
+
+// Hace el check-in como lo haría una persona: toca la carita, suma vasos y guarda
+async function hacerCheckin(carita: number, vasos: number) {
+  const animo = await montar(CheckinMood);
+  await animo.clic('.mood', carita);
+  await animo.clic('.btn-primary');
+
+  const agua = await montar(CheckinWater);
+  for (let i = 0; i < vasos; i++) {
+    await agua.clic('.ctrl.plus');
+  }
+  await agua.clic('.btn-primary');
+
+  const resumen = await montar(CheckinSummary);
+  await resumen.clic('.btn-primary');
+}
 
 // Une el check-in (seba4s) con historial, detalle y estadísticas (andresc1108)
 describe('Integración: check-in → historial, detalle y estadísticas', () => {
-  beforeEach(async () => {
-    localStorage.clear();
-    await TestBed.configureTestingModule({
-      imports: [CheckinMood, CheckinWater, CheckinSummary, History, DayDetail, Stats],
-      providers: [provideRouter([])],
-    }).compileComponents();
-  });
-
+  beforeEach(() => localStorage.clear());
   afterEach(() => localStorage.clear());
 
-  // Hace el check-in como lo haría el usuario: ánimo → agua → resumen
-  function hacerCheckin(animo: number, vasos: number) {
-    const mood = TestBed.createComponent(CheckinMood).componentInstance;
-    mood.seleccionar(animo);
-    mood.guardar();
-
-    const agua = TestBed.createComponent(CheckinWater).componentInstance;
-    for (let i = 0; i < vasos; i++) {
-      agua.sumar();
-    }
-    agua.guardar();
-
-    TestBed.createComponent(CheckinSummary).componentInstance.guardarDia();
-  }
-
-  function leerHistorial(): CheckinEntry[] {
-    return JSON.parse(localStorage.getItem('pulso-historial') ?? '[]');
-  }
-
-  it('el check-in completo guarda un día en pulso-historial', () => {
-    hacerCheckin(5, 3);
-    const historial = leerHistorial();
+  it('el check-in completo guarda un día en el historial', async () => {
+    await hacerCheckin(4, 3); // carita 5 = "Muy bien"
+    const historial = leer('pulso-historial');
     expect(historial.length).toBe(1);
     expect(historial[0].mood).toBe(5);
     expect(historial[0].water).toBe(3);
-    expect(localStorage.getItem('pulso-checkin-hoy')).toBeNull();
+    expect(leer('pulso-checkin-hoy')).toBeNull();
   });
 
-  it('el día de hoy aparece en el calendario del historial con su ánimo', () => {
-    hacerCheckin(5, 3);
-    const historia = TestBed.createComponent(History).componentInstance;
-    const diaDeHoy = historia.dias.find((d) => d.isToday);
-    expect(diaDeHoy?.mood).toBe(5);
+  it('el día de hoy aparece en el calendario con su carita', async () => {
+    await hacerCheckin(4, 3);
+    const historial = await montar(History);
+    expect(historial.atributo('app-day-cell .today img', 'src')).toBe('moods/5.svg');
+    expect(historial.texto('.total .metric')).toBe('1');
   });
 
-  it('al elegir el día de hoy, el detalle muestra su registro', () => {
-    hacerCheckin(5, 3);
-    const historia = TestBed.createComponent(History).componentInstance;
-    const diaDeHoy = historia.dias.find((d) => d.isToday)!;
-    historia.elegirDia(diaDeHoy);
+  it('al tocar el día de hoy en el historial, el detalle muestra su registro', async () => {
+    await hacerCheckin(4, 3);
+    const historial = await montar(History);
+    await historial.clic('app-day-cell .today');
 
-    const detalle = TestBed.createComponent(DayDetail).componentInstance;
-    expect(detalle.existe).toBe(true);
-    expect(detalle.mood().label).toBe('Muy bien');
+    const detalle = await montar(DayDetail);
+    expect(detalle.texto('.mood-hero h2')).toBe('Muy bien');
+    expect(detalle.texto('.detail-grid')).toContain('3');
   });
 
-  it('las estadísticas toman el ánimo del check-in', () => {
-    hacerCheckin(5, 3);
-    const estadisticas = TestBed.createComponent(Stats).componentInstance;
-    expect(estadisticas.animoPromedio()).toBe('Muy bien');
+  it('las estadísticas y el inicio toman los datos del check-in', async () => {
+    await hacerCheckin(4, 3);
+    const estadisticas = await montar(Stats);
+    expect(estadisticas.texto('.mood-card h3')).toBe('Muy bien en promedio');
+
+    const inicio = await montar(Home);
+    expect(inicio.texto('.counter .metric')).toBe('3');
+    expect(inicio.texto('.hero-panel .selected')).toBe('Muy bien');
   });
 
-  it('repetir el check-in el mismo día reemplaza el registro', () => {
-    hacerCheckin(5, 3);
-    hacerCheckin(2, 1);
-    const historial = leerHistorial();
+  it('repetir el check-in el mismo día reemplaza el registro', async () => {
+    await hacerCheckin(4, 3);
+    await hacerCheckin(1, 1); // carita 2 = "Mal"
+    const historial = leer('pulso-historial');
     expect(historial.length).toBe(1);
     expect(historial[0].mood).toBe(2);
   });

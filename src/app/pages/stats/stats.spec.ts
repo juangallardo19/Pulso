@@ -1,89 +1,127 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 import { Stats } from './stats';
-import { CheckinEntry, CHECKIN_VACIO } from '../../models/checkin.model';
+import { CHECKIN_VACIO, CheckinEntry } from '../../models/checkin.model';
+import { guardar, montar } from '../../../testing/dom';
 
-const historialDePrueba: CheckinEntry[] = [
-  { ...CHECKIN_VACIO, date: '2026-11-01', mood: 4, sleepStart: '23:00', sleepEnd: '07:00' },
-  { ...CHECKIN_VACIO, date: '2026-11-02', mood: 4, sleepStart: '00:00', sleepEnd: '06:00' },
-  { ...CHECKIN_VACIO, date: '2026-11-03', mood: 4, sleepStart: '22:30', sleepEnd: '07:00' },
-];
-
-// 20 días seguidos para probar el corte de semana y mes
-const veinteDias: CheckinEntry[] = Array(20)
-  .fill(0)
-  .map((_, i) => ({
-    ...CHECKIN_VACIO,
-    date: '2026-10-' + String(i + 1).padStart(2, '0'),
-    mood: 3,
-  }));
-
-describe('Stats', () => {
-  let component: Stats;
-  let fixture: ComponentFixture<Stats>;
-
-  async function crear() {
-    await TestBed.configureTestingModule({
-      imports: [Stats],
-      providers: [provideRouter([])],
-    }).compileComponents();
-    fixture = TestBed.createComponent(Stats);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+// N días seguidos terminando el 2026-11-11 (miércoles); el ánimo va del 1 al 5 en ciclo
+function historialDe(n: number, extra: Partial<CheckinEntry> = {}): CheckinEntry[] {
+  const lista: CheckinEntry[] = [];
+  for (let i = n - 1; i >= 0; i--) {
+    lista.push({
+      ...CHECKIN_VACIO,
+      date: new Date(2026, 10, 11 - i).toLocaleDateString('en-CA'),
+      mood: (i % 5) + 1,
+      ...extra,
+    });
   }
+  return lista;
+}
 
+const dias = (p: { todos: (s: string) => HTMLElement[] }) =>
+  p.todos('.bar-col small').map((d) => d.textContent);
+
+// Estadísticas: todo se prueba tocando y leyendo el HTML
+describe('Stats', () => {
   beforeEach(() => localStorage.clear());
   afterEach(() => localStorage.clear());
 
-  it('se crea', async () => {
-    await crear();
-    expect(component).toBeTruthy();
+  it('sin registros muestra "Sin datos" y pide seguir registrando', async () => {
+    const p = await montar(Stats);
+    expect(p.texto('.mood-card h3')).toBe('Sin datos en promedio');
+    expect(p.cuantos('.bar-col')).toBe(0);
+    expect(p.texto('.insight h3')).toBe('Sigue registrando tus días');
   });
 
-  it('sin historial animoPromedio() es Sin datos', async () => {
-    await crear();
-    expect(component.animoPromedio()).toBe('Sin datos');
+  it('en "Semana" muestra los últimos 7 registros', async () => {
+    guardar('pulso-historial', historialDe(10));
+    const p = await montar(Stats);
+    expect(p.tieneClase('.segmented button', 'active', 0)).toBe(true);
+    expect(p.cuantos('.pt')).toBe(7);
+    expect(dias(p)).toEqual(['05', '06', '07', '08', '09', '10', '11']);
   });
 
-  it('con 3 días de ánimo 4 animoPromedio() es Bien', async () => {
-    localStorage.setItem('pulso-historial', JSON.stringify(historialDePrueba));
-    await crear();
-    expect(component.animoPromedio()).toBe('Bien');
-    expect(fixture.nativeElement.textContent).toContain('Bien en promedio');
-  });
-
-  it("periodo.set('mes') toma hasta 30 registros", async () => {
-    localStorage.setItem('pulso-historial', JSON.stringify(veinteDias));
-    await crear();
-    expect(component.registros().length).toBe(7);
-    component.periodo.set('mes');
-    await fixture.whenStable();
-    expect(component.registros().length).toBe(20);
-    expect(fixture.nativeElement.querySelectorAll('.bar-col').length).toBe(20);
-  });
-
-  it('cumpleMeta() usa 8 h si no existe pulso-goals', async () => {
-    localStorage.setItem('pulso-historial', JSON.stringify(historialDePrueba));
-    await crear();
-    expect(component.metaSueno).toBe(8);
-    expect(component.cumpleMeta(historialDePrueba[0])).toBe(true);
-    expect(component.cumpleMeta(historialDePrueba[1])).toBe(false);
-  });
-
-  it('cumpleMeta() usa la meta de pulso-goals', async () => {
-    localStorage.setItem('pulso-historial', JSON.stringify(historialDePrueba));
-    localStorage.setItem(
-      'pulso-goals',
-      JSON.stringify({ sleepHours: 6, waterGlasses: 8, exerciseMinutes: 30 }),
+  it('calcula el ánimo, el sueño y el estrés promedio', async () => {
+    guardar(
+      'pulso-historial',
+      historialDe(3, { mood: 4, stress: 6, sleepStart: '23:00', sleepEnd: '06:00' }),
     );
-    await crear();
-    expect(component.metaSueno).toBe(6);
-    expect(component.cumpleMeta(historialDePrueba[1])).toBe(true);
+    const p = await montar(Stats);
+    expect(p.texto('.mood-card h3')).toBe('Bien en promedio');
+    expect(p.texto('.stats-grid')).toContain('7 h al día');
+    expect(p.texto('.stats-grid')).toContain('6 / 10 en promedio');
   });
 
-  it('suenoPromedio() da el texto en horas y minutos', async () => {
-    localStorage.setItem('pulso-historial', JSON.stringify(historialDePrueba));
-    await crear();
-    expect(component.suenoPromedio()).toBe('7 h 30 min');
+  it('"Mes" muestra hasta 30 registros', async () => {
+    guardar('pulso-historial', historialDe(40));
+    const p = await montar(Stats);
+    await p.clic('.segmented button', 1);
+    expect(p.tieneClase('.segmented button', 'active', 1)).toBe(true);
+    expect(p.cuantos('.bar-col')).toBe(30);
+  });
+
+  it('"Anterior" muestra la semana pasada y "Siguiente" vuelve', async () => {
+    guardar('pulso-historial', historialDe(10));
+    const p = await montar(Stats);
+    await p.clic('[aria-label="Anterior"]');
+    expect(dias(p)).toEqual(['02', '03', '04']);
+    await p.clic('[aria-label="Siguiente"]');
+    expect(dias(p)).toEqual(['05', '06', '07', '08', '09', '10', '11']);
+  });
+
+  it('las flechas se deshabilitan cuando no hay más registros', async () => {
+    guardar('pulso-historial', historialDe(5));
+    const p = await montar(Stats);
+    expect(p.tieneClase('[aria-label="Anterior"]', 'deshabilitado')).toBe(true);
+    expect(p.tieneClase('[aria-label="Siguiente"]', 'deshabilitado')).toBe(true);
+  });
+
+  it('cambiar a "Mes" vuelve a los registros más recientes', async () => {
+    guardar('pulso-historial', historialDe(40));
+    const p = await montar(Stats);
+    await p.clic('[aria-label="Anterior"]');
+    await p.clic('.segmented button', 1);
+    expect(dias(p).at(-1)).toBe('11');
+  });
+
+  it('las barras de sueño se marcan cuando se cumple la meta', async () => {
+    guardar('pulso-goals', { sleepHours: 7 });
+    guardar('pulso-historial', [
+      { ...CHECKIN_VACIO, date: '2026-11-10', sleepStart: '23:00', sleepEnd: '07:00' },
+      { ...CHECKIN_VACIO, date: '2026-11-11', sleepStart: '01:00', sleepEnd: '06:00' },
+    ]);
+    const p = await montar(Stats);
+    expect(p.texto('.goal-line')).toBe('Meta 7 h');
+    expect(p.tieneClase('.bar', 'ok', 0)).toBe(true);
+    expect(p.tieneClase('.bar', 'ok', 1)).toBe(false);
+  });
+
+  it('la línea del gráfico pasa por los registros reales', async () => {
+    guardar('pulso-historial', historialDe(2));
+    const p = await montar(Stats);
+    expect(p.atributo('svg path', 'd')).toBe('M75.0 99.9 L225.0 124.9');
+  });
+
+  it('el mapa de estrés colorea cada día de la semana con su nivel', async () => {
+    // 2026-11-11 es miércoles (columna X)
+    guardar('pulso-historial', [{ ...CHECKIN_VACIO, date: '2026-11-11', stress: 9 }]);
+    const p = await montar(Stats);
+    const columnas = p.todos('.heat-col');
+    expect(columnas.map((c) => c.textContent?.trim())).toEqual(['L', 'M', 'X', 'J', 'V', 'S', 'D']);
+    expect((columnas[2].querySelector('span') as HTMLElement).style.opacity).toBe('0.9');
+    expect((columnas[0].querySelector('span') as HTMLElement).style.opacity).toBe('0.08');
+  });
+
+  it('el hallazgo compara el sueño de los días de más estrés', async () => {
+    guardar('pulso-historial', [
+      { ...CHECKIN_VACIO, date: '2026-11-10', stress: 9, sleepStart: '01:00', sleepEnd: '06:00' },
+      { ...CHECKIN_VACIO, date: '2026-11-11', stress: 3, sleepStart: '23:00', sleepEnd: '07:00' },
+    ]);
+    const p = await montar(Stats);
+    expect(p.texto('.insight h3')).toBe('Duermes menos los días de más estrés');
+    expect(p.texto('.insight p')).toBe('Esos días dormiste 3 h 0 min menos que el resto.');
+  });
+
+  it('el calendario del encabezado lleva al historial', async () => {
+    const p = await montar(Stats);
+    expect(p.href('.page-header a')).toBe('/historial');
   });
 });

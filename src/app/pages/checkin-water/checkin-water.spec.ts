@@ -1,70 +1,70 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 import { CheckinWater } from './checkin-water';
+import { guardar, leer, montar } from '../../../testing/dom';
 
+// Paso 3 del check-in: todo se prueba tocando el HTML
 describe('CheckinWater', () => {
-  let component: CheckinWater;
-  let fixture: ComponentFixture<CheckinWater>;
-
-  async function crear() {
-    await TestBed.configureTestingModule({
-      imports: [CheckinWater],
-      providers: [provideRouter([])],
-    }).compileComponents();
-    fixture = TestBed.createComponent(CheckinWater);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  }
-
   beforeEach(() => localStorage.clear());
-
   afterEach(() => localStorage.clear());
 
-  it('se crea', async () => {
-    await crear();
-    expect(component).toBeTruthy();
+  it('se crea en 0 vasos con la meta de 8 si no hay metas', async () => {
+    const p = await montar(CheckinWater);
+    expect(p.atributo('.stepper', 'aria-label')).toBe('Paso 3 de 6');
+    expect(p.texto('.big-number')).toBe('0/ 8 vasos');
   });
 
-  it('toma la meta de pulso-goals', async () => {
-    localStorage.setItem(
-      'pulso-goals',
-      JSON.stringify({ sleepHours: 8, waterGlasses: 6, exerciseMinutes: 30 }),
-    );
-    await crear();
-    expect(component.meta).toBe(6);
+  it('usa la meta de agua guardada', async () => {
+    guardar('pulso-goals', { waterGlasses: 6 });
+    const p = await montar(CheckinWater);
+    expect(p.texto('.big-number')).toContain('/ 6 vasos');
   });
 
-  it('sin pulso-goals la meta es 8', async () => {
-    await crear();
-    expect(component.meta).toBe(8);
+  it('el botón + suma vasos y el − los quita', async () => {
+    const p = await montar(CheckinWater);
+    await p.clic('.ctrl.plus');
+    await p.clic('.ctrl.plus');
+    expect(p.texto('.metric')).toBe('2');
+    await p.clic('.ctrl.minus');
+    expect(p.texto('.metric')).toBe('1');
   });
 
-  it('sumar() sube a 1', async () => {
-    await crear();
-    component.sumar();
-    expect(component.vasos()).toBe(1);
+  it('el botón − no baja de 0', async () => {
+    const p = await montar(CheckinWater);
+    await p.clic('.ctrl.minus');
+    expect(p.texto('.metric')).toBe('0');
   });
 
-  it('quitar() en 0 sigue en 0', async () => {
-    await crear();
-    component.quitar();
-    expect(component.vasos()).toBe(0);
+  it('dice cuántos vasos faltan y, al llegar, "¡Meta cumplida!"', async () => {
+    guardar('pulso-goals', { waterGlasses: 2 });
+    const p = await montar(CheckinWater);
+    await p.clic('.ctrl.plus');
+    expect(p.texto('.water p', 0)).toContain('Te faltan 1 vasos');
+    expect(p.visible('.water p', 1)).toBe(false);
+    await p.clic('.ctrl.plus');
+    expect(p.visible('.water p', 0)).toBe(false);
+    expect(p.visible('.water p', 1)).toBe(true);
   });
 
-  it('faltan() no baja de 0', async () => {
-    await crear();
-    for (let i = 0; i < 10; i++) {
-      component.sumar();
-    }
-    expect(component.faltan()).toBe(0);
+  it('el vaso se llena a medida que se suman vasos', async () => {
+    guardar('pulso-goals', { waterGlasses: 4 });
+    const p = await montar(CheckinWater);
+    await p.clic('.ctrl.plus');
+    expect(p.el('.water-fill').style.opacity).toBe('0.25');
   });
 
-  it('guardar() escribe water', async () => {
-    await crear();
-    component.sumar();
-    component.sumar();
-    component.guardar();
-    const hoy = JSON.parse(localStorage.getItem('pulso-checkin-hoy') ?? '{}');
-    expect(hoy.water).toBe(2);
+  it('"Siguiente" y "Omitir" guardan los vasos y siguen al ejercicio', async () => {
+    const p = await montar(CheckinWater);
+    await p.clic('.ctrl.plus');
+    await p.clic('.btn-primary');
+    expect(leer('pulso-checkin-hoy').water).toBe(1);
+    localStorage.clear();
+    await p.clic('.btn-ghost');
+    expect(leer('pulso-checkin-hoy').water).toBe(1);
+    expect(p.href('.btn-primary')).toBe('/checkin/ejercicio');
+  });
+
+  it('si ya había vasos registrados hoy, empieza desde ahí', async () => {
+    guardar('pulso-checkin-hoy', { water: 3 });
+    const p = await montar(CheckinWater);
+    expect(p.texto('.metric')).toBe('3');
   });
 });

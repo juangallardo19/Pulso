@@ -1,58 +1,65 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-
 import { Privacy } from './privacy';
+import { guardar, leer, montar } from '../../../testing/dom';
 
+// Privacidad: todo se prueba tocando el HTML
 describe('Privacy', () => {
-  let component: Privacy;
-  let fixture: ComponentFixture<Privacy>;
-
-  beforeEach(async () => {
-    localStorage.clear();
-    localStorage.setItem('pulso-historial', JSON.stringify([{ date: '2026-11-10', mood: 4 }]));
-
-    await TestBed.configureTestingModule({
-      imports: [Privacy],
-      providers: [provideRouter([])],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Privacy);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
+  beforeEach(() => localStorage.clear());
   afterEach(() => {
     localStorage.clear();
     vi.restoreAllMocks();
   });
 
-  it('se crea', () => {
-    expect(component).toBeTruthy();
+  it('muestra los dos interruptores con sus valores por defecto', async () => {
+    const p = await montar(Privacy);
+    expect(p.cuantos('app-toggle-switch')).toBe(2);
+    expect(p.tieneClase('.toggle', 'on', 0)).toBe(false); // compartir datos
+    expect(p.tieneClase('.toggle', 'on', 1)).toBe(true); // consejos
   });
 
-  it('muestra dos interruptores de ajustes', () => {
-    expect(fixture.nativeElement.querySelectorAll('app-toggle-switch').length).toBe(2);
+  it('tocar cada interruptor lo cambia y lo guarda', async () => {
+    const p = await montar(Privacy);
+    await p.clic('.toggle', 0);
+    await p.clic('.toggle', 1);
+    expect(p.tieneClase('.toggle', 'on', 0)).toBe(true);
+    expect(p.tieneClase('.toggle', 'on', 1)).toBe(false);
+    expect(leer('pulso-ajustes').shareAnonymousData).toBe(true);
+    expect(leer('pulso-ajustes').showInsights).toBe(false);
   });
 
-  it('cambiarCompartir guarda el ajuste en pulso-ajustes', () => {
-    component.cambiarCompartir(true);
-    const guardado = JSON.parse(localStorage.getItem('pulso-ajustes') ?? '{}');
-    expect(guardado.shareAnonymousData).toBe(true);
+  it('"Eliminar mis datos" pide confirmación y borra todo', async () => {
+    guardar('pulso-historial', [{ date: '2026-11-11' }]);
+    guardar('pulso-goals', { sleepHours: 7 });
+    guardar('pulso-recordatorios', []);
+    const pregunta = vi.spyOn(window, 'confirm').mockReturnValue(true);
+    const p = await montar(Privacy);
+    expect(p.visible('.eliminado')).toBe(false);
+    await p.clic('.btn-danger');
+    expect(pregunta).toHaveBeenCalled();
+    expect(leer('pulso-historial')).toBeNull();
+    expect(leer('pulso-goals')).toBeNull();
+    expect(leer('pulso-recordatorios')).toBeNull();
+    expect(p.visible('.eliminado')).toBe(true);
   });
 
-  it('si confirma, eliminarDatos borra el historial y muestra el aviso', async () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
-    component.eliminarDatos();
-    await fixture.whenStable();
-    expect(localStorage.getItem('pulso-historial')).toBeNull();
-    expect(component.eliminado()).toBe(true);
-    expect(fixture.nativeElement.querySelector('.eliminado.oculto')).toBeNull();
-  });
-
-  it('si cancela, eliminarDatos no borra nada', () => {
+  it('si se cancela la confirmación no borra nada', async () => {
+    guardar('pulso-historial', [{ date: '2026-11-11' }]);
     vi.spyOn(window, 'confirm').mockReturnValue(false);
-    component.eliminarDatos();
-    expect(localStorage.getItem('pulso-historial')).not.toBeNull();
-    expect(component.eliminado()).toBe(false);
+    const p = await montar(Privacy);
+    await p.clic('.btn-danger');
+    expect(leer('pulso-historial')).not.toBeNull();
+    expect(p.visible('.eliminado')).toBe(false);
+  });
+
+  it('después de eliminar, los interruptores vuelven a sus valores por defecto', async () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    const p = await montar(Privacy);
+    await p.clic('.toggle', 0);
+    await p.clic('.btn-danger');
+    expect(p.tieneClase('.toggle', 'on', 0)).toBe(false);
+  });
+
+  it('"Volver" lleva al perfil', async () => {
+    const p = await montar(Privacy);
+    expect(p.href('[aria-label="Volver"]')).toBe('/perfil');
   });
 });

@@ -1,56 +1,40 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-
 import { Breathe } from './breathe';
+import { leer, montar } from '../../../testing/dom';
 
+// Respira: todo se prueba tocando el HTML
 describe('Breathe', () => {
-  let component: Breathe;
-  let fixture: ComponentFixture<Breathe>;
-
-  beforeEach(async () => {
-    localStorage.clear();
-    await TestBed.configureTestingModule({
-      imports: [Breathe],
-      providers: [provideRouter([])],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Breathe);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
+  beforeEach(() => localStorage.clear());
   afterEach(() => localStorage.clear());
 
-  it('se crea', () => {
-    expect(component).toBeTruthy();
+  it('muestra las 2 técnicas con sus fases y la primera elegida', async () => {
+    const p = await montar(Breathe);
+    expect(p.cuantos('.technique')).toBe(2);
+    expect(p.texto('.technique h3', 0)).toBe('Respiración 4-7-8');
+    expect(p.texto('.technique .phases', 1)).toBe('4 inhala4 sostén4 exhala4 sostén');
+    expect(p.tieneClase('.technique', 'selected', 0)).toBe(true);
   });
 
-  it('muestra las 2 técnicas', () => {
-    expect(fixture.nativeElement.querySelectorAll('.technique').length).toBe(2);
+  it('tocar una técnica la marca como elegida', async () => {
+    const p = await montar(Breathe);
+    await p.clic('.technique', 1);
+    expect(p.tieneClase('.technique', 'selected', 1)).toBe(true);
+    expect(p.tieneClase('.technique', 'selected', 0)).toBe(false);
   });
 
-  it('al tocar la segunda técnica se marca como seleccionada', async () => {
-    const tarjetas = fixture.nativeElement.querySelectorAll('.technique');
-    tarjetas[1].click();
-    await fixture.whenStable();
-    expect(component.seleccionada()).toBe(1);
-    expect(tarjetas[1].classList).toContain('selected');
-    expect(tarjetas[0].classList).not.toContain('selected');
+  it('tocar una duración la activa', async () => {
+    const p = await montar(Breathe);
+    expect(p.texto('.duration .chip.active')).toBe('1 min');
+    await p.clic('.duration .chip', 2);
+    expect(p.texto('.duration .chip.active')).toBe('5 min');
+    expect(p.cuantos('.duration .chip.active')).toBe(1);
   });
 
-  it('marca como activa la duración elegida', async () => {
-    component.duracion.set('3 min');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    const activa = fixture.nativeElement.querySelector('.chip.active');
-    expect(activa.textContent).toContain('3 min');
-  });
-
-  it('comenzar guarda la técnica y los minutos elegidos', () => {
-    component.seleccionada.set(1);
-    component.duracion.set('3 min');
-    component.comenzar();
-    const guardado = JSON.parse(localStorage.getItem('pulso-respiracion') ?? '{}');
-    expect(guardado).toEqual({ name: 'Respiración en caja', minutes: 3 });
+  it('"Comenzar" guarda la técnica y los minutos y lleva a la sesión', async () => {
+    const p = await montar(Breathe);
+    await p.clic('.technique', 1);
+    await p.clic('.duration .chip', 1);
+    await p.clic('.start');
+    expect(leer('pulso-respiracion')).toEqual({ name: 'Respiración en caja', minutes: 3 });
+    expect(p.href('.start')).toBe('/respira/sesion');
   });
 });
