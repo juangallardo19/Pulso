@@ -47,21 +47,21 @@
         </div>
         <div class="rings">
           <div class="ring-item">
-            <div class="ring sleep-ring">
+            <div class="ring sleep-ring" [style.--avance]="avanceSueno() + '%'">
               <div class="ring-hole"><span class="icon i-moon c-sleep"></span></div>
             </div>
             <strong>{{ horas() }} h</strong>
             <span class="small">Sueño</span>
           </div>
           <div class="ring-item">
-            <div class="ring water-ring">
+            <div class="ring water-ring" [style.--avance]="avanceAgua() + '%'">
               <div class="ring-hole"><span class="icon i-droplet c-secondary"></span></div>
             </div>
             <strong>{{ vasos() }} / {{ metas.waterGlasses }}</strong>
             <span class="small">Agua</span>
           </div>
           <div class="ring-item">
-            <div class="ring exercise-ring">
+            <div class="ring exercise-ring" [style.--avance]="avanceEjercicio() + '%'">
               <div class="ring-hole"><span class="icon i-flame c-accent"></span></div>
             </div>
             <strong>{{ hoy.exerciseMinutes }} min</strong>

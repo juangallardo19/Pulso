@@ -96,6 +96,30 @@ describe('Home', () => {
     expect(p.texto('.counter .metric')).toBe('0');
   });
 
+  it('los anillos de "Tu día" se llenan según el avance de cada meta', async () => {
+    guardar('pulso-goals', { sleepHours: 8, waterGlasses: 4, exerciseMinutes: 30 });
+    guardar('pulso-checkin-hoy', {
+      sleepStart: '00:00',
+      sleepEnd: '04:00',
+      water: 1,
+      exerciseMinutes: 30,
+    });
+    const p = await montar(Home);
+    const avance = (selector: string) => p.el(selector).style.getPropertyValue('--avance');
+    expect(avance('.sleep-ring')).toBe('50%');
+    expect(avance('.water-ring')).toBe('25%');
+    expect(avance('.exercise-ring')).toBe('100%');
+    await p.clic('.counter .add');
+    expect(avance('.water-ring')).toBe('50%');
+  });
+
+  it('sin registros de hoy los anillos están vacíos', async () => {
+    const p = await montar(Home);
+    expect(p.el('.sleep-ring').style.getPropertyValue('--avance')).toBe('0%');
+    expect(p.el('.water-ring').style.getPropertyValue('--avance')).toBe('0%');
+    expect(p.el('.exercise-ring').style.getPropertyValue('--avance')).toBe('0%');
+  });
+
   it('el progreso nunca pasa de 100 %', async () => {
     guardar('pulso-checkin-hoy', {
       sleepStart: '20:00',
